@@ -1,0 +1,90 @@
+name: ecom
+description: "This is an e-commerce shopping application developed by BSquare Software, designed to provide a seamless and user-friendly shopping experience."
+
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.9.0
+
+# ---------------- [PACKAGES] ----------------
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # Utilities
+  flutter_native_splash: ^2.4.6   # Native splash screens
+  http: ^1.5.0                     # API requests
+  intl: ^0.20.2                    # Date/number formatting
+  logger: ^2.6.1                   # Debug logging
+  url_launcher: ^6.3.2             # Open links, calls, emails
+  smooth_page_indicator: ^1.2.1
+  lottie: ^3.3.1
+
+  # Icons
+  cupertino_icons: ^1.0.8          # iOS icons
+  iconsax: ^0.0.8                  # Modern icon set
+
+  # State Management
+  get: ^4.7.2                      # State management + navigation
+  get_storage: ^2.1.1              # Local key-value storage
+
+  # Product Specific
+
+  # Firebase
+  firebase_core: ^4.1.0
+
+  # App Icon Packages
+  flutter_launcher_icons: ^0.14.4
+
+
+# ---------------- [PACKAGES END] ----------------
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^5.0.0
+
+# ---------------- [APP ICON] ----------------
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/icon/icon.png"
+  adaptive_icon_foreground: "assets/icon/foreground.png"
+  adaptive_icon_background: "assets/icon/background.png"
+  adaptive_icon_monochrome: "assets/icon/monochrome.png"
+  remove_alpha_ios: true
+
+
+flutter:
+
+  uses-material-design: true
+
+  # ---------------- [ASSETS] ----------------
+  assets:
+    - assets/images/
+    - assets/logo/
+    - assets/animations/
+
+
+  # ---------------- [FONTS] ----------------
+  fonts:
+    - family: 'Nunito'
+      fonts:
+        - asset: assets/fonts/Nunito-Light.ttf
+          weight: 300
+        - asset: assets/fonts/Nunito-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Nunito-Italic.ttf
+          style: italic
+        - asset: assets/fonts/Nunito-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Nunito-MediumItalic.ttf
+          style: italic
+          weight: 500
+        - asset: assets/fonts/Nunito-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Nunito-Bold.ttf
+          weight: 800
+

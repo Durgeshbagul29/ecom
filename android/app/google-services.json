@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "178585922432",
+    "project_id": "ecom-app-be18f",
+    "storage_bucket": "ecom-app-be18f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:178585922432:android:cd8dabebe0a9c2fba0af65",
+        "android_client_info": {
+          "package_name": "com.bsquare.ecom"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDBZE-5DyRxu3_ECc3EAGvkH3xZbiQiALA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:178585922432:android:6505eeaa5d02c36fa0af65",
+        "android_client_info": {
+          "package_name": "com.bsquare.ecom_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDBZE-5DyRxu3_ECc3EAGvkH3xZbiQiALA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
