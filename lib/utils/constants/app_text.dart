@@ -59,9 +59,10 @@ class AppText {
   static const String accountCreatedTitle = 'Your account successfully created';
   static const String accountCreatedSubTitle = 'Congratulations! Your account has been successfully created. You can now explore all the amazing features, start personalizing your experience, and enjoy seamless access to our services. Let’s get started!';
 
+  // App Bar Home
   static const String homeAppBarTitle = 'Good Morning';
-  static const String homeAppBarSubTitle = 'Unknown Pro';
-  static const String searchBarTitle = 'Search in Store';
+  static const String homeAppBarSubTitle = 'Durgesh Bagul';
+  static const String searchBarTitle = 'Search in ECom';
   static const String popularCategories = 'Popular Categories';
 
 }

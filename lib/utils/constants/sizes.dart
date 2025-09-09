@@ -24,6 +24,7 @@ class AppSizes{
   static const double imgXXl = 200.0; // big extra large,
 
   // Font sizes
+  static const double fontSizeXs = 12.0; // extra small
   static const double fontSizeSm = 14.0; // small
   static const double fontSizeMd = 16.0; // medium
   static const double fontSizeLg = 18.0; // large

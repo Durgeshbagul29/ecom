@@ -1,5 +1,6 @@
 import 'package:ecom/common/widgets/buttons/app_elevated_button.dart';
 import 'package:ecom/features/authentication/screens/forgot_password/forgot_password_screen.dart';
+import 'package:ecom/navigation_menu.dart';
 import 'package:ecom/utils/constants/app_text.dart';
 import 'package:ecom/utils/constants/colors.dart';
 import 'package:ecom/utils/constants/sizes.dart';
@@ -62,7 +63,7 @@ class LoginForm extends StatelessWidget {
         /// Buttons
         // Sign In Button
         AppElevatedButton(
-          onPressed: () => Get.to(() => Scaffold()),
+          onPressed: () => Get.to(() => NavigationMenu()),
           child: Text(AppText.signIn),
         ),
 

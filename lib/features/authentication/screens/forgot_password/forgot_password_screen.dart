@@ -1,6 +1,6 @@
 import 'package:ecom/common/styles/padding.dart';
 import 'package:ecom/common/widgets/buttons/app_elevated_button.dart';
-import 'package:ecom/common/widgets/my_appbar.dart';
+import 'package:ecom/common/widgets/appbar/my_appbar.dart';
 import 'package:ecom/features/authentication/screens/forgot_password/reset_password_screen.dart';
 import 'package:ecom/utils/constants/app_text.dart';
 import 'package:ecom/utils/constants/images.dart';

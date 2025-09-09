@@ -1,7 +1,7 @@
 import 'package:ecom/common/styles/padding.dart';
 import 'package:ecom/common/widgets/buttons/social_media_buttons.dart';
 import 'package:ecom/common/widgets/login_signup/form_divider.dart';
-import 'package:ecom/common/widgets/my_appbar.dart';
+import 'package:ecom/common/widgets/appbar/my_appbar.dart';
 import 'package:ecom/features/authentication/screens/login/login_screen.dart';
 import 'package:ecom/features/authentication/screens/signup/widgets/signup_form.dart';
 import 'package:ecom/utils/constants/app_text.dart';
