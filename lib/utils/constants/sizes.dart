@@ -51,6 +51,7 @@ class AppSizes{
   static const double borderRadiusMd = 8.0;
   static const double borderRadiusLg = 12.0;
   static const double borderRadiusXl = 14.0;
+  static const double borderRadiusXXl = 16.0;
 
   // Product item dimensions
   static const double productImageRadius = 16.0;

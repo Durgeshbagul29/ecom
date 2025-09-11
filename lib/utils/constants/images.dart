@@ -39,7 +39,14 @@ class AppImages{
   static const String handDoneImage = 'assets/images/hand_done.png';
   static const String mailSentImage = 'assets/images/mail_illustration.png';
   //
-  // // categories icons
+  // categories icons
+  static const String drinks = 'assets/icons/categories/cola.png';
+  static const String electronics = 'assets/icons/categories/electronics.png';
+  static const String fashion = 'assets/icons/categories/fashion.png';
+  static const String furniture = 'assets/icons/categories/furniture.png';
+  static const String homeAccessories = 'assets/icons/categories/home.png';
+  static const String mobiles = 'assets/icons/categories/phone.png';
+  static const String shoes = 'assets/icons/categories/shoes.png';
   // static const String bagsIcon = 'assets/icons/categories/bag.png'; //------------
   // static const String bedIcon = 'assets/icons/categories/bed.png'; //------------
   // static const String clothesIcon = 'assets/icons/categories/clothes.png'; //------------
@@ -65,11 +72,12 @@ class AppImages{
   // static const String watchIcon = 'assets/icons/categories/watch.png'; //------------
   //
   // // Banners
-  // static const String homeBanner1 = 'assets/banners/banner_1.jpg';
-  // static const String homeBanner2 = 'assets/banners/banner_2.jpg';
-  // static const String homeBanner3 = 'assets/banners/banner_3.jpg';
-  // static const String homeBanner4 = 'assets/banners/banner_4.jpg';
-  // static const String homeBanner5 = 'assets/banners/banner_5.jpg';
+  static const String homeBanner1 = 'assets/banners/2.png';
+  static const String homeBanner2 = 'assets/banners/1.png';
+  static const String homeBanner3 = 'assets/banners/3.png';
+  static const String homeBanner4 = 'assets/banners/4.png';
+  static const String homeBanner5 = 'assets/banners/5.png';
+  static const String homeBanner6 = 'assets/banners/6.png';
   //
 
 }

@@ -12,7 +12,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       leading: IconButton(
-        // icon: Icon(
+        // icons: Icon(
         //   Theme.of(context).platform == TargetPlatform.iOS
         //       ? Icons.arrow_back_ios_new
         //       : Icons.arrow_back,

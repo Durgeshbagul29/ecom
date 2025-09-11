@@ -21,10 +21,11 @@ dependencies:
   url_launcher: ^6.3.2             # Open links, calls, emails
   smooth_page_indicator: ^1.2.1
   lottie: ^3.3.1
+  carousel_slider: ^5.1.1
 
   # Icons
   cupertino_icons: ^1.0.8          # iOS icons
-  iconsax: ^0.0.8                  # Modern icon set
+  iconsax: ^0.0.8                  # Modern icons set
 
   # State Management
   get: ^4.7.2                      # State management + navigation
@@ -50,10 +51,10 @@ dev_dependencies:
 flutter_launcher_icons:
   android: true
   ios: true
-  image_path: "assets/icon/icon.png"
-  adaptive_icon_foreground: "assets/icon/foreground.png"
-  adaptive_icon_background: "assets/icon/background.png"
-  adaptive_icon_monochrome: "assets/icon/monochrome.png"
+  image_path: "assets/icons/icon.png"
+  adaptive_icon_foreground: "assets/icons/foreground.png"
+  adaptive_icon_background: "assets/icons/background.png"
+  adaptive_icon_monochrome: "assets/icons/monochrome.png"
   remove_alpha_ios: true
 
 
@@ -64,8 +65,10 @@ flutter:
   # ---------------- [ASSETS] ----------------
   assets:
     - assets/images/
+    - assets/banners/
     - assets/logo/
     - assets/animations/
+    - assets/icons/categories/
 
 
   # ---------------- [FONTS] ----------------

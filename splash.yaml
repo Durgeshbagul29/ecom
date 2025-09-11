@@ -1,7 +1,7 @@
 # SPLASH SCREEN FOR OLD ANDROID AND LATEST ALSO IOS
 flutter_native_splash:
   color: "#FFFFFF" # white
-  color_dark: "#000000" # Black
+  color_dark: "#121212" # Black
   image: assets/logo/black_ecom_logo.png
   image_dark: assets/logo/white_ecom_logo.png
   branding: assets/logo/brand_white.png
@@ -11,7 +11,7 @@ flutter_native_splash:
 
   android_12:
     color: "#FFFFFF" # white
-    color_dark: "#000000" # Black
+    color_dark: "#121212" # Black
     image: assets/logo/black_ecom_logo.png
     image_dark: assets/logo/white_ecom_logo.png
     branding: assets/logo/brand_white.png

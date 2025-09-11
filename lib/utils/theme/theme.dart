@@ -41,7 +41,7 @@ class AppTheme {
     disabledColor: AppColors.grey,
     textTheme: AppTextTheme.darkTextTheme,
     chipTheme: AppChipTheme.darkChipTheme,
-    scaffoldBackgroundColor: AppColors.black,
+    scaffoldBackgroundColor: AppColors.charcoalBlack,
     appBarTheme: AppAppBarTheme.darkAppBarTheme,
     checkboxTheme: AppCheckBoxTheme.darkCheckboxTheme,
     bottomSheetTheme: AppBottomSheetTheme.darkBottomSheetTheme,

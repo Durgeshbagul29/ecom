@@ -41,7 +41,7 @@ class NavigationMenu extends StatelessWidget {
       bottomNavigationBar: Obx(
             () => BottomNavigationBar(
           type: BottomNavigationBarType.fixed, // Always show labels
-          backgroundColor: isDark ? AppColors.black : AppColors.white,
+          backgroundColor: isDark ? AppColors.charcoalBlack : AppColors.white,
           elevation: 8,
           selectedItemColor: AppColors.primary,
           unselectedItemColor: isDark ? AppColors.grey : AppColors.darkGrey,

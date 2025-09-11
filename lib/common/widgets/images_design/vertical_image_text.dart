@@ -29,12 +29,12 @@ class AppVerticalImageText extends StatelessWidget {
               height: 56,
               padding: const EdgeInsets.all(AppSizes.sm),
               decoration: BoxDecoration(
-                  color: backgroundColor ?? (isDark ? AppColors.black : AppColors.white),
-                  borderRadius: BorderRadius.circular(AppSizes.borderRadiusMd)
+                  color: backgroundColor ?? (isDark ? AppColors.cardBlack.withValues(alpha: 0.9) : AppColors.white.withValues(alpha: 0.9)),
+                  borderRadius: BorderRadius.circular(AppSizes.borderRadiusLg)
               ),
               // Category Image
               child: Center(
-                child: Image(image: AssetImage(image), fit: BoxFit.cover,color: isDark ? AppColors.light : AppColors.dark),
+                child: Image(image: AssetImage(image), fit: BoxFit.cover),
               ),
             ),
             // Category Text
