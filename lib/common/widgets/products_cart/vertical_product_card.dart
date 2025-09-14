@@ -1,7 +1,8 @@
 import 'package:ecom/common/custom_shapes/containers/circular_container.dart';
 import 'package:ecom/common/styles/shadows.dart';
-import 'package:ecom/common/widgets/icons/AppCircularIcon.dart';
+import 'package:ecom/common/widgets/icons/app_circular_icon.dart';
 import 'package:ecom/common/widgets/images_design/app_rounded_image.dart';
+import 'package:ecom/common/widgets/texts/product_price_text.dart';
 import 'package:ecom/common/widgets/texts/product_title_text.dart';
 import 'package:ecom/utils/constants/colors.dart';
 import 'package:ecom/utils/constants/images.dart';
@@ -80,11 +81,13 @@ class VerticalProductCard extends StatelessWidget {
                 // Maintain spacing between each field equally for all cards
                 // Spacer(),
 
-                // Price
+                /// Price and Add Button
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('₹100', maxLines: 1, overflow: TextOverflow.ellipsis, style: Theme.of(context).textTheme.headlineMedium),
+                    // Product Price
+                    ProductPriceText(price: '100'),
+
                     Container(
                       decoration: const BoxDecoration(
                         color: AppColors.dark,
