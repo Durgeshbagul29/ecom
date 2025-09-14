@@ -37,7 +37,7 @@ class AppSearchBar extends StatelessWidget {
           ),
           child: Row(
             children: [
-              Icon(icon, color: AppColors.darkerGrey), const SizedBox(width: AppSizes.spaceBtwItems),
+              Icon(icon, color: isDark ? AppColors.darkGrey : AppColors.darkerGrey), const SizedBox(width: AppSizes.spaceBtwItems),
               Text(text, style: Theme.of(context).textTheme.bodySmall)
             ],
           ),

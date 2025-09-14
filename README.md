@@ -4,6 +4,7 @@ An advanced E-commerce Application built using Flutter & Dart with Firebase back
 This application provides smooth experiences for Customers and powerful tools for Admins with secure authentication, product management, and order handling.
 
 🚀 Features
+
 👤 Customer
 
 🔑 Secure Login & Signup (Email/Password, Google Authentication)

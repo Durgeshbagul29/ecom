@@ -47,7 +47,7 @@ class AppImages{
   static const String homeAccessories = 'assets/icons/categories/home.png';
   static const String mobiles = 'assets/icons/categories/phone.png';
   static const String shoes = 'assets/icons/categories/shoes.png';
-  // static const String bagsIcon = 'assets/icons/categories/bag.png'; //------------
+  static const String belt = 'assets/products/belt.jpg';
   // static const String bedIcon = 'assets/icons/categories/bed.png'; //------------
   // static const String clothesIcon = 'assets/icons/categories/clothes.png'; //------------
   // static const String cosmeticsIcon = 'assets/icons/categories/cosmetics.png'; //------------

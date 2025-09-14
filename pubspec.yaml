@@ -65,6 +65,7 @@ flutter:
   # ---------------- [ASSETS] ----------------
   assets:
     - assets/images/
+    - assets/products/
     - assets/banners/
     - assets/logo/
     - assets/animations/
