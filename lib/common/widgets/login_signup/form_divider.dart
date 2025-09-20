@@ -1,5 +1,5 @@
 import 'package:ecom/utils/constants/colors.dart';
-import 'package:ecom/utils/helpers/helper_fucations.dart';
+import 'package:ecom/utils/helpers/helper_functions.dart';
 import 'package:flutter/material.dart';
 
 

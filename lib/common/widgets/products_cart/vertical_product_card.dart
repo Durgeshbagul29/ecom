@@ -8,7 +8,7 @@ import 'package:ecom/common/widgets/texts/product_title_text.dart';
 import 'package:ecom/utils/constants/colors.dart';
 import 'package:ecom/utils/constants/images.dart';
 import 'package:ecom/utils/constants/sizes.dart';
-import 'package:ecom/utils/helpers/helper_fucations.dart';
+import 'package:ecom/utils/helpers/helper_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 

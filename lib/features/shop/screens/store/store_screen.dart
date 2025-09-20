@@ -1,20 +1,14 @@
-import 'package:ecom/common/custom_shapes/containers/circular_container.dart';
 import 'package:ecom/common/widgets/appbar/appbar.dart';
 import 'package:ecom/common/widgets/appbar/tab_bar.dart';
-import 'package:ecom/common/widgets/images_design/app_circular_iamge.dart';
 import 'package:ecom/common/widgets/layouts/grid_layout.dart';
 import 'package:ecom/common/widgets/products_cart/cart_menu_icon.dart';
 import 'package:ecom/common/widgets/texts/app_section_heading.dart';
-import 'package:ecom/common/widgets/texts/brand_title_text_with_verified_icon.dart';
 import 'package:ecom/features/shop/screens/home/widgets/app_search_bar.dart';
 import 'package:ecom/features/shop/screens/store/widgets/brand_card.dart';
-import 'package:ecom/features/shop/screens/store/widgets/brand_show_case.dart';
 import 'package:ecom/features/shop/screens/store/widgets/category_tab.dart';
 import 'package:ecom/utils/constants/colors.dart';
-import 'package:ecom/utils/constants/enums.dart';
-import 'package:ecom/utils/constants/images.dart';
 import 'package:ecom/utils/constants/sizes.dart';
-import 'package:ecom/utils/helpers/helper_fucations.dart';
+import 'package:ecom/utils/helpers/helper_functions.dart';
 import 'package:flutter/material.dart';
 
 class StoreScreen extends StatelessWidget {
@@ -44,9 +38,7 @@ class StoreScreen extends StatelessWidget {
                 automaticallyImplyLeading: false,
                 pinned: true,
                 floating: true,
-                backgroundColor: AppHelperFunctions.isDarkMode(context)
-                    ? AppColors.charcoalBlack
-                    : AppColors.white,
+                backgroundColor: isDark ? AppColors.charcoalBlack : AppColors.white,
                 expandedHeight: 390,
 
                 flexibleSpace: Padding(
