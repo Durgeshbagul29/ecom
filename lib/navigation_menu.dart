@@ -1,4 +1,5 @@
 import 'package:ecom/features/shop/screens/home/home_screen.dart';
+import 'package:ecom/features/shop/screens/store/store_screen.dart';
 import 'package:ecom/utils/constants/colors.dart';
 import 'package:ecom/utils/constants/sizes.dart';
 import 'package:ecom/utils/helpers/helper_fucations.dart';
@@ -12,7 +13,7 @@ class NavigationController extends GetxController {
 
   final screens = <Widget>[
     const HomeScreen(),
-    const Center(child: Text("Store Screen")),
+    const StoreScreen(),
     const Center(child: Text("Wishlist Screen")),
     const Center(child: Text("Profile Screen")),
   ];

@@ -2,6 +2,7 @@ import 'package:ecom/common/custom_shapes/containers/circular_container.dart';
 import 'package:ecom/common/styles/shadows.dart';
 import 'package:ecom/common/widgets/icons/app_circular_icon.dart';
 import 'package:ecom/common/widgets/images_design/app_rounded_image.dart';
+import 'package:ecom/common/widgets/texts/brand_title_text_with_verified_icon.dart';
 import 'package:ecom/common/widgets/texts/product_price_text.dart';
 import 'package:ecom/common/widgets/texts/product_title_text.dart';
 import 'package:ecom/utils/constants/colors.dart';
@@ -40,7 +41,7 @@ class VerticalProductCard extends StatelessWidget {
               child: Stack(
                 children: [
                   /// Product Image
-                  const AppRoundedImage(imageUrl: AppImages.belt, applyImageRadius: true),
+                  const AppRoundedImage(imageUrl: AppImages.belt, applyImageRadius: true, fit: BoxFit.contain ),
 
                   /// Sale Tag
                   Positioned(
@@ -69,40 +70,37 @@ class VerticalProductCard extends StatelessWidget {
                 ProductTitleText(title: "Men's Brown Belt",smallSize: true,textAlign: TextAlign.left),
                 const SizedBox(height: AppSizes.spaceBtwItems / 2),
 
-                // Brand Text
-                Row(
-                  children: [
-                    Text('Zara', overflow: TextOverflow.ellipsis, maxLines: 1, style: Theme.of(context).textTheme.labelMedium),
-                    const SizedBox(width: AppSizes.sm),
-                    Icon(Iconsax.verify5, color: AppColors.primary, size: AppSizes.iconXs)
-                  ],
+                // Brand Text With Verified Icon
+                BrandTitleTextWithVerifiedIcon(title: 'Nike')
+
+              ],
+            )),
+            // Maintain spacing between each field equally for all cards
+            Spacer(),
+
+            /// Price and Add Button
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                // Product Price
+                Padding(
+                  padding: const EdgeInsets.only(left: AppSizes.sm),
+                  child: ProductPriceText(price: '100'),
                 ),
 
-                // Maintain spacing between each field equally for all cards
-                // Spacer(),
-
-                /// Price and Add Button
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    // Product Price
-                    ProductPriceText(price: '100'),
-
-                    Container(
-                      decoration: const BoxDecoration(
-                        color: AppColors.dark,
-                        borderRadius: BorderRadius.only(
+                Container(
+                  decoration: const BoxDecoration(
+                      color: AppColors.dark,
+                      borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(AppSizes.cardRadiusMd),
                           bottomRight: Radius.circular(AppSizes.productImageRadius)
-                        )
-                      ),
-                      child: const SizedBox(width: AppSizes.iconLg * 1.2, height: AppSizes.iconLg * 1.2,
-                          child: Center(child: Icon(Iconsax.add, color: AppColors.white))),
-                    )
-                  ],
+                      )
+                  ),
+                  child: const SizedBox(width: AppSizes.iconLg * 1.2, height: AppSizes.iconLg * 1.2,
+                      child: Center(child: Icon(Iconsax.add, color: AppColors.white))),
                 )
               ],
-            ))
+            )
           ],
         ),
       ),

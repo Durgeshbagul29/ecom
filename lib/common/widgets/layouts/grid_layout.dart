@@ -16,15 +16,17 @@ class AppGridlayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GridView.builder(
-        itemCount: itemCount,
-        shrinkWrap: true,
-        padding: EdgeInsets.zero,
-        physics: NeverScrollableScrollPhysics(),
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            mainAxisSpacing: AppSizes.gridViewSpacing,
-            crossAxisSpacing: AppSizes.gridViewSpacing,
-            mainAxisExtent: mainAxisExtent
-        ), itemBuilder: itemBuilder);
+      itemCount: itemCount,
+      shrinkWrap: true,
+      padding: EdgeInsets.zero,
+      physics: NeverScrollableScrollPhysics(),
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        mainAxisSpacing: AppSizes.gridViewSpacing,
+        crossAxisSpacing: AppSizes.gridViewSpacing,
+        mainAxisExtent: mainAxisExtent,
+      ),
+      itemBuilder: itemBuilder,
+    );
   }
 }

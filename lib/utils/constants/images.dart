@@ -38,6 +38,7 @@ class AppImages{
   static const String accountCreatedImage = 'assets/images/account_created.png';
   static const String handDoneImage = 'assets/images/hand_done.png';
   static const String mailSentImage = 'assets/images/mail_illustration.png';
+  static const String nike = 'assets/images/nike.png';
   //
   // categories icons
   static const String drinks = 'assets/icons/categories/cola.png';
