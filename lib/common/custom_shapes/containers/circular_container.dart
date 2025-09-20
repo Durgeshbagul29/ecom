@@ -10,10 +10,10 @@ class CircularContainer extends StatelessWidget {
     this.width,
     this.padding,
     this.margin,
-    this.borderColor = AppColors.borderPrimary ,
+    this.borderColor = AppColors.borderPrimary,
     this.radius = AppSizes.cardRadiusLg,
     this.backgroundColor = AppColors.white,
-    this.shadowBorder = false
+    this.shadowBorder = false,
   });
 
   // Container Variables
@@ -25,7 +25,6 @@ class CircularContainer extends StatelessWidget {
   final Widget? child;
   final bool shadowBorder;
 
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -36,9 +35,9 @@ class CircularContainer extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(radius!),
         color: backgroundColor,
-        border: shadowBorder ? Border.all(color: borderColor, width: 1.5) : null
+        border: shadowBorder ? Border.all(color: borderColor, width: 1.5) : null,
       ),
-      child: child
+      child: child,
     );
   }
 }
