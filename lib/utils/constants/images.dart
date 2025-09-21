@@ -39,6 +39,7 @@ class AppImages{
   static const String handDoneImage = 'assets/images/hand_done.png';
   static const String mailSentImage = 'assets/images/mail_illustration.png';
   static const String nike = 'assets/images/nike.png';
+  static const String user = 'assets/images/user.png';
   //
   // categories icons
   static const String drinks = 'assets/icons/categories/cola.png';

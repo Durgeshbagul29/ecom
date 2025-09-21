@@ -1,3 +1,4 @@
+import 'package:ecom/features/personaliation/screens/account/account_screen.dart';
 import 'package:ecom/features/shop/screens/home/home_screen.dart';
 import 'package:ecom/features/shop/screens/store/store_screen.dart';
 import 'package:ecom/features/shop/screens/wishlist/wishlist_screen.dart';
@@ -16,7 +17,7 @@ class NavigationController extends GetxController {
     const HomeScreen(),
     const StoreScreen(),
     const WishlistScreen(),
-    const Center(child: Text("Profile Screen")),
+    const AccountScreen(),
   ];
 
   void changeIndex(int index) {

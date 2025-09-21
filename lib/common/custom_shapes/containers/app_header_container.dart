@@ -16,18 +16,15 @@ class AppHeaderContainer extends StatelessWidget {
       child: Container(
         color: AppColors.primary,
         padding: const EdgeInsets.all(0),
-        child: SizedBox(
-          height: 400,
-          child: Stack(
-            children: [
-              // Circular Container
-              Positioned(top: -150, right: -250, child: CircularContainer(backgroundColor: AppColors.white.withValues(alpha: 0.1))),
-              // Circular Container
-              Positioned(top: 100, right: -300, child: CircularContainer(backgroundColor: AppColors.white.withValues(alpha: 0.1))),
-              // Child
-              child
-            ],
-          ),
+        child: Stack(
+          children: [
+            // Circular Container
+            Positioned(top: -150, right: -250, child: CircularContainer(backgroundColor: AppColors.white.withValues(alpha: 0.1))),
+            // Circular Container
+            Positioned(top: 100, right: -300, child: CircularContainer(backgroundColor: AppColors.white.withValues(alpha: 0.1))),
+            // Child
+            child
+          ],
         ),
       ),
     );
