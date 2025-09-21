@@ -3,10 +3,12 @@ import 'package:ecom/common/widgets/appbar/appbar.dart';
 import 'package:ecom/common/widgets/images_design/app_circular_iamge.dart';
 import 'package:ecom/common/widgets/list_tiles/settings_menu_title.dart';
 import 'package:ecom/common/widgets/texts/app_section_heading.dart';
+import 'package:ecom/features/personaliation/screens/profile/profile_screen.dart';
 import 'package:ecom/utils/constants/colors.dart';
 import 'package:ecom/utils/constants/images.dart';
 import 'package:ecom/utils/constants/sizes.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 
 class AccountScreen extends StatelessWidget {
@@ -28,10 +30,10 @@ class AccountScreen extends StatelessWidget {
                     /// User Profile Card
                     ListTile(
                       leading: AppCircularImage(
-                          image: AppImages.user, width: 50, height: 50, padding: 0),
+                          image: AppImages.user,  padding: 0),
                       title: Text('Durgesh Bagul', style: Theme.of(context).textTheme.headlineSmall!.apply(color : AppColors.white)),
                       subtitle : Text('baguldurgesh29@gmail.com', style: Theme.of(context).textTheme.bodyMedium!.apply(color : AppColors.white)),
-                      trailing: IconButton(onPressed: () {}, icon: const Icon(Iconsax.edit, color: AppColors.white))
+                      trailing: IconButton(onPressed: () => Get.to(() => const ProfileScreen()), icon: const Icon(Iconsax.edit, color: AppColors.white))
                     ),
                     const SizedBox(height: AppSizes.spaceBtwSections),
 
@@ -63,7 +65,7 @@ class AccountScreen extends StatelessWidget {
                 SettingsMenuTitle(icon: Iconsax.security_user, title: 'Safe Mode',subTitle: 'Search result is safe for all ages', trailing: Switch(value: true, onChanged: (value) {})),
                 SettingsMenuTitle(icon: Iconsax.image, title: 'HD Image Quality',subTitle: 'Set image quality to be seen', trailing: Switch(value: false, onChanged: (value) {})),
 
-                ///
+                /// Logout Button
                 const SizedBox(height: AppSizes.spaceBtwSections),
                 SizedBox(
                   width: double.infinity,

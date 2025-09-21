@@ -2,7 +2,6 @@ import 'package:ecom/utils/constants/sizes.dart';
 import 'package:ecom/utils/device/device_utility.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:iconsax/iconsax.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBar({
@@ -29,7 +28,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         leading: showBackArrow
             ? IconButton(
                 onPressed: () => Get.back(),
-                icon: const Icon(Iconsax.arrow_left),
+                icon: const Icon(Icons.arrow_back_ios_new_rounded),
               )
             : leadingIcon != null
             ? IconButton(onPressed: leadingOnPressed, icon: Icon(leadingIcon))
