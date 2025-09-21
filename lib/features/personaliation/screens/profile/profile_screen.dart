@@ -1,5 +1,6 @@
 import 'package:ecom/common/widgets/appbar/appbar.dart';
 import 'package:ecom/common/widgets/images_design/app_circular_iamge.dart';
+import 'package:ecom/common/widgets/images_design/app_rounded_image.dart';
 import 'package:ecom/common/widgets/texts/app_section_heading.dart';
 import 'package:ecom/features/personaliation/screens/profile/widgets/profile_menu.dart';
 import 'package:ecom/utils/constants/images.dart';
@@ -13,7 +14,7 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title: Text('Profile'), showBackArrow: true),
+      appBar: CustomAppBar(title: Text('Profile', style: Theme.of(context).textTheme.headlineMedium), showBackArrow: true),
       body: SingleChildScrollView(
         padding: EdgeInsetsGeometry.all(AppSizes.defaultSpace),
         child: Column(
@@ -23,7 +24,7 @@ class ProfileScreen extends StatelessWidget {
               width: double.infinity,
               child: Column(
                 children: [
-                  const AppCircularImage(image: AppImages.user, width: 80, height: 80),
+                  const AppRoundedImage(imageUrl: AppImages.user, width: 80, height: 80, fit: BoxFit.cover, borderRadius: 100),
                   TextButton(onPressed: () {}, child: const Text('Change Profile Picture')),
                 ],
               ),
@@ -69,10 +70,7 @@ class ProfileScreen extends StatelessWidget {
                   ],
                 ),
               ),
-            )
-
-
-
+            ),
           ],
         ),
       ),

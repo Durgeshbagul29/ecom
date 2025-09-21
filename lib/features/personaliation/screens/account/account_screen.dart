@@ -1,7 +1,9 @@
 import 'package:ecom/common/custom_shapes/containers/app_header_container.dart';
 import 'package:ecom/common/widgets/appbar/appbar.dart';
 import 'package:ecom/common/widgets/images_design/app_circular_iamge.dart';
-import 'package:ecom/common/widgets/list_tiles/settings_menu_title.dart';
+import 'package:ecom/common/widgets/images_design/app_rounded_image.dart';
+import 'package:ecom/common/widgets/list_tiles/settings_menu_tile.dart';
+import 'package:ecom/common/widgets/list_tiles/user_profile_tile.dart';
 import 'package:ecom/common/widgets/texts/app_section_heading.dart';
 import 'package:ecom/features/personaliation/screens/profile/profile_screen.dart';
 import 'package:ecom/utils/constants/colors.dart';
@@ -28,13 +30,7 @@ class AccountScreen extends StatelessWidget {
                     const SizedBox(height: AppSizes.spaceBtwItems),
 
                     /// User Profile Card
-                    ListTile(
-                      leading: AppCircularImage(
-                          image: AppImages.user,  padding: 0),
-                      title: Text('Durgesh Bagul', style: Theme.of(context).textTheme.headlineSmall!.apply(color : AppColors.white)),
-                      subtitle : Text('baguldurgesh29@gmail.com', style: Theme.of(context).textTheme.bodyMedium!.apply(color : AppColors.white)),
-                      trailing: IconButton(onPressed: () => Get.to(() => const ProfileScreen()), icon: const Icon(Iconsax.edit, color: AppColors.white))
-                    ),
+                    UserProfileTile(name: 'Durgesh Bagul', email: 'baguldurgesh29@gmail.com', image: AppImages.user, border: true),
                     const SizedBox(height: AppSizes.spaceBtwSections),
 
               ],
