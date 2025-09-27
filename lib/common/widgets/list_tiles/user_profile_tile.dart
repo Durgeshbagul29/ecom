@@ -1,7 +1,5 @@
-import 'package:ecom/common/widgets/images_design/app_rounded_image.dart';
 import 'package:ecom/features/personaliation/screens/profile/profile_screen.dart';
 import 'package:ecom/utils/constants/colors.dart';
-import 'package:ecom/utils/constants/images.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';

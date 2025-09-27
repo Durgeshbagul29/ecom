@@ -1,16 +1,12 @@
 import 'package:ecom/common/custom_shapes/containers/app_header_container.dart';
 import 'package:ecom/common/widgets/appbar/appbar.dart';
-import 'package:ecom/common/widgets/images_design/app_circular_iamge.dart';
-import 'package:ecom/common/widgets/images_design/app_rounded_image.dart';
 import 'package:ecom/common/widgets/list_tiles/settings_menu_tile.dart';
 import 'package:ecom/common/widgets/list_tiles/user_profile_tile.dart';
 import 'package:ecom/common/widgets/texts/app_section_heading.dart';
-import 'package:ecom/features/personaliation/screens/profile/profile_screen.dart';
 import 'package:ecom/utils/constants/colors.dart';
 import 'package:ecom/utils/constants/images.dart';
 import 'package:ecom/utils/constants/sizes.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 
 class AccountScreen extends StatelessWidget {

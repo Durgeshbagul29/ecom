@@ -1,5 +1,4 @@
 import 'package:ecom/common/widgets/appbar/appbar.dart';
-import 'package:ecom/common/widgets/images_design/app_circular_iamge.dart';
 import 'package:ecom/common/widgets/images_design/app_rounded_image.dart';
 import 'package:ecom/common/widgets/texts/app_section_heading.dart';
 import 'package:ecom/features/personaliation/screens/profile/widgets/profile_menu.dart';

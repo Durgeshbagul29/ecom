@@ -5,11 +5,13 @@ import 'package:ecom/common/widgets/images_design/app_rounded_image.dart';
 import 'package:ecom/common/widgets/texts/brand_title_text_with_verified_icon.dart';
 import 'package:ecom/common/widgets/texts/product_price_text.dart';
 import 'package:ecom/common/widgets/texts/product_title_text.dart';
+import 'package:ecom/features/shop/screens/product_details/product_details_screen.dart';
 import 'package:ecom/utils/constants/colors.dart';
 import 'package:ecom/utils/constants/images.dart';
 import 'package:ecom/utils/constants/sizes.dart';
 import 'package:ecom/utils/helpers/helper_functions.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 
 class VerticalProductCard extends StatelessWidget {
@@ -22,7 +24,7 @@ class VerticalProductCard extends StatelessWidget {
 
     /// Product Container with side padding, color, edges, radius and shadow
     return GestureDetector(
-      onTap: () {},
+      onTap: () => Get.to(() => const ProductDetailsScreen()),
       child: Container(
         width: 180,
         padding: const EdgeInsets.all(1),

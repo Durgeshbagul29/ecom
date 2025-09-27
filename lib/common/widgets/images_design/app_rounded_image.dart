@@ -38,7 +38,7 @@ class AppRoundedImage extends StatelessWidget {
             border: border, color: backgroundColor, borderRadius: BorderRadiusGeometry.circular(borderRadius)),
         child: ClipRRect(
           borderRadius: applyImageRadius ? BorderRadius.circular(borderRadius) : BorderRadius.zero,
-          child: Image(fit: fit ?? BoxFit.cover, image: isNetworking ? NetworkImage(imageUrl) : AssetImage(imageUrl)),
+          child: Image(fit: fit ?? BoxFit.cover, image: isNetworking ? NetworkImage(imageUrl) : AssetImage(imageUrl) as ImageProvider),
         ),
       ),
     );

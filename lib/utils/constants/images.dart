@@ -50,6 +50,10 @@ class AppImages{
   static const String mobiles = 'assets/icons/categories/phone.png';
   static const String shoes = 'assets/icons/categories/shoes.png';
   static const String belt = 'assets/products/belt.jpg';
+  static const String shirt = 'assets/products/2.jpg';
+  static const String shirt2 = 'assets/products/3.jpg';
+  static const String shirt3 = 'assets/products/clothes-1.jpg';
+  static const String jacket = 'assets/products/jacket-1.jpg';
   // static const String bedIcon = 'assets/icons/categories/bed.png'; //------------
   // static const String clothesIcon = 'assets/icons/categories/clothes.png'; //------------
   // static const String cosmeticsIcon = 'assets/icons/categories/cosmetics.png'; //------------

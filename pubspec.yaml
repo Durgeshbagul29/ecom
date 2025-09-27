@@ -21,7 +21,6 @@ dependencies:
   url_launcher: ^6.3.2             # Open links, calls, emails
   smooth_page_indicator: ^1.2.1
   lottie: ^3.3.1
-  carousel_slider: ^5.1.1
 
   # Icons
   cupertino_icons: ^1.0.8          # iOS icons
@@ -32,6 +31,9 @@ dependencies:
   get_storage: ^2.1.1              # Local key-value storage
 
   # Product Specific
+  readmore: ^3.0.0
+  carousel_slider: ^5.1.1
+  flutter_rating_bar: ^4.0.1
 
   # Firebase
   firebase_core: ^4.1.0
