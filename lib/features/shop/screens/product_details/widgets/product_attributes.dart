@@ -25,7 +25,6 @@ class ProductAttributes extends StatelessWidget {
           child: Column(
             children: [
               /// Title, Price and Stoke Status
-              const ProductTitleText(title: 'Price: ', smallSize: true),
               Row(
                 children: [
                   const AppSectionHeading(title: 'Variation', showActionButton: false),
@@ -35,6 +34,8 @@ class ProductAttributes extends StatelessWidget {
                     children: [
                       const Row(
                         children: [
+                          ProductTitleText(title: 'Price:', smallSize: true),
+                          SizedBox(width: AppSizes.spaceBtwItems),
                           /// Actual Price
                           ProductPriceText(price: '25', lineThrough: true),
                           SizedBox(width: AppSizes.spaceBtwItems),
@@ -46,7 +47,8 @@ class ProductAttributes extends StatelessWidget {
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const ProductTitleText(title: 'Stock', smallSize: true),
+                          const ProductTitleText(title: 'Stock:', smallSize: true),
+                          SizedBox(width: AppSizes.spaceBtwItems),
                           Text('In Stock', style: Theme.of(context).textTheme.titleMedium)
                         ],
                       ),
@@ -76,7 +78,7 @@ class ProductAttributes extends StatelessWidget {
               children: [
                 AppChoiceChip(text: 'Green', selected: true, onSelected: (value) {}),
                 AppChoiceChip(text: 'Red', selected: false, onSelected: (value) {}),
-                AppChoiceChip(text: 'Yellow', selected: false, onSelected: (value) {}),
+                AppChoiceChip(text: 'Purple', selected: false, onSelected: (value) {}),
                 AppChoiceChip(text: 'Pink', selected: false, onSelected: (value) {}),
                 AppChoiceChip(text: 'Blue', selected: false, onSelected: (value) {})
               ],

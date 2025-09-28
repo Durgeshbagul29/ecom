@@ -4,8 +4,10 @@ import 'package:ecom/features/shop/screens/product_details/widgets/product_attri
 import 'package:ecom/features/shop/screens/product_details/widgets/product_detail_iamge.dart';
 import 'package:ecom/features/shop/screens/product_details/widgets/product_meta_data.dart';
 import 'package:ecom/features/shop/screens/product_details/widgets/product_rating_share.dart';
+import 'package:ecom/features/shop/screens/product_reviews/product_reviews_screen.dart';
 import 'package:ecom/utils/constants/sizes.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:readmore/readmore.dart';
 
@@ -65,10 +67,11 @@ class ProductDetailsScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       const AppSectionHeading(title: 'Reviews (25)', showActionButton: false),
-                      IconButton(onPressed: () {}, icon: Icon(Iconsax.arrow_right_3, size: 18))
+                      IconButton(onPressed: () => Get.to(() => const ProductReviewsScreen()),
+                          icon: Icon(Iconsax.arrow_right_3, size: 18))
                     ],
                   ),
-                  const  SizedBox(height: AppSizes.spaceBtwSections),
+                  const SizedBox(height: AppSizes.spaceBtwSections),
                 ],
               ),
             ),

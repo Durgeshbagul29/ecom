@@ -25,16 +25,37 @@ class AppHelperFunctions {
         return Colors.black;
       case 'white':
         return Colors.white;
-      case 'Brown':
+      case 'brown':
         return Colors.brown;
-      case 'Teal':
+      case 'teal':
         return Colors.teal;
-      case 'Indigo':
+      case 'indigo':
         return Colors.indigo;
+      case 'orange':
+        return Colors.orange;
+      case 'yellow':
+        return Colors.yellow;
+      case 'cyan':
+        return Colors.cyan;
+      case 'lime':
+        return Colors.lime;
+      case 'amber':
+        return Colors.amber;
+      case 'deeporange':
+        return Colors.deepOrange;
+      case 'deeppurple':
+        return Colors.deepPurple;
+      case 'lightblue':
+        return Colors.lightBlue;
+      case 'lightgreen':
+        return Colors.lightGreen;
+      case 'bluegrey':
+        return Colors.blueGrey;
       default:
         return null; // If no match found
     }
   }
+
 
   /// Show a SnackBar message
   static void showSnackBar(String message) {

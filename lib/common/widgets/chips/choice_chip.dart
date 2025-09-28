@@ -21,7 +21,7 @@ class AppChoiceChip extends StatelessWidget {
     final isColor = AppHelperFunctions.getColor(text) != null;
 
     return ChoiceChip(
-      label: isColor ? const SizedBox() : Text(''),
+      label: isColor ? const SizedBox() : Text(text),
       selected: selected,
       onSelected: onSelected,
       labelStyle: TextStyle(color: selected ? AppColors.white : null),
@@ -36,7 +36,7 @@ class AppChoiceChip extends StatelessWidget {
       labelPadding: isColor ? const EdgeInsets.all(0) : null,
       // Make icon in the center
       padding: isColor ? const EdgeInsets.all(0) : null,
-      selectedColor: Colors.green,
+      // selectedColor: Colors.green,
       backgroundColor: isColor ? AppHelperFunctions.getColor(text)! : null,
     );
   }
