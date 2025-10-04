@@ -3,10 +3,12 @@ import 'package:ecom/common/widgets/appbar/appbar.dart';
 import 'package:ecom/common/widgets/list_tiles/settings_menu_tile.dart';
 import 'package:ecom/common/widgets/list_tiles/user_profile_tile.dart';
 import 'package:ecom/common/widgets/texts/app_section_heading.dart';
+import 'package:ecom/features/personaliation/screens/address/address_screen.dart';
 import 'package:ecom/utils/constants/colors.dart';
 import 'package:ecom/utils/constants/images.dart';
 import 'package:ecom/utils/constants/sizes.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 
 class AccountScreen extends StatelessWidget {
@@ -40,7 +42,7 @@ class AccountScreen extends StatelessWidget {
                 const AppSectionHeading(title: 'Account Settings', showActionButton: false),
                 const SizedBox(height: AppSizes.spaceBtwItems),
 
-                SettingsMenuTitle(icon: Iconsax.safe_home, title: 'My Addresses',subTitle: 'Set shopping delivery address', onTap: () {}),
+                SettingsMenuTitle(icon: Iconsax.safe_home, title: 'My Addresses',subTitle: 'Set shopping delivery address', onTap: () => Get.to(() => AddressScreen())),
                 SettingsMenuTitle(icon: Iconsax.shopping_cart, title: 'My Cart',subTitle: 'Add, remove products and move to checkout', onTap: () {}),
                 SettingsMenuTitle(icon: Iconsax.bag_tick, title: 'My Orders',subTitle: 'In-progress and Completed Orders', onTap: () {}),
                 SettingsMenuTitle(icon: Iconsax.bank, title: 'Bank Account',subTitle: 'Withdraw balance to registered bank account', onTap: () {}),

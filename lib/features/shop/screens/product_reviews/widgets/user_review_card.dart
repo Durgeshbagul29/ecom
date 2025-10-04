@@ -81,7 +81,7 @@ class UserReviewCard extends StatelessWidget {
             ),
           ),
         ),
-        const SizedBox(height: AppSizes.spaceBtwItems),
+        const SizedBox(height: AppSizes.spaceBtwSections),
       ],
     );
   }

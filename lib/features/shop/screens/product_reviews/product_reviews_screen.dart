@@ -1,4 +1,3 @@
-import 'package:ecom/common/widgets/appbar/appbar.dart';
 import 'package:ecom/common/widgets/appbar/my_appbar.dart';
 import 'package:ecom/common/widgets/products_cart/rating_star_indicator.dart';
 import 'package:ecom/features/shop/screens/product_reviews/widgets/overall_product_rating.dart';
