@@ -1,5 +1,4 @@
 import 'package:ecom/common/custom_shapes/containers/circular_container.dart';
-import 'package:ecom/common/styles/padding.dart';
 import 'package:ecom/common/widgets/appbar/appbar.dart';
 import 'package:ecom/common/widgets/products_cart/coupon_code.dart';
 import 'package:ecom/common/widgets/screens/success_screen.dart';
@@ -32,7 +31,7 @@ class CheckoutScreen extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: AppPadding.screenNotTopPadding,
+          padding: const EdgeInsets.all(AppSizes.defaultSpace),
           child: Column(
             children: [
               /// Selected Products List

@@ -2,6 +2,7 @@ import 'package:ecom/common/styles/padding.dart';
 import 'package:ecom/common/widgets/appbar/appbar.dart';
 import 'package:ecom/features/shop/screens/cart/widgets/cart_product_items.dart';
 import 'package:ecom/features/shop/screens/checkout/checkout.dart';
+import 'package:ecom/utils/constants/sizes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -16,7 +17,7 @@ class CartScreen extends StatelessWidget {
         showBackArrow: true,
       ),
       body: Padding(
-        padding: AppPadding.screenNotTopPadding,
+        padding: const EdgeInsets.all(AppSizes.defaultSpace),
         // In separatorBuilder _ means context, __ means index
         child: CartProductItems(),
       ),
