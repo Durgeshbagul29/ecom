@@ -1,5 +1,7 @@
+import 'package:ecom/features/shop/screens/cart/cart_screen.dart';
 import 'package:ecom/utils/constants/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class MyCartCounterIcon extends StatelessWidget {
   const MyCartCounterIcon({
@@ -13,7 +15,7 @@ class MyCartCounterIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        IconButton(onPressed: onPressed, icon: Icon(Icons.shopping_cart, color: iconColor)),
+        IconButton(onPressed: () => Get.to(() => CartScreen()), icon: Icon(Icons.shopping_cart, color: iconColor)),
         Positioned(
           right: 1,
           top: 1,
