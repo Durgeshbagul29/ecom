@@ -30,6 +30,6 @@ class AuthenticationRepository extends GetxController {
     deviceStorage.read('isFirstTime') != true ? Get.offAll(() => const LoginScreen()) : Get.offAll(() => const OnBoardingScreen());
   }
 
-  ///* ----------- Email and Password Sign-In ----------- */
-  //
+  //* ----------- Email and Password Sign-In ----------- */
+  ///
 }
