@@ -1,6 +1,8 @@
 import 'package:ecom/common/widgets/images_design/vertical_image_text.dart';
+import 'package:ecom/features/shop/screens/sub_category/sub_categories.dart';
 import 'package:ecom/utils/constants/images.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class HomeCategories extends StatelessWidget {
   const HomeCategories({
@@ -16,7 +18,7 @@ class HomeCategories extends StatelessWidget {
           itemCount: 6,
           scrollDirection: Axis.horizontal,
           itemBuilder: (_, index){
-            return AppVerticalImageText(image: AppImages.shoes, title: 'Shoes',onTap: (){},);
+            return AppVerticalImageText(image: AppImages.shoes, title: 'Shoes',onTap: () => Get.to(() => const SubCategoriesScreen()));
           }),
     );
   }
