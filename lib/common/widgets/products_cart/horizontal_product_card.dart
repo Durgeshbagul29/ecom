@@ -76,7 +76,7 @@ class HorizontalProductCard extends StatelessWidget {
                   const Positioned(
                     top: 0,
                     right: 0,
-                    child: const AppCircularIcon(
+                    child: AppCircularIcon(
                       icon: Iconsax.heart5,
                       color: Colors.red,
                     ),

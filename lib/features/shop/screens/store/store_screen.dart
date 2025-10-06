@@ -3,6 +3,8 @@ import 'package:ecom/common/widgets/appbar/tab_bar.dart';
 import 'package:ecom/common/widgets/layouts/grid_layout.dart';
 import 'package:ecom/common/widgets/products_cart/cart_menu_icon.dart';
 import 'package:ecom/common/widgets/texts/app_section_heading.dart';
+import 'package:ecom/features/shop/screens/brands/all_brands.dart';
+import 'package:ecom/features/shop/screens/brands/brand_products.dart';
 import 'package:ecom/features/shop/screens/home/widgets/app_search_bar.dart';
 import 'package:ecom/features/shop/screens/store/widgets/brand_card.dart';
 import 'package:ecom/features/shop/screens/store/widgets/category_tab.dart';
@@ -10,6 +12,7 @@ import 'package:ecom/utils/constants/colors.dart';
 import 'package:ecom/utils/constants/sizes.dart';
 import 'package:ecom/utils/helpers/helper_functions.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class StoreScreen extends StatelessWidget {
   const StoreScreen({super.key});
@@ -61,7 +64,7 @@ class StoreScreen extends StatelessWidget {
                       /// Featured Brands
                       AppSectionHeading(
                         title: 'Featured Brands',
-                        onPressed: () {},
+                        onPressed: () => Get.to(() => const AllBrandsScreen()),
                       ),
                       const SizedBox(height: AppSizes.spaceBtwItems / 1.5),
 
@@ -70,7 +73,7 @@ class StoreScreen extends StatelessWidget {
                         itemCount: 4,
                         mainAxisExtent: 70,
                         itemBuilder: (_, index) {
-                          return BrandCard(showBorder: true);
+                          return BrandCard(showBorder: true, onTap: () => Get.to(() => const BrandProductsScreen()));
                         },
                       ),
                     ],
