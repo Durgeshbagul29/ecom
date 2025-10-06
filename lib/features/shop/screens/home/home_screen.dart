@@ -2,6 +2,7 @@ import 'package:ecom/common/custom_shapes/containers/app_header_container.dart';
 import 'package:ecom/common/widgets/layouts/grid_layout.dart';
 import 'package:ecom/common/widgets/products_cart/vertical_product_card.dart';
 import 'package:ecom/common/widgets/texts/app_section_heading.dart';
+import 'package:ecom/features/shop/screens/all_products/all_products.dart';
 import 'package:ecom/features/shop/screens/home/widgets/banner_slider.dart';
 import 'package:ecom/features/shop/screens/home/widgets/home_appbar.dart';
 import 'package:ecom/features/shop/screens/home/widgets/home_categories.dart';
@@ -11,6 +12,7 @@ import 'package:ecom/utils/constants/colors.dart';
 import 'package:ecom/utils/constants/images.dart';
 import 'package:ecom/utils/constants/sizes.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -63,7 +65,7 @@ class HomeScreen extends StatelessWidget {
                   const SizedBox(height: AppSizes.spaceBtwSections),
 
                   /// Popular Products Heading
-                  AppSectionHeading(title: 'Popular Products',onPressed: () {}),
+                  AppSectionHeading(title: 'Popular Products',onPressed: () => Get.to(() => const AllProductsScreen())),
                   const SizedBox(height: AppSizes.spaceBtwItems),
 
                   /// Home Popular Products with Grid Layout
