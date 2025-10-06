@@ -47,29 +47,31 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyBb22eSgA49zyjH-J-CfqwJVEasZ3TbZv4',
-    appId: '1:178585922432:web:43204969525363d9a0af65',
-    messagingSenderId: '178585922432',
-    projectId: 'ecom-app-be18f',
-    authDomain: 'ecom-app-be18f.firebaseapp.com',
-    storageBucket: 'ecom-app-be18f.firebasestorage.app',
-    measurementId: 'G-KQVYQPM0B0',
+    apiKey: 'AIzaSyCDZockFhW_DbGQ0BwUsYPWUsSLePgYN-Y',
+    appId: '1:35345434957:web:1087d3bf5336bc64af0f04',
+    messagingSenderId: '35345434957',
+    projectId: 'ecom-59109',
+    authDomain: 'ecom-59109.firebaseapp.com',
+    storageBucket: 'ecom-59109.firebasestorage.app',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDBZE-5DyRxu3_ECc3EAGvkH3xZbiQiALA',
-    appId: '1:178585922432:android:cd8dabebe0a9c2fba0af65',
-    messagingSenderId: '178585922432',
-    projectId: 'ecom-app-be18f',
-    storageBucket: 'ecom-app-be18f.firebasestorage.app',
+    apiKey: 'AIzaSyBKx7un52A5vk6e7a23wLL1v7pLo9Hpx2Q',
+    appId: '1:35345434957:android:8c5656a67bd09d00af0f04',
+    messagingSenderId: '35345434957',
+    projectId: 'ecom-59109',
+    storageBucket: 'ecom-59109.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyD6rKJGLXfwYBqYBWtwslt_7ndnJI_KpFo',
-    appId: '1:178585922432:ios:7285932e6ba71687a0af65',
-    messagingSenderId: '178585922432',
-    projectId: 'ecom-app-be18f',
-    storageBucket: 'ecom-app-be18f.firebasestorage.app',
+    apiKey: 'AIzaSyDZLOAhbqVVJ9N2CAgy8ODEy3T51xY3az0',
+    appId: '1:35345434957:ios:353eae092e7646c9af0f04',
+    messagingSenderId: '35345434957',
+    projectId: 'ecom-59109',
+    storageBucket: 'ecom-59109.firebasestorage.app',
+    androidClientId: '35345434957-90nk4ghbm4jcstdciasfmv4p9e0kcuhg.apps.googleusercontent.com',
+    iosClientId: '35345434957-aa3baqasokv0c3lelvvtmd9l0gc1h7m9.apps.googleusercontent.com',
     iosBundleId: 'com.bsquare.ecom',
   );
+
 }

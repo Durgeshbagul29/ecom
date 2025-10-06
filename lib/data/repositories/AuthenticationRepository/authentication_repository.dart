@@ -22,7 +22,7 @@ class AuthenticationRepository extends GetxController {
   screenRedirect() async {
     // Local Storage
     if (kDebugMode){
-      print('================== GET STORAGE [In Authentication Repository] ==================');
+      print('============ GET STORAGE [In Authentication Repository] ============');
       print(deviceStorage.read('isFirstTime'));
     }
 

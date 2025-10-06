@@ -1,45 +1,51 @@
 {
   "project_info": {
-    "project_number": "178585922432",
-    "project_id": "ecom-app-be18f",
-    "storage_bucket": "ecom-app-be18f.firebasestorage.app"
+    "project_number": "35345434957",
+    "project_id": "ecom-59109",
+    "storage_bucket": "ecom-59109.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:178585922432:android:cd8dabebe0a9c2fba0af65",
+        "mobilesdk_app_id": "1:35345434957:android:8c5656a67bd09d00af0f04",
         "android_client_info": {
           "package_name": "com.bsquare.ecom"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "35345434957-90nk4ghbm4jcstdciasfmv4p9e0kcuhg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.bsquare.ecom",
+            "certificate_hash": "b1a96dea8397c44677633e2442321ba240134582"
+          }
+        },
+        {
+          "client_id": "35345434957-v2oc46klf8di6l5kk10a16gov75cq23d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
-          "current_key": "AIzaSyDBZE-5DyRxu3_ECc3EAGvkH3xZbiQiALA"
+          "current_key": "AIzaSyBKx7un52A5vk6e7a23wLL1v7pLo9Hpx2Q"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:178585922432:android:6505eeaa5d02c36fa0af65",
-        "android_client_info": {
-          "package_name": "com.bsquare.ecom_app"
-        }
-      },
-      "oauth_client": [],
-      "api_key": [
-        {
-          "current_key": "AIzaSyDBZE-5DyRxu3_ECc3EAGvkH3xZbiQiALA"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "35345434957-ltdjbk9nufchsomjaakathgb6lqvh2m0.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "35345434957-aa3baqasokv0c3lelvvtmd9l0gc1h7m9.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.bsquare.ecom"
+              }
+            }
+          ]
         }
       }
     }
