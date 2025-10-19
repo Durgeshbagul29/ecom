@@ -57,6 +57,8 @@ import 'package:ecom/utils/popups/loaders.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
+import '../../common/widgets/screens/no_internet_screen.dart';
+
 /// ---------------------------------------------------------------------------
 /// NetworkManager
 /// ---------------------------------------------------------------------------
@@ -72,48 +74,78 @@ class NetworkManager extends GetxController {
   late StreamSubscription<List<ConnectivityResult>> _connectivitySubscription;
   final Rx<ConnectivityResult> _connectionStatus = ConnectivityResult.none.obs;
 
-  /// Called when the controller is initialized.
-  /// Subscribes to connectivity changes and updates status accordingly.
   @override
   void onInit() {
     super.onInit();
-    _connectivitySubscription =
-        _connectivity.onConnectivityChanged.listen((List<ConnectivityResult> results) {
-          final result = results.isNotEmpty ? results.first : ConnectivityResult.none;
-          _updateConnectionStatus(result);
-        });
+    _connectivitySubscription = _connectivity.onConnectivityChanged.listen(
+          (List<ConnectivityResult> results) {
+        final result =
+        results.isNotEmpty ? results.first : ConnectivityResult.none;
+        _updateConnectionStatus(result);
+      },
+    );
   }
 
-  /// Handles connectivity updates and displays warning if disconnected.
+  /// Handles connectivity updates and user feedback
   Future<void> _updateConnectionStatus(ConnectivityResult result) async {
     _connectionStatus.value = result;
 
-    if (_connectionStatus.value == ConnectivityResult.none) {
-      AppLoaders.warningSnackBar(title: 'No Internet Connection');
+    if (result == ConnectivityResult.none) {
+      // Option 1: Show a snack bar for minor interruptions
+      AppLoaders.warningSnackBar(
+        title: 'No Internet Connection',
+        message:
+        'You’re offline. Please check your Wi-Fi or mobile data and try again.',
+      );
+
+      // Option 2: Navigate to dedicated no internet screen
+      Future.delayed(const Duration(milliseconds: 500), () {
+        if (Get.currentRoute != '/NoInternetScreen') {
+          Get.to(
+                () => NoInternetScreen(
+              onRetry: () async {
+                final connected = await isConnected();
+                if (connected) {
+                  Get.back(); // Dismiss the no internet screen
+                } else {
+                  AppLoaders.warningSnackBar(
+                    title: 'Still Offline',
+                    message:
+                    'Unable to reconnect. Please verify your internet settings.',
+                  );
+                }
+              },
+            ),
+            routeName: '/NoInternetScreen',
+          );
+        }
+      });
+    } else {
+      // Optional: Show success message when connection is restored
+      if (Get.currentRoute == '/NoInternetScreen') {
+        Get.back(); // Automatically dismiss the offline screen
+        AppLoaders.successSnackBar(
+          title: 'Back Online',
+          message: 'Your connection has been restored.',
+        );
+      }
     }
   }
 
-  /// Checks internet connection manually.
-  /// Returns `true` if connected, `false` otherwise.
+  /// Manually checks if the device has an active internet connection
   Future<bool> isConnected() async {
     try {
       final results = await _connectivity.checkConnectivity();
-
-      // New API returns a list, so check first element.
-      if (results.isEmpty || results.first == ConnectivityResult.none) {
-        return false;
-      } else {
-        return true;
-      }
+      return results.isNotEmpty && results.first != ConnectivityResult.none;
     } on PlatformException catch (_) {
       return false;
     }
   }
 
-  /// Cancels active connectivity subscription.
   @override
   void onClose() {
     _connectivitySubscription.cancel();
     super.onClose();
   }
 }
+

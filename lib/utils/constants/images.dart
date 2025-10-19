@@ -86,6 +86,8 @@ class AppImages{
   static const String homeBanner4 = 'assets/banners/4.png';
   static const String homeBanner5 = 'assets/banners/5.png';
   static const String homeBanner6 = 'assets/banners/6.png';
-  //
+
+  // Another Images
+  static const String noInternet = 'assets/images/no-wifi.png';
 
 }
