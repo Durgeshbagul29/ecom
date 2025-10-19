@@ -20,6 +20,8 @@ class AppImages{
   static const String secureDeliveryAnimation = 'assets/animations/delivery_animation.json';
   static const String forgotPasswordAnimation = 'assets/animations/forgot_password.json';
   static const String workHouseDeliveryAnimation = 'assets/animations/warehouse_delivery.json';
+  static const String searchLoading = 'assets/animations/search_loading.json';
+  static const String bubbleLoading = 'assets/animations/buble_loading.json';
 
   // animations
   // static const String pencilAnimation = 'assets/animations/pencil_drawing.json';

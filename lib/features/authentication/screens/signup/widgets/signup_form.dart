@@ -1,29 +1,34 @@
 import 'package:ecom/common/widgets/buttons/app_elevated_button.dart';
-import 'package:ecom/features/authentication/screens/signup/verify_email_screen.dart';
+import 'package:ecom/features/authentication/controllers/signup_controller.dart';
 import 'package:ecom/utils/constants/app_text.dart';
 import 'package:ecom/utils/constants/colors.dart';
 import 'package:ecom/utils/constants/sizes.dart';
+import 'package:ecom/utils/validators/validation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 
-
 class SignUPForm extends StatelessWidget {
-  const SignUPForm({
-    super.key,
-  });
+  const SignUPForm({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    /// Create Signup Controller Instance
+    final controller = Get.put(SignupController());
+
+    return Form(
+      key: controller.signFormKey,
+      child: Column(
         children: [
-          // First Name and Last Name
+          /// First Name and Last Name
           Row(
             children: [
-
-              // First Name
+              /// First Name
               Expanded(
                 child: TextFormField(
+                  controller: controller.firstName,
+                  validator: (value) =>
+                      AppValidator.validatedEmptyText(AppText.firstName, value),
                   decoration: InputDecoration(
                     labelText: AppText.firstName,
                     prefixIcon: Icon(Iconsax.user),
@@ -33,20 +38,23 @@ class SignUPForm extends StatelessWidget {
 
               SizedBox(width: AppSizes.spaceBtwInputFields),
 
-              // Last Name
+              /// Last Name
               Expanded(
                 child: TextFormField(
-                  decoration: InputDecoration(
-                    labelText: AppText.lastName,
-                  ),
+                  controller: controller.lastName,
+                  validator: (value) =>
+                      AppValidator.validatedEmptyText(AppText.lastName, value),
+                  decoration: InputDecoration(labelText: AppText.lastName),
                 ),
               ),
             ],
           ),
           SizedBox(height: AppSizes.spaceBtwInputFields),
 
-          // Email
+          /// Email
           TextFormField(
+            controller: controller.email,
+            validator: (value) => AppValidator.validateEmail(value!.trim()),
             decoration: InputDecoration(
               labelText: AppText.email,
               prefixIcon: Icon(Icons.email_outlined),
@@ -54,8 +62,10 @@ class SignUPForm extends StatelessWidget {
           ),
           SizedBox(height: AppSizes.spaceBtwInputFields),
 
-          // Phone Number
+          /// Phone Number
           TextFormField(
+            controller: controller.phoneNumber,
+            validator: (value) => AppValidator.validatePhoneNumber(value),
             decoration: InputDecoration(
               labelText: AppText.phoneNumber,
               prefixIcon: Icon(Iconsax.call),
@@ -64,37 +74,79 @@ class SignUPForm extends StatelessWidget {
 
           SizedBox(height: AppSizes.spaceBtwInputFields),
 
-          // Password
-          TextFormField(
-            decoration: InputDecoration(
+          /// Password
+          Obx(
+            () => TextFormField(
+              controller: controller.password,
+              validator: (value) => AppValidator.validatePassword(value),
+              obscureText: controller.hidePassword.value,
+              decoration: InputDecoration(
                 labelText: AppText.password,
-                prefixIcon: Icon(Icons.password),
-                suffixIcon: Icon(Iconsax.eye)
+                prefixIcon: const Icon(Iconsax.password_check),
+                suffixIcon: IconButton(
+                  onPressed: () => controller.hidePassword.value =
+                      !controller.hidePassword.value,
+                  icon: Icon(
+                    controller.hidePassword.value
+                        ? Iconsax.eye_slash
+                        : Iconsax.eye,
+                  ),
+                ),
+              ),
             ),
           ),
 
           SizedBox(height: AppSizes.spaceBtwInputFields / 2),
-          // Check Box Privacy Policy
+
+          /// Check Box Privacy Policy
           Row(
-              children: [
-                Checkbox(value: true, onChanged: (value){}),
-                RichText(text: TextSpan(
+            children: [
+              Obx(
+                () => Checkbox(
+                  value: controller.privacyPolicy.value,
+                  onChanged: (value) => controller.privacyPolicy.value =
+                      !controller.privacyPolicy.value,
+                ),
+              ),
+              Expanded(
+                child: RichText(
+                  text: TextSpan(
                     style: Theme.of(context).textTheme.bodyMedium,
                     children: [
                       TextSpan(text: '${AppText.iAgreeTo} '),
-                      TextSpan(text: '${AppText.privacyPolicy} ',style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: AppColors.primary, decoration: TextDecoration.underline, decorationColor: AppColors.primary)),
+                      TextSpan(
+                        text: '${AppText.privacyPolicy} ',
+                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                          color: AppColors.primary,
+                          decoration: TextDecoration.underline,
+                          decorationColor: AppColors.primary,
+                        ),
+                      ),
                       TextSpan(text: '${AppText.and} '),
-                      TextSpan(text: '${AppText.termsOfUse} ',style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: AppColors.primary, decoration: TextDecoration.underline, decorationColor: AppColors.primary))
-                    ]
-                ))
-              ]
+                      TextSpan(
+                        text: '${AppText.termsOfUse} ',
+                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                          color: AppColors.primary,
+                          decoration: TextDecoration.underline,
+                          decorationColor: AppColors.primary,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
           ),
 
           SizedBox(height: AppSizes.spaceBtwInputFields),
 
-          // Create Account Button
-          AppElevatedButton(onPressed: () => Get.to(() => VerifyEmailScreen()), child: Text(AppText.signUp))
-        ]
+          /// Create Account Button
+          AppElevatedButton(
+            onPressed: () => controller.signup(),
+            child: Text(AppText.signUp),
+          ),
+        ],
+      ),
     );
   }
 }

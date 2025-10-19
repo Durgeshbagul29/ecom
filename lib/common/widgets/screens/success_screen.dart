@@ -27,10 +27,7 @@ class SuccessScreen extends StatelessWidget {
           child: Column(
             children: [
               /// Account Created Image
-              Lottie.asset(
-                image,
-                height: AppDeviceHelpers.getScreenWidth(context) * 0.6,
-              ),
+              Lottie.asset(image, height: AppDeviceHelpers.getScreenWidth(context) * 0.6),
               SizedBox(height: AppSizes.spaceBtwSections),
 
               /// Title

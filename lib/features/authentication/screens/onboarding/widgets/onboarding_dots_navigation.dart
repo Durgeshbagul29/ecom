@@ -15,7 +15,7 @@ class PageNavigationIndicator extends StatelessWidget {
     final controller = OnBoardingController.instance;
 
     return Positioned(
-      bottom: AppDeviceHelpers.getBottomNavigationBarHeight() * 4,
+      bottom: AppDeviceHelpers.getBottomNavigationBarHeight() * 3,
       right: AppDeviceHelpers.getScreenWidth(context) / 3,
       left: AppDeviceHelpers.getScreenWidth(context) / 3,
       child: SmoothPageIndicator(
