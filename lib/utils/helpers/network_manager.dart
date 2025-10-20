@@ -92,14 +92,14 @@ class NetworkManager extends GetxController {
 
     if (result == ConnectivityResult.none) {
       // Option 1: Show a snack bar for minor interruptions
-      AppLoaders.warningSnackBar(
-        title: 'No Internet Connection',
-        message:
-        'You’re offline. Please check your Wi-Fi or mobile data and try again.',
-      );
+      // AppLoaders.warningSnackBar(
+      //   title: 'No Internet Connection',
+      //   message:
+      //   'You’re offline. Please check your Wi-Fi or mobile data and try again.',
+      // );
 
       // Option 2: Navigate to dedicated no internet screen
-      Future.delayed(const Duration(milliseconds: 500), () {
+      Future.delayed(const Duration(milliseconds: 300), () {
         if (Get.currentRoute != '/NoInternetScreen') {
           Get.to(
                 () => NoInternetScreen(
@@ -116,7 +116,6 @@ class NetworkManager extends GetxController {
                 }
               },
             ),
-            routeName: '/NoInternetScreen',
           );
         }
       });

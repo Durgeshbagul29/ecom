@@ -8,20 +8,19 @@ import 'package:get_storage/get_storage.dart';
 // Firebase Configuration Package
 import 'firebase_options.dart';
 
-
 /// ---------- Entry Point Of Flutter App ----------
 Future<void> main() async {
-  // Widgets flutter binding
+  /// Widgets flutter binding
   final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
 
-  // GetX Local Storage
+  /// GetX Local Storage
   await GetStorage.init();
 
-  // Flutter Native Splash
+  /// Flutter Native Splash
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
-  // Initialize Firebase & Authentication Repository
-  // await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  /// Initialize Firebase & Authentication Repository
+  /// await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform).then(
           (FirebaseApp value) => Get.put(AuthenticationRepository())
   );

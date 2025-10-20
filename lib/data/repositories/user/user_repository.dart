@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ecom/features/personaliation/models/userModel.dart';
+import 'package:ecom/features/personaliation/models/user_model.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
@@ -33,6 +33,6 @@ class UserRepository extends GetxController {
   }
 
 
-/// Function to fetch user details based on user ID.
+  /// Function to fetch user details based on user ID.
 
 }

@@ -29,7 +29,7 @@ class NoInternetScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 12),
                 const Text(
-                  "It seems you're offline right now.\nPlease check your connection and try again.",
+                  "You’re offline. Please check your Wi-Fi or mobile data and try again.",
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 15, color: Colors.black54),
                 ),
