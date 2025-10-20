@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthenticationRepository extends GetxController {
   static AuthenticationRepository get instance => Get.find();
@@ -36,12 +37,6 @@ class AuthenticationRepository extends GetxController {
       }
     } else {
       /// Local Storage check first time or not
-      // if (kDebugMode) {
-      //   print(
-      //     '============ GET STORAGE [In Authentication Repository] ============',
-      //   );
-      //   print(deviceStorage.read('isFirstTime'));
-      // }
       deviceStorage.writeIfNull('isFirstTime', true);
       deviceStorage.read('isFirstTime') != true
           ? Get.offAll(() => const LoginScreen())
@@ -49,7 +44,7 @@ class AuthenticationRepository extends GetxController {
     }
   }
 
-  //* ----------- Email and Password Sign-In ----------- */
+  //* ------------------- Email and Password Sign-In ------------------- */
 
   /// [EmailAuthentication] - SignIn
   Future<UserCredential> loginWithEmailAndPassword(String email, String password) async {
@@ -138,6 +133,37 @@ class AuthenticationRepository extends GetxController {
       throw 'An unexpected error occurred while sending the verification email. Please try again.';
     }
   }
+
+  /* ------------------------- Social Sing In ------------------------- */
+  /// Google Sign In
+  Future<UserCredential> signInWithGoogle() async {
+    try {
+      // Trigger the authentication flow
+      final GoogleSignInAccount? googleUser  = await GoogleSignIn().signIn();
+
+      // Obtain the auth details from the request
+      final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
+
+      // Create n new credential
+      final credentials = GoogleAuthProvider.credential(
+        accessToken: googleAuth?.accessToken,
+        idToken: googleAuth?.idToken,
+      );
+
+      // Sign in with Firebase
+      return await _auth.signInWithCredential(credentials);
+
+    } on FirebaseAuthException catch (e) {
+      throw e.message ?? 'A Firebase authentication error occurred.';
+    } on FirebaseException catch (e) {
+      throw e.message ?? 'A Firebase error occurred.';
+    } on PlatformException catch (e) {
+      throw e.message ?? 'A platform-specific error occurred.';
+    } catch (e) {
+      throw 'An unexpected error occurred: $e';
+    }
+  }
+
 
   /// Logout current user
   Future<void> logout() async {
