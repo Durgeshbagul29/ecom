@@ -73,7 +73,7 @@ class SignupController extends GetxController {
       await userRepository.saveUserRecord(newUser);
 
       // Remove Loader
-      // FullScreenLoader.stopLoading();
+      FullScreenLoader.stopLoading();
 
       // Show Success Message
       AppLoaders.successSnackBar(

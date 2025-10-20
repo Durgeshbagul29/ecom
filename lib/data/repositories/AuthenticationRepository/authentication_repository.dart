@@ -52,6 +52,31 @@ class AuthenticationRepository extends GetxController {
   //* ----------- Email and Password Sign-In ----------- */
 
   /// [EmailAuthentication] - SignIn
+  Future<UserCredential> loginWithEmailAndPassword(String email, String password) async {
+    try {
+      return await _auth.signInWithEmailAndPassword(email: email, password: password);
+    } on FirebaseAuthException catch (e) {
+      switch (e.code) {
+        case 'user-not-found':
+          throw 'No account found with this email. Please sign up first.';
+        case 'wrong-password':
+          throw 'Incorrect password. Please try again.';
+        case 'invalid-email':
+          throw 'The email address is invalid. Please check and try again.';
+        case 'user-disabled':
+          throw 'This account has been disabled. Please contact support.';
+        default:
+          throw 'Login failed: ${e.message ?? 'Unknown error.'}';
+      }
+    } on PlatformException catch (e) {
+      throw 'Platform error: ${e.message ?? 'Unexpected issue occurred.'}';
+    } on FormatException {
+      throw 'Invalid input format. Please check your data.';
+    } catch (e) {
+      throw 'An unexpected error occurred during login. Please try again.';
+    }
+  }
+
 
   /// Register a new user with email and password.
   Future<UserCredential> registerWithEmailAndPassword(
