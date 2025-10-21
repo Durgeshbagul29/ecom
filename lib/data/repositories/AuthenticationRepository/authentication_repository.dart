@@ -3,6 +3,7 @@ import 'package:ecom/features/authentication/screens/onboarding/onboarding.dart'
 import 'package:ecom/features/authentication/screens/signup/verify_email_screen.dart';
 import 'package:ecom/navigation_menu.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
@@ -74,15 +75,9 @@ class AuthenticationRepository extends GetxController {
 
 
   /// Register a new user with email and password.
-  Future<UserCredential> registerWithEmailAndPassword(
-    String email,
-    String password,
-  ) async {
+  Future<UserCredential> registerWithEmailAndPassword(String email, String password) async {
     try {
-      return await _auth.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
+      return await _auth.createUserWithEmailAndPassword(email: email, password: password);
     } on FirebaseAuthException catch (e) {
       // Provide specific, user-friendly messages
       switch (e.code) {
@@ -134,9 +129,37 @@ class AuthenticationRepository extends GetxController {
     }
   }
 
+  /// Forgot Password
+  Future<void> sendResetPasswordEmail(String email) async {
+    try {
+      await _auth.sendPasswordResetEmail(email: email);
+    } on FirebaseAuthException catch (e) {
+      // Handle Firebase authentication specific errors
+      switch (e.code) {
+        case 'user-not-found':
+          throw 'No user found for this email.';
+        case 'invalid-email':
+          throw 'The provided email address is invalid. Please check and try again.';
+        case 'too-many-requests':
+          throw 'Too many requests. Please wait a moment and try again.';
+        default:
+          throw 'Authentication error: ${e.message ?? 'Unknown FirebaseAuth error occurred.'}';
+      }
+    } on FirebaseException catch (e) {
+      // Handles general Firebase errors not limited to Auth
+      throw 'Firebase error: ${e.message ?? 'An unexpected Firebase issue occurred.'}';
+    } on PlatformException catch (e) {
+      throw 'Platform error: ${e.message ?? 'A platform-related issue occurred.'}';
+    } on FormatException {
+      throw 'Invalid input format. Please verify your data and try again.';
+    } catch (e) {
+      throw 'An unexpected error occurred while sending the verification email. Please try again.';
+    }
+  }
+
   /* ------------------------- Social Sing In ------------------------- */
   /// Google Sign In
-  Future<UserCredential> signInWithGoogle() async {
+  Future<UserCredential?> signInWithGoogle() async {
     try {
       // Trigger the authentication flow
       final GoogleSignInAccount? googleUser  = await GoogleSignIn().signIn();
@@ -160,7 +183,8 @@ class AuthenticationRepository extends GetxController {
     } on PlatformException catch (e) {
       throw e.message ?? 'A platform-specific error occurred.';
     } catch (e) {
-      throw 'An unexpected error occurred: $e';
+      if (kDebugMode) print('An unexpected error occurred: $e');
+      return null;
     }
   }
 

@@ -1,6 +1,7 @@
 
 import 'package:ecom/common/styles/padding.dart';
 import 'package:ecom/common/widgets/buttons/app_elevated_button.dart';
+import 'package:ecom/features/authentication/controllers/forgot_password_controller.dart';
 import 'package:ecom/features/authentication/screens/login/login_screen.dart';
 import 'package:ecom/utils/constants/app_text.dart';
 import 'package:ecom/utils/constants/images.dart';
@@ -11,7 +12,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class ResetPasswordScreen extends StatelessWidget {
-  const ResetPasswordScreen({super.key});
+  const ResetPasswordScreen({super.key, required this.email});
+
+  final String email;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +36,7 @@ class ResetPasswordScreen extends StatelessWidget {
               /// Image Email Send
               Image.asset(
                 AppImages.mailSentImage,
-                height: AppDeviceHelpers.getScreenHeight() * 0.4,
+                height: AppDeviceHelpers.getScreenHeight() * 0.3,
               ),
               SizedBox(height: AppSizes.spaceBtwItems),
 
@@ -45,10 +48,7 @@ class ResetPasswordScreen extends StatelessWidget {
               SizedBox(height: AppSizes.spaceBtwItems),
 
               /// Email
-              Text(
-                'example@gmail.com',
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
+              Text(email, style: Theme.of(context).textTheme.bodyMedium),
               SizedBox(height: AppSizes.spaceBtwItems),
 
               /// Subtitle
@@ -59,7 +59,7 @@ class ResetPasswordScreen extends StatelessWidget {
               SizedBox(height: AppSizes.spaceBtwSections),
 
               /// Done Button
-              AppElevatedButton(onPressed: () {}, child: Text(AppText.done)),
+              AppElevatedButton(onPressed: () => Get.to(() => const LoginScreen()), child: Text(AppText.done)),
 
               SizedBox(height: AppSizes.spaceBtwItems / 2),
 
@@ -67,7 +67,7 @@ class ResetPasswordScreen extends StatelessWidget {
               SizedBox(
                 width: double.infinity,
                 child: TextButton(
-                  onPressed: () {},
+                  onPressed: () => ForgotPasswordController.instance.resendResetPasswordEmail(email),
                   child: Text(AppText.resendEmail),
                 ),
               ),
