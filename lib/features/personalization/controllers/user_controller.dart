@@ -1,4 +1,3 @@
-import 'package:ecom/data/repositories/AuthenticationRepository/authentication_repository.dart';
 import 'package:ecom/data/repositories/user/user_repository.dart';
 import 'package:ecom/features/personalization/models/user_model.dart';
 import 'package:ecom/utils/popups/loaders.dart';
