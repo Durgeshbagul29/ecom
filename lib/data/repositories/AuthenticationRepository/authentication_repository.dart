@@ -17,6 +17,9 @@ class AuthenticationRepository extends GetxController {
   // Variables
   final deviceStorage = GetStorage();
 
+  /// Get Authenticated User Data - (Getter Method)
+  User? get authUser => _auth.currentUser;
+
   // Called from main.dart on app launch
   @override
   void onReady() {
@@ -26,7 +29,7 @@ class AuthenticationRepository extends GetxController {
     screenRedirect();
   }
 
-  // Function to show relevant screen
+  /// Function to show relevant screen
   screenRedirect() async {
     User? user = _auth.currentUser;
     //
@@ -141,7 +144,7 @@ class AuthenticationRepository extends GetxController {
         case 'invalid-email':
           throw 'The provided email address is invalid. Please check and try again.';
         case 'too-many-requests':
-          throw 'Too many requests. Please wait a moment and try again.';
+          throw 'Too many request s. Please wait a moment and try again.';
         default:
           throw 'Authentication error: ${e.message ?? 'Unknown FirebaseAuth error occurred.'}';
       }

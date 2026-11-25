@@ -60,9 +60,4 @@ class AppFormatter {
     }
     return formattedNumber.toString();
   }
-
-
-
-
-
 }

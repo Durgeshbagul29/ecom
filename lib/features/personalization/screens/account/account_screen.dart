@@ -3,10 +3,9 @@ import 'package:ecom/common/widgets/appbar/appbar.dart';
 import 'package:ecom/common/widgets/list_tiles/settings_menu_tile.dart';
 import 'package:ecom/common/widgets/list_tiles/user_profile_tile.dart';
 import 'package:ecom/common/widgets/texts/app_section_heading.dart';
-import 'package:ecom/features/personaliation/screens/address/address_screen.dart';
+import 'package:ecom/features/personalization/screens/address/address_screen.dart';
 import 'package:ecom/features/shop/screens/order/order_screen.dart';
 import 'package:ecom/utils/constants/colors.dart';
-import 'package:ecom/utils/constants/images.dart';
 import 'package:ecom/utils/constants/sizes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -29,9 +28,8 @@ class AccountScreen extends StatelessWidget {
                     const SizedBox(height: AppSizes.spaceBtwItems),
 
                     /// User Profile Card
-                    UserProfileTile(name: 'Durgesh Bagul', email: 'baguldurgesh29@gmail.com', image: AppImages.user, border: true),
+                    UserProfileTile(border: true),
                     const SizedBox(height: AppSizes.spaceBtwSections),
-
               ],
             )),
 

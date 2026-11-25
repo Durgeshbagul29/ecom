@@ -1,7 +1,8 @@
 import 'package:ecom/common/widgets/appbar/appbar.dart';
 import 'package:ecom/common/widgets/images_design/app_rounded_image.dart';
 import 'package:ecom/common/widgets/texts/app_section_heading.dart';
-import 'package:ecom/features/personaliation/screens/profile/widgets/profile_menu.dart';
+import 'package:ecom/features/personalization/controllers/user_controller.dart';
+import 'package:ecom/features/personalization/screens/profile/widgets/profile_menu.dart';
 import 'package:ecom/utils/constants/images.dart';
 import 'package:ecom/utils/constants/sizes.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +13,8 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller = UserController.instance;
+
     return Scaffold(
       appBar: CustomAppBar(title: Text('Profile', style: Theme.of(context).textTheme.headlineMedium), showBackArrow: true),
       body: SingleChildScrollView(
@@ -37,8 +40,8 @@ class ProfileScreen extends StatelessWidget {
             const AppSectionHeading(title: 'Profile Information', showActionButton: false),
             const SizedBox(height: AppSizes.spaceBtwItems),
 
-            ProfileMenu(title: 'Name', value: 'Durgesh Bagul',onPressed: () {}),
-            ProfileMenu(title: 'Username', value: 'durgesh29',onPressed: () {}),
+            ProfileMenu(title: 'Name', value: controller.user.value.fullName, onPressed: () {}),
+            ProfileMenu(title: 'Username', value: controller.user.value.username, onPressed: () {}),
 
             const SizedBox(height: AppSizes.spaceBtwItems / 2),
             const Divider(),
@@ -48,9 +51,9 @@ class ProfileScreen extends StatelessWidget {
             const AppSectionHeading(title: 'Personal Information', showActionButton: false),
             const SizedBox(height: AppSizes.spaceBtwItems),
 
-            ProfileMenu(title: 'User ID', value: '7179',icon: Iconsax.copy,onPressed: () {}),
-            ProfileMenu(title: 'E-mail', value: 'baguldurgesh29@gmail.com',onPressed: () {}),
-            ProfileMenu(title: 'Phone Number', value: '8956037179',onPressed: () {}),
+            ProfileMenu(title: 'User ID', value: controller.user.value.id, icon: Iconsax.copy, onPressed: () {}),
+            ProfileMenu(title: 'E-mail', value: controller.user.value.email,onPressed: () {}),
+            ProfileMenu(title: 'Phone Number', value: controller.user.value.phoneNumber,onPressed: () {}),
             ProfileMenu(title: 'Gender', value: 'Male',onPressed: () {}),
             ProfileMenu(title: 'Date of Birth', value: '29 July 2002',onPressed: () {}),
 

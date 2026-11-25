@@ -12,7 +12,8 @@ class ForgotPasswordController extends GetxController {
 
   /// Variables
   final email = TextEditingController();
-  GlobalKey<FormState> forgotPasswordFormKey = GlobalKey<FormState>(); // Form key for form validation
+  GlobalKey<FormState> forgotPasswordFormKey =
+      GlobalKey<FormState>(); // Form key for form validation
 
   /// Send Reset Password Email
   sendResetPasswordEmail() async {
@@ -31,7 +32,9 @@ class ForgotPasswordController extends GetxController {
       );
 
       // Send Email to Reset Password
-      await AuthenticationRepository.instance.sendResetPasswordEmail(email.text.trim());
+      await AuthenticationRepository.instance.sendResetPasswordEmail(
+        email.text.trim(),
+      );
 
       // Remove Loader
       FullScreenLoader.stopLoading();
@@ -44,7 +47,7 @@ class ForgotPasswordController extends GetxController {
 
       // Redirect
       Get.to(() => ResetPasswordScreen(email: email.text.trim()));
-    } catch(e) {
+    } catch (e) {
       // Remove Loader
       FullScreenLoader.stopLoading();
 
@@ -52,6 +55,7 @@ class ForgotPasswordController extends GetxController {
       AppLoaders.errorSnackBar(title: 'Oh Snap!', message: e.toString());
     }
   }
+
 
   /// Re-Send Reset Password Email
   resendResetPasswordEmail(String email) async {
@@ -61,7 +65,10 @@ class ForgotPasswordController extends GetxController {
       if (!isConnected) return;
 
       // Start Loading
-      FullScreenLoader.openLoadingDialog('Processing your request....', AppImages.bubbleLoading);
+      FullScreenLoader.openLoadingDialog(
+        'Processing your request....',
+        AppImages.bubbleLoading,
+      );
 
       // Send Email to Reset Password
       await AuthenticationRepository.instance.sendResetPasswordEmail(email);
@@ -74,7 +81,7 @@ class ForgotPasswordController extends GetxController {
         title: 'Email sent',
         message: 'Email Link Sent to Reset your Password'.tr,
       );
-    } catch(e) {
+    } catch (e) {
       // Remove Loader
       FullScreenLoader.stopLoading();
 
@@ -82,5 +89,4 @@ class ForgotPasswordController extends GetxController {
       AppLoaders.errorSnackBar(title: 'Oh Snap!', message: e.toString());
     }
   }
-
 }

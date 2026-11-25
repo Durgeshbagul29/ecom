@@ -1,5 +1,5 @@
 name: ecom
-description: "This is an e-commerce shopping application developed by BSquare Software, designed to provide a seamless and user-friendly shopping experience."
+description: "This is an e-commerce shopping application developed by BSquare Software's, designed to provide a seamless and user-friendly shopping experience."
 
 publish_to: 'none'
 
@@ -64,11 +64,12 @@ flutter_launcher_icons:
   remove_alpha_ios: true
 
 
+# ---------------- [APP ICON END] ----------------
 flutter:
 
   uses-material-design: true
 
-  # ---------------- [ASSETS] ----------------
+# ---------------- [ASSETS] ----------------
   assets:
     - assets/images/
     - assets/products/
@@ -78,7 +79,7 @@ flutter:
     - assets/icons/categories/
 
 
-  # ---------------- [FONTS] ----------------
+# ---------------- [FONTS] ----------------
   fonts:
     - family: 'Nunito'
       fonts:

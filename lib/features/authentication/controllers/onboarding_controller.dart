@@ -39,8 +39,8 @@ class OnBoardingController extends GetxController {
 
       Get.offAll(() => LoginScreen());
     } else {
-      int page = currentIndex.value++;
-      pageController.jumpToPage(page);
+      currentIndex.value++;
+      pageController.jumpToPage(currentIndex.value);
     }
   }
 

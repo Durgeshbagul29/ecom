@@ -1,4 +1,4 @@
-import 'package:ecom/features/personaliation/screens/account/account_screen.dart';
+import 'package:ecom/features/personalization/screens/account/account_screen.dart';
 import 'package:ecom/features/shop/screens/home/home_screen.dart';
 import 'package:ecom/features/shop/screens/store/store_screen.dart';
 import 'package:ecom/features/shop/screens/wishlist/wishlist_screen.dart';

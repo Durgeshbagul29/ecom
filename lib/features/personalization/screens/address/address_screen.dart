@@ -1,6 +1,6 @@
 import 'package:ecom/common/widgets/appbar/appbar.dart';
-import 'package:ecom/features/personaliation/screens/address/add_new_address_screen.dart';
-import 'package:ecom/features/personaliation/screens/address/widgets/single_address.dart';
+import 'package:ecom/features/personalization/screens/address/add_new_address_screen.dart';
+import 'package:ecom/features/personalization/screens/address/widgets/single_address.dart';
 import 'package:ecom/utils/constants/colors.dart';
 import 'package:ecom/utils/constants/sizes.dart';
 import 'package:flutter/material.dart';
