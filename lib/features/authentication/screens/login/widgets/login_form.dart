@@ -22,12 +22,15 @@ class LoginForm extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Email
-          TextFormField(
-            controller: controller.email,
-            validator: (value) => AppValidator.validateEmail(value!.trim()),
-            decoration: InputDecoration(
-              prefixIcon: Icon(Icons.email_outlined),
-              labelText: AppText.email,
+          Obx(
+            () => TextFormField(
+              controller: controller.email,
+              autovalidateMode: controller.autoValidateMode.value,
+              validator: (value) => AppValidator.validateEmail(value?.trim()),
+              decoration: InputDecoration(
+                prefixIcon: Icon(Icons.email_outlined),
+                labelText: AppText.email,
+              ),
             ),
           ),
 
@@ -37,7 +40,8 @@ class LoginForm extends StatelessWidget {
           Obx(
             () => TextFormField(
               controller: controller.password,
-              validator: (value) => AppValidator.validatePassword(value!.trim()),
+              autovalidateMode: controller.autoValidateMode.value,
+              validator: (value) => AppValidator.validatePassword(value?.trim()),
               obscureText: controller.hidePassword.value,
               decoration: InputDecoration(
                 labelText: AppText.password,
@@ -84,7 +88,12 @@ class LoginForm extends StatelessWidget {
                     fontWeight: FontWeight.w600,
                   ),
                 ),
-                onPressed: () => Get.to(() => ForgotPasswordScreen()),
+                onPressed: () {
+                  controller.clearFormErrors();
+                  Get.to(() => const ForgotPasswordScreen())?.then((_) {
+                    controller.clearFormErrors();
+                  });
+                },
               ),
             ],
           ),

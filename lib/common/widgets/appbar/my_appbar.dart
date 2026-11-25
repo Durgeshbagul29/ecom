@@ -1,6 +1,5 @@
 import 'package:ecom/utils/constants/images.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   const MyAppBar({super.key, this.title, this.showLogo});

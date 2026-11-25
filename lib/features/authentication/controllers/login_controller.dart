@@ -16,6 +16,7 @@ class LoginController extends GetxController {
   final localStorage = GetStorage();
   final hidePassword = true.obs; // Observable for hiding/ showing password
   final rememberMe = true.obs; // Observable for privacy policy checkbox
+  final autoValidateMode = AutovalidateMode.disabled.obs; // Observable for form auto-validation
   final email = TextEditingController(); // Controller for email input
   final password = TextEditingController(); // Controller for password input
   GlobalKey<FormState> loginFormKey = GlobalKey<FormState>(); // Form key for form validation
@@ -29,12 +30,29 @@ class LoginController extends GetxController {
     super.onInit();
   }
 
+  /// Clear form validation errors and reset validation mode
+  void clearFormErrors() {
+    autoValidateMode.value = AutovalidateMode.disabled;
+    final currentEmail = email.text;
+    final currentPassword = password.text;
+    loginFormKey.currentState?.reset();
+
+    // Preserve current entered text, or fall back to saved credentials if empty
+    final savedEmail = localStorage.read('REMEMBER_ME_EMAIL') ?? '';
+    final savedPassword = localStorage.read('REMEMBER_ME_PASSWORD') ?? '';
+    email.text = currentEmail.isNotEmpty ? currentEmail : savedEmail;
+    password.text = currentPassword.isNotEmpty ? currentPassword : savedPassword;
+  }
+
   /// Login using Email & Password
   Future<void> emailAndPasswordSignIn() async {
     try {
       // Check Internet Connectivity
       final isConnected = await NetworkManager.instance.isConnected();
       if (!isConnected) return;
+
+      // Enable auto validation so errors update dynamically as user corrects their input
+      autoValidateMode.value = AutovalidateMode.onUserInteraction;
 
       // Form Validation
       if (!loginFormKey.currentState!.validate()) return;

@@ -4,6 +4,8 @@ import 'package:ecom/utils/theme/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+final RouteObserver<ModalRoute<void>> routeObserver = RouteObserver<ModalRoute<void>>();
+
 class EComApp extends StatelessWidget {
   const EComApp({super.key});
 
@@ -12,6 +14,7 @@ class EComApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'ECom',
       debugShowCheckedModeBanner: false,
+      navigatorObservers: [routeObserver],
       /// theme changing depends on system
       themeMode: ThemeMode.system,
       // set light theme

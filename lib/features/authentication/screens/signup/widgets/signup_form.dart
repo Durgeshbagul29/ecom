@@ -57,7 +57,7 @@ class SignUPForm extends StatelessWidget {
           /// Email
           TextFormField(
             controller: controller.email,
-            validator: (value) => AppValidator.validateEmail(value!.trim()),
+            validator: (value) => AppValidator.validateEmail(value?.trim()),
             decoration: InputDecoration(
               labelText: AppText.email,
               prefixIcon: Icon(Icons.email_outlined),

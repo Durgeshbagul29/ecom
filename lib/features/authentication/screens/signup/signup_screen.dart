@@ -2,6 +2,7 @@ import 'package:ecom/common/styles/padding.dart';
 import 'package:ecom/common/widgets/buttons/social_media_buttons.dart';
 import 'package:ecom/common/widgets/login_signup/form_divider.dart';
 import 'package:ecom/common/widgets/appbar/my_appbar.dart';
+import 'package:ecom/features/authentication/controllers/login_controller.dart';
 import 'package:ecom/features/authentication/screens/login/login_screen.dart';
 import 'package:ecom/features/authentication/screens/signup/widgets/signup_form.dart';
 import 'package:ecom/utils/constants/app_text.dart';
@@ -61,6 +62,9 @@ class SignUpScreen extends StatelessWidget {
                     Text(AppText.haveAccount, style: Theme.of(context).textTheme.bodyMedium),
                     TextButton(
                       onPressed: () {
+                        if (Get.isRegistered<LoginController>()) {
+                          LoginController.instance.clearFormErrors();
+                        }
                         if (Navigator.of(context).canPop()) {
                           Get.back();
                         } else {
