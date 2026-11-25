@@ -15,13 +15,13 @@ class OnBoardingPageView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(left: AppSizes.defaultSpace, right: AppSizes.defaultSpace, top: AppDeviceHelpers.getAppBarHeight()),
+      padding: EdgeInsets.only(top: AppDeviceHelpers.getAppBarHeight()),
       child: Column(
         children: [
           Lottie.asset(animationImage, width: AppDeviceHelpers.getScreenWidth(context) * 0.8, height: AppDeviceHelpers.getScreenWidth(context) * 0.8 ),
-          SizedBox(height: AppSizes.spaceBtwItems),
+          const SizedBox(height: AppSizes.spaceBtwItems),
           Text(title, style: Theme.of(context).textTheme.headlineMedium, textAlign: TextAlign.center,),
-          SizedBox(height: AppSizes.spaceBtwInputFields),
+          const SizedBox(height: AppSizes.spaceBtwInputFields),
           Text(subTitle, style: Theme.of(context).textTheme.bodyLarge, textAlign: TextAlign.center,)
         ],
       ),

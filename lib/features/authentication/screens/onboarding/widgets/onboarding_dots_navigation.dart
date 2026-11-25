@@ -16,13 +16,15 @@ class PageNavigationIndicator extends StatelessWidget {
 
     return Positioned(
       bottom: AppDeviceHelpers.getBottomNavigationBarHeight() * 3,
-      right: AppDeviceHelpers.getScreenWidth(context) / 3,
-      left: AppDeviceHelpers.getScreenWidth(context) / 3,
-      child: SmoothPageIndicator(
-        controller: controller.pageController,
-        onDotClicked: controller.dotNavigationClick,
-        count: 3,
-        effect: ExpandingDotsEffect(dotHeight: 6, activeDotColor: AppColors.primary)
+      left: 0,
+      right: 0,
+      child: Center(
+        child: SmoothPageIndicator(
+          controller: controller.pageController,
+          onDotClicked: controller.dotNavigationClick,
+          count: 3,
+          effect: const ExpandingDotsEffect(dotHeight: 6, activeDotColor: AppColors.primary),
+        ),
       ),
     );
   }
