@@ -36,15 +36,19 @@ class SignupController extends GetxController {
       if (!isConnected) return;
 
       // Form Validation
-      if (!signFormKey.currentState!.validate()) return;
+      final isFormValid = signFormKey.currentState!.validate();
 
-      // privacy Policy Check
+      // Privacy Policy Check
       if (!privacyPolicy.value) {
         AppLoaders.warningSnackBar(
           title: 'Accept Privacy Policy',
-          message: 'In order to crete account, you must have to read and accept the Privacy Policy & Terms of Use.');
+          message:
+              'In order to create an account, you must read and accept the Privacy Policy & Terms of Use.',
+        );
         return;
       }
+
+      if (!isFormValid) return;
 
       // Start Loading
       FullScreenLoader.openLoadingDialog(

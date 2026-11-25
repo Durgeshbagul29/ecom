@@ -104,34 +104,38 @@ class SignUPForm extends StatelessWidget {
               Obx(
                 () => Checkbox(
                   value: controller.privacyPolicy.value,
-                  onChanged: (value) => controller.privacyPolicy.value =
-                      !controller.privacyPolicy.value,
+                  onChanged: (value) =>
+                      controller.privacyPolicy.value = value ?? false,
                 ),
               ),
               Expanded(
-                child: RichText(
-                  text: TextSpan(
-                    style: Theme.of(context).textTheme.bodyMedium,
-                    children: [
-                      TextSpan(text: '${AppText.iAgreeTo} '),
-                      TextSpan(
-                        text: '${AppText.privacyPolicy} ',
-                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                          color: AppColors.primary,
-                          decoration: TextDecoration.underline,
-                          decorationColor: AppColors.primary,
+                child: GestureDetector(
+                  onTap: () => controller.privacyPolicy.value =
+                      !controller.privacyPolicy.value,
+                  child: RichText(
+                    text: TextSpan(
+                      style: Theme.of(context).textTheme.bodyMedium,
+                      children: [
+                        TextSpan(text: '${AppText.iAgreeTo} '),
+                        TextSpan(
+                          text: '${AppText.privacyPolicy} ',
+                          style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                            color: AppColors.primary,
+                            decoration: TextDecoration.underline,
+                            decorationColor: AppColors.primary,
+                          ),
                         ),
-                      ),
-                      TextSpan(text: '${AppText.and} '),
-                      TextSpan(
-                        text: '${AppText.termsOfUse} ',
-                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                          color: AppColors.primary,
-                          decoration: TextDecoration.underline,
-                          decorationColor: AppColors.primary,
+                        TextSpan(text: '${AppText.and} '),
+                        TextSpan(
+                          text: '${AppText.termsOfUse} ',
+                          style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                            color: AppColors.primary,
+                            decoration: TextDecoration.underline,
+                            decorationColor: AppColors.primary,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
