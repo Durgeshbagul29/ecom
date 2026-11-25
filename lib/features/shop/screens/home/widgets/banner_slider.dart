@@ -60,7 +60,7 @@ class BannerSlider extends StatelessWidget {
                  CircularContainer(
                     width: 8, height: 8,
                     margin: EdgeInsets.only(right: 6),
-                    backgroundColor: controller.carouselCurrentIndex == i ? AppColors.primary : Colors.transparent,
+                    backgroundColor: controller.carouselCurrentIndex.value == i ? AppColors.primary : Colors.transparent,
                      shadowBorder: true
                  )
             ],
@@ -126,7 +126,7 @@ class BannerSlider extends StatelessWidget {
 //                       radius: 5,
 //                       margin: const EdgeInsets.only(right: 6),
 //                       backgroundColor:
-//                       controller.carouselCurrentIndex == i
+//                       controller.carouselCurrentIndex.value == i
 //                           ? AppColors.primary
 //                           : Colors.transparent,
 //                       border: Border.all(

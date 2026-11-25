@@ -20,8 +20,8 @@ class AppLoaders {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(30),
             color: AppHelperFunctions.isDarkMode(Get.context!)
-                ? AppColors.darkerGrey.withOpacity(0.9)
-                : AppColors.grey.withOpacity(0.9),
+                ? AppColors.darkerGrey.withValues(alpha: 0.9)
+                : AppColors.grey.withValues(alpha: 0.9),
           ),
         ),
       ),

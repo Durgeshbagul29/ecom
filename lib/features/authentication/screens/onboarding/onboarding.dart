@@ -19,70 +19,72 @@ class OnBoardingScreen extends StatelessWidget {
     final controller = Get.put(OnBoardingController());
 
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: AppSizes.defaultSpace),
-        child: Stack(
-          children: [
-            /// Scrollable Page
-            PageView(
-              controller: controller.pageController,
-              onPageChanged: (value) => controller.updatePageIndicator(value),
-              children: [
-                // add OnBoardingPage with Data
-                OnBoardingPageView(
-                  animationImage: AppImages.shoppingAnimation,
-                  title: AppText.onBoardingTitle1,
-                  subTitle: AppText.onBoardingSubTitle1,
-                ),
-                OnBoardingPageView(
-                  animationImage: AppImages.mobileEComAnimation,
-                  title: AppText.onBoardingTitle2,
-                  subTitle: AppText.onBoardingSubTitle2,
-                ),
-                OnBoardingPageView(
-                  animationImage: AppImages.workHouseDeliveryAnimation,
-                  title: AppText.onBoardingTitle3,
-                  subTitle: AppText.onBoardingSubTitle3,
-                ),
-              ],
-            ),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: AppSizes.defaultSpace),
+          child: Stack(
+            children: [
+              /// Scrollable Page
+              PageView(
+                controller: controller.pageController,
+                onPageChanged: (value) => controller.updatePageIndicator(value),
+                children: [
+                  // add OnBoardingPage with Data
+                  OnBoardingPageView(
+                    animationImage: AppImages.shoppingAnimation,
+                    title: AppText.onBoardingTitle1,
+                    subTitle: AppText.onBoardingSubTitle1,
+                  ),
+                  OnBoardingPageView(
+                    animationImage: AppImages.mobileEComAnimation,
+                    title: AppText.onBoardingTitle2,
+                    subTitle: AppText.onBoardingSubTitle2,
+                  ),
+                  OnBoardingPageView(
+                    animationImage: AppImages.workHouseDeliveryAnimation,
+                    title: AppText.onBoardingTitle3,
+                    subTitle: AppText.onBoardingSubTitle3,
+                  ),
+                ],
+              ),
 
-            /// Indictor
-            PageNavigationIndicator(),
+              /// Indictor
+              PageNavigationIndicator(),
 
-            /// Bottom buttons with transition
-            Positioned(
-              left: AppSizes.defaultSpace,
-              right: AppSizes.defaultSpace,
-              bottom: AppSizes.spaceBtwItems,
-              child: Obx(() {
-                return AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 400),
-                  transitionBuilder: (child, animation) {
-                    return SizeTransition(
-                      sizeFactor: animation,
-                      axis: Axis.horizontal,
-                      child: child,
-                    );
-                  },
-                  child: controller.currentIndex.value == 2
-                      ? SizedBox(
-                          width: double.infinity,
-                          child: OnBoardingStartedButton(),
-                        )
-                      : Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            // Skip Button
-                            OnBoardingSkipButton(),
-                            // Next Button
-                            OnBoardingNextButton(),
-                          ],
-                        ),
-                );
-              }),
-            ),
-          ],
+              /// Bottom buttons with transition
+              Positioned(
+                left: AppSizes.defaultSpace,
+                right: AppSizes.defaultSpace,
+                bottom: AppSizes.spaceBtwItems,
+                child: Obx(() {
+                  return AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 400),
+                    transitionBuilder: (child, animation) {
+                      return SizeTransition(
+                        sizeFactor: animation,
+                        axis: Axis.horizontal,
+                        child: child,
+                      );
+                    },
+                    child: controller.currentIndex.value == 2
+                        ? SizedBox(
+                            width: double.infinity,
+                            child: OnBoardingStartedButton(),
+                          )
+                        : Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              // Skip Button
+                              OnBoardingSkipButton(),
+                              // Next Button
+                              OnBoardingNextButton(),
+                            ],
+                          ),
+                  );
+                }),
+              ),
+            ],
+          ),
         ),
       ),
     );
