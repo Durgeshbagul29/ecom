@@ -4,6 +4,7 @@ import 'package:ecom/utils/constants/images.dart';
 import 'package:ecom/utils/helpers/network_manager.dart';
 import 'package:ecom/utils/popups/full_screen_loader.dart';
 import 'package:ecom/utils/popups/loaders.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -50,8 +51,31 @@ class LoginController extends GetxController {
         localStorage.write('REMEMBER_ME_PASSWORD', password.text.trim());
       }
 
+      if (kDebugMode) {
+        debugPrint('==================== [LOGIN SCREEN - REQUEST] ====================');
+        debugPrint('Action: Email & Password Sign-In');
+        debugPrint('Email: ${email.text.trim()}');
+        debugPrint('Remember Me: ${rememberMe.value}');
+        debugPrint('Timestamp: ${DateTime.now().toIso8601String()}');
+        debugPrint('==================================================================');
+      }
+
       // Login user using Email & Password Authentication
-      await AuthenticationRepository.instance.loginWithEmailAndPassword(email.text.trim(), password.text.trim());
+      final userCredential = await AuthenticationRepository.instance.loginWithEmailAndPassword(
+        email.text.trim(),
+        password.text.trim(),
+      );
+
+      if (kDebugMode) {
+        debugPrint('==================== [LOGIN SCREEN - RESPONSE] ====================');
+        debugPrint('Status: Login Successful');
+        debugPrint('User UID: ${userCredential.user?.uid}');
+        debugPrint('User Email: ${userCredential.user?.email}');
+        debugPrint('Email Verified: ${userCredential.user?.emailVerified}');
+        debugPrint('Display Name: ${userCredential.user?.displayName}');
+        debugPrint('Provider: ${userCredential.additionalUserInfo?.providerId}');
+        debugPrint('===================================================================');
+      }
 
       // Remove Loader
       FullScreenLoader.stopLoading();
@@ -60,6 +84,12 @@ class LoginController extends GetxController {
       AuthenticationRepository.instance.screenRedirect();
 
     } catch (e) {
+      if (kDebugMode) {
+        debugPrint('==================== [LOGIN SCREEN - ERROR] ====================');
+        debugPrint('Error: $e');
+        debugPrint('================================================================');
+      }
+
       // Remove Loader
       FullScreenLoader.stopLoading();
 
@@ -78,8 +108,24 @@ class LoginController extends GetxController {
       // Start Loading
       FullScreenLoader.openLoadingDialog('Logging you in....', AppImages.bubbleLoading);
 
+      if (kDebugMode) {
+        debugPrint('==================== [LOGIN SCREEN - GOOGLE SIGN-IN REQUEST] ====================');
+        debugPrint('Action: Google Sign-In Initiated');
+        debugPrint('Timestamp: ${DateTime.now().toIso8601String()}');
+        debugPrint('=================================================================================');
+      }
+
       // Login user using Google Account
       final userCredentials = await AuthenticationRepository.instance.signInWithGoogle();
+
+      if (kDebugMode) {
+        debugPrint('==================== [LOGIN SCREEN - GOOGLE SIGN-IN RESPONSE] ====================');
+        debugPrint('Status: Google Sign-In Successful');
+        debugPrint('User UID: ${userCredentials?.user?.uid}');
+        debugPrint('User Email: ${userCredentials?.user?.email}');
+        debugPrint('Display Name: ${userCredentials?.user?.displayName}');
+        debugPrint('==================================================================================');
+      }
 
       // Save User Record
       await userController.saveUserRecord(userCredentials);
@@ -91,6 +137,12 @@ class LoginController extends GetxController {
       AuthenticationRepository.instance.screenRedirect();
 
     } catch (e) {
+      if (kDebugMode) {
+        debugPrint('==================== [LOGIN SCREEN - GOOGLE SIGN-IN ERROR] ====================');
+        debugPrint('Error: $e');
+        debugPrint('===============================================================================');
+      }
+
       // Remove Loader
       FullScreenLoader.stopLoading();
 

@@ -6,6 +6,7 @@ import 'package:ecom/utils/constants/images.dart';
 import 'package:ecom/utils/helpers/network_manager.dart';
 import 'package:ecom/utils/popups/full_screen_loader.dart';
 import 'package:ecom/utils/popups/loaders.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -51,12 +52,33 @@ class SignupController extends GetxController {
         AppImages.bubbleLoading,
       );
 
+      if (kDebugMode) {
+        debugPrint('==================== [SIGNUP SCREEN - REQUEST] ====================');
+        debugPrint('Action: Register User With Email & Password');
+        debugPrint('First Name: ${firstName.text.trim()}');
+        debugPrint('Last Name: ${lastName.text.trim()}');
+        debugPrint('Username: ${username.text.trim()}');
+        debugPrint('Email: ${email.text.trim()}');
+        debugPrint('Phone Number: ${phoneNumber.text.trim()}');
+        debugPrint('Privacy Policy Accepted: ${privacyPolicy.value}');
+        debugPrint('Timestamp: ${DateTime.now().toIso8601String()}');
+        debugPrint('===================================================================');
+      }
+
       // Register user in the Firebase Authentication & Save user data in the Firebase
       final userCredential = await AuthenticationRepository.instance
           .registerWithEmailAndPassword(
             email.text.trim(),
             password.text.trim(),
           );
+
+      if (kDebugMode) {
+        debugPrint('==================== [SIGNUP SCREEN - AUTH RESPONSE] ====================');
+        debugPrint('Status: User Registered Successfully in Authentication');
+        debugPrint('User UID: ${userCredential.user?.uid}');
+        debugPrint('User Email: ${userCredential.user?.email}');
+        debugPrint('=========================================================================');
+      }
 
       // Save Authentication user data in the Firebase Firestore
       final newUser = UserModel(
@@ -69,8 +91,23 @@ class SignupController extends GetxController {
         profilePicture: '',
       );
 
+      if (kDebugMode) {
+        debugPrint('==================== [SIGNUP SCREEN - SAVE USER REQUEST] ====================');
+        debugPrint('Target Collection: Users');
+        debugPrint('User ID: ${newUser.id}');
+        debugPrint('Payload: ${newUser.toJson()}');
+        debugPrint('=============================================================================');
+      }
+
       final userRepository = Get.put(UserRepository());
       await userRepository.saveUserRecord(newUser);
+
+      if (kDebugMode) {
+        debugPrint('==================== [SIGNUP SCREEN - SAVE USER RESPONSE] ====================');
+        debugPrint('Status: User Record Successfully Saved to Firestore');
+        debugPrint('User ID: ${newUser.id}');
+        debugPrint('==============================================================================');
+      }
 
       // Remove Loader
       FullScreenLoader.stopLoading();
@@ -85,6 +122,12 @@ class SignupController extends GetxController {
       Get.to(() => VerifyEmailScreen(email: email.text.trim()));
 
     } catch (e) {
+      if (kDebugMode) {
+        debugPrint('==================== [SIGNUP SCREEN - ERROR] ====================');
+        debugPrint('Error: $e');
+        debugPrint('=================================================================');
+      }
+
       // Remove Loader
       FullScreenLoader.stopLoading();
 

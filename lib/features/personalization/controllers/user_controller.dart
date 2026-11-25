@@ -2,6 +2,7 @@ import 'package:ecom/data/repositories/user/user_repository.dart';
 import 'package:ecom/features/personalization/models/user_model.dart';
 import 'package:ecom/utils/popups/loaders.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 
 class UserController extends GetxController {
@@ -21,9 +22,24 @@ class UserController extends GetxController {
   Future<void> fetchUserRecord() async {
     try {
       profileLoading.value = true;
+      if (kDebugMode) {
+        debugPrint('==================== [USER CONTROLLER - FETCH RECORD REQUEST] ====================');
+        debugPrint('Action: fetchUserDetails');
+        debugPrint('==================================================================================');
+      }
       final user = await userRepo.fetchUserDetails();
       this.user(user);
+      if (kDebugMode) {
+        debugPrint('==================== [USER CONTROLLER - FETCH RECORD RESPONSE] ====================');
+        debugPrint('Fetched User: ${user.toJson()}');
+        debugPrint('===================================================================================');
+      }
     } catch(e) {
+      if (kDebugMode) {
+        debugPrint('==================== [USER CONTROLLER - FETCH RECORD ERROR] ====================');
+        debugPrint('Error: $e');
+        debugPrint('================================================================================');
+      }
       user(UserModel.empty());
     } finally {
       profileLoading.value = false;
@@ -53,10 +69,28 @@ class UserController extends GetxController {
           profilePicture: userCredential.user!.photoURL ?? '',
         );
 
+        if (kDebugMode) {
+          debugPrint('==================== [USER CONTROLLER - SAVE RECORD REQUEST] ====================');
+          debugPrint('Action: saveUserRecord from provider');
+          debugPrint('Payload: ${user.toJson()}');
+          debugPrint('=================================================================================');
+        }
+
         // Save user data
         await userRepo.saveUserRecord(user);
+
+        if (kDebugMode) {
+          debugPrint('==================== [USER CONTROLLER - SAVE RECORD RESPONSE] ====================');
+          debugPrint('Status: User record saved');
+          debugPrint('==================================================================================');
+        }
       }
     } catch (e) {
+      if (kDebugMode) {
+        debugPrint('==================== [USER CONTROLLER - SAVE RECORD ERROR] ====================');
+        debugPrint('Error: $e');
+        debugPrint('================================================================================');
+      }
       AppLoaders.warningSnackBar(
         title: 'Data not saved',
         message:
