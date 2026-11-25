@@ -1,9 +1,12 @@
 import 'package:ecom/common/widgets/buttons/app_elevated_button.dart';
 import 'package:ecom/features/authentication/controllers/signup_controller.dart';
+import 'package:ecom/features/authentication/screens/signup/privacy_policy_screen.dart';
+import 'package:ecom/features/authentication/screens/signup/terms_of_use_screen.dart';
 import 'package:ecom/utils/constants/app_text.dart';
 import 'package:ecom/utils/constants/colors.dart';
 import 'package:ecom/utils/constants/sizes.dart';
 import 'package:ecom/utils/validators/validation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
@@ -109,33 +112,43 @@ class SignUPForm extends StatelessWidget {
                 ),
               ),
               Expanded(
-                child: GestureDetector(
-                  onTap: () => controller.privacyPolicy.value =
-                      !controller.privacyPolicy.value,
-                  child: RichText(
-                    text: TextSpan(
-                      style: Theme.of(context).textTheme.bodyMedium,
-                      children: [
-                        TextSpan(text: '${AppText.iAgreeTo} '),
-                        TextSpan(
-                          text: '${AppText.privacyPolicy} ',
-                          style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                            color: AppColors.primary,
-                            decoration: TextDecoration.underline,
-                            decorationColor: AppColors.primary,
-                          ),
+                child: RichText(
+                  text: TextSpan(
+                    style: Theme.of(context).textTheme.bodyMedium,
+                    children: [
+                      TextSpan(
+                        text: '${AppText.iAgreeTo} ',
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () => controller.privacyPolicy.value =
+                              !controller.privacyPolicy.value,
+                      ),
+                      TextSpan(
+                        text: '${AppText.privacyPolicy} ',
+                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                          color: AppColors.primary,
+                          decoration: TextDecoration.underline,
+                          decorationColor: AppColors.primary,
                         ),
-                        TextSpan(text: '${AppText.and} '),
-                        TextSpan(
-                          text: '${AppText.termsOfUse} ',
-                          style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                            color: AppColors.primary,
-                            decoration: TextDecoration.underline,
-                            decorationColor: AppColors.primary,
-                          ),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () => Get.to(() => const PrivacyPolicyScreen()),
+                      ),
+                      TextSpan(
+                        text: '${AppText.and} ',
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () => controller.privacyPolicy.value =
+                              !controller.privacyPolicy.value,
+                      ),
+                      TextSpan(
+                        text: '${AppText.termsOfUse} ',
+                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                          color: AppColors.primary,
+                          decoration: TextDecoration.underline,
+                          decorationColor: AppColors.primary,
                         ),
-                      ],
-                    ),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () => Get.to(() => const TermsOfUseScreen()),
+                      ),
+                    ],
                   ),
                 ),
               ),

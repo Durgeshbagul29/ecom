@@ -12,13 +12,12 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       leading: IconButton(
-        // icons: Icon(
-        //   Theme.of(context).platform == TargetPlatform.iOS
-        //       ? Icons.arrow_back_ios_new
-        //       : Icons.arrow_back,
-        // ),
-        icon: Icon(Icons.arrow_back_ios_rounded),
-        onPressed: () => Get.back(),
+        icon: const Icon(Icons.arrow_back_ios_rounded),
+        onPressed: () {
+          if (Navigator.of(context).canPop()) {
+            Navigator.of(context).pop();
+          }
+        },
       ),
       centerTitle: true,
       title: Row(
