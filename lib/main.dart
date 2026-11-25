@@ -1,6 +1,7 @@
 import 'package:ecom/data/repositories/AuthenticationRepository/authentication_repository.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:ecom/ecom_app.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
@@ -12,6 +13,9 @@ import 'firebase_options.dart';
 Future<void> main() async {
   /// Widgets flutter binding
   final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+
+  /// System UI Mode Edge-to-Edge for modern Android & iOS
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
 
   /// GetX Local Storage
   await GetStorage.init();

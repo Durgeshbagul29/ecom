@@ -17,12 +17,11 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    return SafeArea(
-      top: false,
-      child: Scaffold(
-        appBar: AppBar(automaticallyImplyLeading: false),
-        body: SingleChildScrollView(
+    return Scaffold(
+      appBar: AppBar(automaticallyImplyLeading: false),
+      body: SafeArea(
+        top: false,
+        child: SingleChildScrollView(
           child: Padding(
             padding: AppPadding.screenNotTopPadding,
             child: Column(

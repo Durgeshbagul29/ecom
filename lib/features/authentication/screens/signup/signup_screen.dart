@@ -17,50 +17,53 @@ class SignUpScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: MyAppBar(showLogo: true),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: AppPadding.screenPadding,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              /// SignUp Header
-              Text(
-                AppText.signupTitle,
-                style: Theme.of(context).textTheme.headlineMedium,
-              ),
-              // SizedBox(height: AppSizes.spaceBtwItems / 2),
-              // Text(
-              //   AppText.signupSubTitle,
-              //   style: Theme.of(context).textTheme.bodyLarge,
-              // ),
+      body: SafeArea(
+        top: false,
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: AppPadding.screenPadding,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                /// SignUp Header
+                Text(
+                  AppText.signupTitle,
+                  style: Theme.of(context).textTheme.headlineMedium,
+                ),
+                // SizedBox(height: AppSizes.spaceBtwItems / 2),
+                // Text(
+                //   AppText.signupSubTitle,
+                //   style: Theme.of(context).textTheme.bodyLarge,
+                // ),
 
-              SizedBox(height: AppSizes.spaceBtwSections),
+                SizedBox(height: AppSizes.spaceBtwSections),
 
-              /// SignUp Form
-              SignUPForm(),
+                /// SignUp Form
+                SignUPForm(),
 
-              SizedBox(height: AppSizes.spaceBtwSections),
+                SizedBox(height: AppSizes.spaceBtwSections),
 
-              /// Form Divider
-              AppFormDivider(title: AppText.orSignupWith),
+                /// Form Divider
+                AppFormDivider(title: AppText.orSignupWith),
 
-              SizedBox(height: AppSizes.spaceBtwSections),
+                SizedBox(height: AppSizes.spaceBtwSections),
 
-              /// Login Social Buttons
-              AppSocialButtons(),
+                /// Login Social Buttons
+                AppSocialButtons(),
 
-              SizedBox(height: AppSizes.spaceBtwSections),
+                SizedBox(height: AppSizes.spaceBtwSections),
 
-              /// Login Screen Root
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(AppText.haveAccount, style: Theme.of(context).textTheme.bodyMedium),
-                  TextButton(onPressed: () => Get.to(() => LoginScreen()), child: Text(AppText.signIn, style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: AppColors.primary, fontWeight: FontWeight.bold)))
-                ],
-              )
-            ],
+                /// Login Screen Root
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(AppText.haveAccount, style: Theme.of(context).textTheme.bodyMedium),
+                    TextButton(onPressed: () => Get.to(() => LoginScreen()), child: Text(AppText.signIn, style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: AppColors.primary, fontWeight: FontWeight.bold)))
+                  ],
+                )
+              ],
+            ),
           ),
         ),
       ),
