@@ -1,3 +1,4 @@
+import 'package:ecom/common/widgets/system_ui/app_system_ui_overlay.dart';
 import 'package:ecom/features/authentication/controllers/onboarding_controller.dart';
 import 'package:ecom/features/authentication/screens/onboarding/widgets/onboarding_dots_navigation.dart';
 import 'package:ecom/features/authentication/screens/onboarding/widgets/onboarding_next_button.dart';
@@ -7,9 +8,7 @@ import 'package:ecom/features/authentication/screens/onboarding/widgets/onboardi
 import 'package:ecom/utils/constants/app_text.dart';
 import 'package:ecom/utils/constants/images.dart';
 import 'package:ecom/utils/constants/sizes.dart';
-import 'package:ecom/utils/helpers/helper_functions.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 class OnBoardingScreen extends StatelessWidget {
@@ -19,19 +18,8 @@ class OnBoardingScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     // Instance of OnBoarding Controller using put method in GetX
     final controller = Get.put(OnBoardingController());
-    final isDark = AppHelperFunctions.isDarkMode(context);
 
-    return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle(
-        statusBarColor: Colors.transparent,
-        statusBarIconBrightness: isDark ? Brightness.light : Brightness.dark,
-        statusBarBrightness: isDark ? Brightness.dark : Brightness.light,
-        systemStatusBarContrastEnforced: false,
-        systemNavigationBarColor: Colors.transparent,
-        systemNavigationBarIconBrightness: isDark ? Brightness.light : Brightness.dark,
-        systemNavigationBarDividerColor: Colors.transparent,
-        systemNavigationBarContrastEnforced: false,
-      ),
+    return AppSystemUiOverlay(
       child: Scaffold(
         body: SafeArea(
           child: Padding(
