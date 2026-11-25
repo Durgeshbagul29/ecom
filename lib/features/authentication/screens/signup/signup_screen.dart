@@ -59,7 +59,22 @@ class SignUpScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(AppText.haveAccount, style: Theme.of(context).textTheme.bodyMedium),
-                    TextButton(onPressed: () => Get.to(() => LoginScreen()), child: Text(AppText.signIn, style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: AppColors.primary, fontWeight: FontWeight.bold)))
+                    TextButton(
+                      onPressed: () {
+                        if (Navigator.of(context).canPop()) {
+                          Get.back();
+                        } else {
+                          Get.off(() => const LoginScreen());
+                        }
+                      },
+                      child: Text(
+                        AppText.signIn,
+                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                          color: AppColors.primary,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
                   ],
                 )
               ],

@@ -23,7 +23,7 @@ class ResetPasswordScreen extends StatelessWidget {
         automaticallyImplyLeading: false,
         actions: [
           IconButton(
-            onPressed: () => Get.to(() => LoginScreen()),
+            onPressed: () => Get.offAll(() => const LoginScreen()),
             icon: Icon(CupertinoIcons.clear),
           ),
         ],
@@ -59,7 +59,7 @@ class ResetPasswordScreen extends StatelessWidget {
               SizedBox(height: AppSizes.spaceBtwSections),
 
               /// Done Button
-              AppElevatedButton(onPressed: () => Get.to(() => const LoginScreen()), child: Text(AppText.done)),
+              AppElevatedButton(onPressed: () => Get.offAll(() => const LoginScreen()), child: Text(AppText.done)),
 
               SizedBox(height: AppSizes.spaceBtwItems / 2),
 
