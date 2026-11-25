@@ -3,9 +3,11 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
     // Rules for Users collection:
-    // Allow users to read and write only their own document
+    // Allow authenticated users to read user profiles (needed for appbar, profile, reviews)
+    // Allow users to create and update only their own document
     match /Users/{userId} {
-      allow read, write: if request.auth != null && request.auth.uid == userId;
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && request.auth.uid == userId;
     }
 
     // Default rule for other documents: allow authenticated users

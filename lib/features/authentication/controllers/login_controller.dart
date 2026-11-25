@@ -21,8 +21,6 @@ class LoginController extends GetxController {
   final password = TextEditingController(); // Controller for password input
   GlobalKey<FormState> loginFormKey = GlobalKey<FormState>(); // Form key for form validation
 
-  final userController = Get.put(UserController());
-
   @override
   void onInit() {
     email.text = localStorage.read('REMEMBER_ME_EMAIL') ?? '';
@@ -146,7 +144,7 @@ class LoginController extends GetxController {
       }
 
       // Save User Record
-      await userController.saveUserRecord(userCredentials);
+      await UserController.instance.saveUserRecord(userCredentials);
 
       // Remove Loader
       FullScreenLoader.stopLoading();

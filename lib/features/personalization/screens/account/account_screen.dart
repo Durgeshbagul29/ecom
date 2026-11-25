@@ -65,7 +65,7 @@ class AccountScreen extends StatelessWidget {
                   child: OutlinedButton(onPressed: () {}, child: const Text('Logout'))
                 ),
                 const SizedBox(height: AppSizes.spaceBtwSections),
-                Text('Powered By BSquare Softwares Pvt Ltd.', style: Theme.of(context).textTheme.labelMedium!.apply(color: AppColors.primary))
+                Text('Powered By BSquare Softwares Solutions.', style: Theme.of(context).textTheme.labelMedium!.apply(color: AppColors.primary))
               ],
             ))
 

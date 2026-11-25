@@ -1,3 +1,4 @@
+import 'package:ecom/data/repositories/AuthenticationRepository/authentication_repository.dart';
 import 'package:ecom/data/repositories/user/user_repository.dart';
 import 'package:ecom/features/personalization/models/user_model.dart';
 import 'package:ecom/utils/popups/loaders.dart';
@@ -6,11 +7,12 @@ import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 
 class UserController extends GetxController {
-  static UserController get instance => Get.find();
+  static UserController get instance =>
+      Get.isRegistered<UserController>() ? Get.find<UserController>() : Get.put(UserController());
 
   final profileLoading = false.obs;
   Rx<UserModel> user = UserModel.empty().obs;
-  final userRepo = Get.put(UserRepository());
+  final userRepo = Get.isRegistered<UserRepository>() ? Get.find<UserRepository>() : Get.put(UserRepository());
 
   @override
   void onInit() {
@@ -21,17 +23,24 @@ class UserController extends GetxController {
   /// Fetch user record
   Future<void> fetchUserRecord() async {
     try {
+      // Don't attempt to fetch if user is not authenticated
+      final authUser = FirebaseAuth.instance.currentUser;
+      if (authUser == null) {
+        user(UserModel.empty());
+        return;
+      }
+
       profileLoading.value = true;
       if (kDebugMode) {
         debugPrint('==================== [USER CONTROLLER - FETCH RECORD REQUEST] ====================');
-        debugPrint('Action: fetchUserDetails');
+        debugPrint('Action: fetchUserDetails for UID: ${authUser.uid}');
         debugPrint('==================================================================================');
       }
-      final user = await userRepo.fetchUserDetails();
-      this.user(user);
+      final fetchedUser = await userRepo.fetchUserDetails();
+      user(fetchedUser);
       if (kDebugMode) {
         debugPrint('==================== [USER CONTROLLER - FETCH RECORD RESPONSE] ====================');
-        debugPrint('Fetched User: ${user.toJson()}');
+        debugPrint('Fetched User: ${fetchedUser.toJson()}');
         debugPrint('===================================================================================');
       }
     } catch(e) {

@@ -65,6 +65,15 @@ class UserRepository extends GetxController {
   /// Function to fetch user details based on user ID.
   Future<UserModel> fetchUserDetails() async {
     final uid = AuthenticationRepository.instance.authUser?.uid;
+    if (uid == null || uid.isEmpty) {
+      if (kDebugMode) {
+        debugPrint('==================== [USER REPO: FETCH USER REQUEST] ====================');
+        debugPrint('Status: No authenticated user UID found. Returning empty UserModel.');
+        debugPrint('=========================================================================');
+      }
+      return UserModel.empty();
+    }
+
     if (kDebugMode) {
       debugPrint('==================== [USER REPO: FETCH USER REQUEST] ====================');
       debugPrint('Collection: Users | DocId: $uid');
@@ -85,8 +94,35 @@ class UserRepository extends GetxController {
       } else {
         if (kDebugMode) {
           debugPrint('==================== [USER REPO: FETCH USER RESPONSE] ====================');
-          debugPrint('Status: User document does not exist, returning empty UserModel');
+          debugPrint('Status: User document does not exist in Firestore, initializing default profile from Auth');
           debugPrint('==========================================================================');
+        }
+        final authUser = AuthenticationRepository.instance.authUser;
+        if (authUser != null) {
+          final displayName = (authUser.displayName != null && authUser.displayName!.trim().isNotEmpty)
+              ? authUser.displayName!.trim()
+              : (authUser.email != null && authUser.email!.contains('@')
+                  ? authUser.email!.split('@')[0]
+                  : 'User');
+          final parts = UserModel.nameParts(displayName);
+          final fName = parts.isNotEmpty ? parts[0] : displayName;
+          final lName = parts.length > 1 ? parts.sublist(1).join(' ') : '';
+          final uname = UserModel.generateUsername(displayName);
+
+          final defaultUser = UserModel(
+            id: authUser.uid,
+            firstName: fName,
+            lastName: lName,
+            username: uname,
+            email: authUser.email ?? '',
+            phoneNumber: authUser.phoneNumber ?? '',
+            profilePicture: authUser.photoURL ?? '',
+          );
+
+          try {
+            await saveUserRecord(defaultUser);
+          } catch (_) {}
+          return defaultUser;
         }
         return UserModel.empty();
       }
@@ -99,11 +135,11 @@ class UserRepository extends GetxController {
       // Handle specific Firebase Firestore errors
       switch (e.code) {
         case 'permission-denied':
-          throw 'You do not have permission to save this data.';
+          throw 'You do not have permission to access this data.';
         case 'unavailable':
           throw 'Firestore service is temporarily unavailable. Please try again later.';
         default:
-          throw 'Failed to save user data: ${e.message ?? 'Unknown Firebase error.'}';
+          throw 'Failed to fetch user data: ${e.message ?? 'Unknown Firebase error.'}';
       }
     } on PlatformException catch (e) {
       if (kDebugMode) {
@@ -120,7 +156,7 @@ class UserRepository extends GetxController {
         debugPrint('Error: $e');
         debugPrint('==================================================================================');
       }
-      throw 'Unexpected error occurred while saving user data. Please try again.';
+      throw 'Unexpected error occurred while fetching user data. Please try again.';
     }
   }
 
@@ -150,11 +186,11 @@ class UserRepository extends GetxController {
       // Handle specific Firebase Firestore errors
       switch (e.code) {
         case 'permission-denied':
-          throw 'You do not have permission to save this data.';
+          throw 'You do not have permission to update this data.';
         case 'unavailable':
           throw 'Firestore service is temporarily unavailable. Please try again later.';
         default:
-          throw 'Failed to save user data: ${e.message ?? 'Unknown Firebase error.'}';
+          throw 'Failed to update user data: ${e.message ?? 'Unknown Firebase error.'}';
       }
     } on PlatformException catch (e) {
       if (kDebugMode) {
@@ -171,13 +207,16 @@ class UserRepository extends GetxController {
         debugPrint('Error: $e');
         debugPrint('===================================================================================');
       }
-      throw 'Unexpected error occurred while saving user data. Please try again.';
+      throw 'Unexpected error occurred while updating user data. Please try again.';
     }
   }
 
   /// Update any single field in users collection
   Future<void> updateSingleField(Map<String, dynamic> json) async {
     final uid = AuthenticationRepository.instance.authUser?.uid;
+    if (uid == null || uid.isEmpty) {
+      throw 'User is not authenticated. Cannot update field.';
+    }
     if (kDebugMode) {
       debugPrint('==================== [USER REPO: UPDATE FIELD REQUEST] ====================');
       debugPrint('Collection: Users | DocId: $uid');
@@ -201,11 +240,11 @@ class UserRepository extends GetxController {
       // Handle specific Firebase Firestore errors
       switch (e.code) {
         case 'permission-denied':
-          throw 'You do not have permission to save this data.';
+          throw 'You do not have permission to update this data.';
         case 'unavailable':
           throw 'Firestore service is temporarily unavailable. Please try again later.';
         default:
-          throw 'Failed to save user data: ${e.message ?? 'Unknown Firebase error.'}';
+          throw 'Failed to update user data: ${e.message ?? 'Unknown Firebase error.'}';
       }
     } on PlatformException catch (e) {
       if (kDebugMode) {
@@ -222,7 +261,7 @@ class UserRepository extends GetxController {
         debugPrint('Error: $e');
         debugPrint('====================================================================================');
       }
-      throw 'Unexpected error occurred while saving user data. Please try again.';
+      throw 'Unexpected error occurred while updating user data. Please try again.';
     }
   }
 
@@ -251,11 +290,11 @@ class UserRepository extends GetxController {
       // Handle specific Firebase Firestore errors
       switch (e.code) {
         case 'permission-denied':
-          throw 'You do not have permission to save this data.';
+          throw 'You do not have permission to delete this data.';
         case 'unavailable':
           throw 'Firestore service is temporarily unavailable. Please try again later.';
         default:
-          throw 'Failed to save user data: ${e.message ?? 'Unknown Firebase error.'}';
+          throw 'Failed to delete user data: ${e.message ?? 'Unknown Firebase error.'}';
       }
     } on PlatformException catch (e) {
       if (kDebugMode) {
