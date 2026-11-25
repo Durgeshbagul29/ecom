@@ -85,11 +85,15 @@ class SignupController extends GetxController {
       }
 
       // Save Authentication user data in the Firebase Firestore
+      final usernameValue = username.text.trim().isNotEmpty
+          ? username.text.trim()
+          : UserModel.generateUsername('${firstName.text.trim()} ${lastName.text.trim()}');
+
       final newUser = UserModel(
         id: userCredential.user!.uid,
         firstName: firstName.text.trim(),
         lastName: lastName.text.trim(),
-        username: username.text.trim(),
+        username: usernameValue,
         email: email.text.trim(),
         phoneNumber: phoneNumber.text.trim(),
         profilePicture: '',
@@ -104,13 +108,25 @@ class SignupController extends GetxController {
       }
 
       final userRepository = Get.put(UserRepository());
-      await userRepository.saveUserRecord(newUser);
+      try {
+        await userRepository.saveUserRecord(newUser);
 
-      if (kDebugMode) {
-        debugPrint('==================== [SIGNUP SCREEN - SAVE USER RESPONSE] ====================');
-        debugPrint('Status: User Record Successfully Saved to Firestore');
-        debugPrint('User ID: ${newUser.id}');
-        debugPrint('==============================================================================');
+        if (kDebugMode) {
+          debugPrint('==================== [SIGNUP SCREEN - SAVE USER RESPONSE] ====================');
+          debugPrint('Status: User Record Successfully Saved to Firestore');
+          debugPrint('User ID: ${newUser.id}');
+          debugPrint('==============================================================================');
+        }
+      } catch (saveError) {
+        if (kDebugMode) {
+          debugPrint('==================== [SIGNUP SCREEN - SAVE USER ERROR] ====================');
+          debugPrint('Error saving user to Firestore: $saveError');
+          debugPrint('===========================================================================');
+        }
+        AppLoaders.warningSnackBar(
+          title: 'Profile Data Notice',
+          message: 'Account created, but profile data could not be saved to Firestore. You can update it later in Profile.',
+        );
       }
 
       // Remove Loader
@@ -118,12 +134,12 @@ class SignupController extends GetxController {
 
       // Show Success Message
       AppLoaders.successSnackBar(
-        title: 'Congregations',
+        title: 'Congratulations',
         message: 'Your account has been created! Verify email to continue.',
       );
 
-      // Move to verify Email Screen
-      Get.to(() => VerifyEmailScreen(email: email.text.trim()));
+      // Move to verify Email Screen (replace signup screen so back button doesn't return to signup)
+      Get.off(() => VerifyEmailScreen(email: email.text.trim()));
 
     } catch (e) {
       if (kDebugMode) {

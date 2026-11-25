@@ -1,1 +1,26 @@
-{"flutter":{"platforms":{"android":{"default":{"projectId":"ecom-59109","appId":"1:35345434957:android:8c5656a67bd09d00af0f04","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"ecom-59109","configurations":{"android":"1:35345434957:android:8c5656a67bd09d00af0f04","ios":"1:35345434957:ios:353eae092e7646c9af0f04","web":"1:35345434957:web:1087d3bf5336bc64af0f04"}}}}}}
+{
+  "firestore": {
+    "rules": "firestore.rules"
+  },
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "ecom-59109",
+          "appId": "1:35345434957:android:8c5656a67bd09d00af0f04",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "ecom-59109",
+          "configurations": {
+            "android": "1:35345434957:android:8c5656a67bd09d00af0f04",
+            "ios": "1:35345434957:ios:353eae092e7646c9af0f04",
+            "web": "1:35345434957:web:1087d3bf5336bc64af0f04"
+          }
+        }
+      }
+    }
+  }
+}
