@@ -13,8 +13,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  # Utilities
-  flutter_native_splash: ^2.4.6   # Native splash screens
+
   http: ^1.5.0                     # API requests
   intl: ^0.20.2                    # Date/number formatting
   logger: ^2.6.1                   # Debug logging

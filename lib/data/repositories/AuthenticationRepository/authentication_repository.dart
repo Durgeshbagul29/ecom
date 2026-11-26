@@ -5,7 +5,6 @@ import 'package:ecom/navigation_menu.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -23,8 +22,6 @@ class AuthenticationRepository extends GetxController {
   // Called from main.dart on app launch
   @override
   void onReady() {
-    // Remove the native splash screen
-    FlutterNativeSplash.remove();
     // Redirect to the appropriate screen
     screenRedirect();
   }

@@ -24,9 +24,18 @@ class EComApp extends StatelessWidget {
       // when app running then load
       initialBinding: GeneralBindings(),
       // Show loader or circular progress indicator meanwhile authentication repository is deciding to show relevant screen.
-      home: const Scaffold(
-        backgroundColor: AppColors.primary,
-        body: Center(child: CircularProgressIndicator(color: Colors.white)),
+      home: Builder(
+        builder: (context) {
+          final isDark = Theme.of(context).brightness == Brightness.dark;
+          return Scaffold(
+            backgroundColor: isDark ? const Color(0xFF121212) : Colors.white,
+            body: Center(
+              child: CircularProgressIndicator(
+                color: AppColors.primary,
+              ),
+            ),
+          );
+        },
       ),
     );
   }
