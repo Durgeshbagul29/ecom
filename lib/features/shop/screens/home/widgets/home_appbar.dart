@@ -1,8 +1,10 @@
 import 'package:ecom/common/widgets/appbar/appbar.dart';
+import 'package:ecom/common/widgets/loaders/circular_loader.dart';
 import 'package:ecom/common/widgets/products_cart/cart_menu_icon.dart';
 import 'package:ecom/features/personalization/controllers/user_controller.dart';
 import 'package:ecom/utils/constants/app_text.dart';
 import 'package:ecom/utils/constants/colors.dart';
+import 'package:ecom/utils/constants/sizes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -23,8 +25,15 @@ class HomeAppBar extends StatelessWidget {
           ),
           Obx(() {
             if (controller.profileLoading.value) {
-              // Display a Shimmer loader while user profile is being loaded
-              return const CircularProgressIndicator();
+              // Display 3 dots animated loading while user profile is being loaded
+              return const Padding(
+                padding: EdgeInsets.symmetric(vertical: AppSizes.xs),
+                child: CircularLoader(
+                  color: AppColors.white,
+                  size: AppSizes.sm,
+                  spacing: AppSizes.xs,
+                ),
+              );
             } else {
               return Text(controller.user.value.fullName,
                 style: Theme.of(context).textTheme.headlineSmall!.apply(color: AppColors.white),
