@@ -5,7 +5,7 @@ import 'package:ecom/utils/formatters/formatter.dart';
 class UserModel {
   // Keep those values final which you do not want to update
   final String id;
-  final String firstName;
+  String firstName;
   String lastName;
   final String username;
   final String email;

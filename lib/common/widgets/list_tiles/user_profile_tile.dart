@@ -22,8 +22,8 @@ class UserProfileTile extends StatelessWidget {
               border: Border.all(color: Colors.grey.shade200, width: border ? 1 : 0)
             ),
             child: CircleAvatar(radius: 30, backgroundImage: AssetImage(AppImages.user))),
-        title: Text(controller.user.value.fullName, style: Theme.of(context).textTheme.headlineSmall!.apply(color : AppColors.white)),
-        subtitle : Text(controller.user.value.email, style: Theme.of(context).textTheme.bodyMedium!.apply(color : AppColors.white)),
+        title: Obx(() => Text(controller.user.value.fullName, style: Theme.of(context).textTheme.headlineSmall!.apply(color : AppColors.white))),
+        subtitle : Obx(() => Text(controller.user.value.email, style: Theme.of(context).textTheme.bodyMedium!.apply(color : AppColors.white))),
         trailing: IconButton(onPressed: () => Get.to(() => const ProfileScreen()), icon: const Icon(Iconsax.edit, color: AppColors.white))
     );
   }
