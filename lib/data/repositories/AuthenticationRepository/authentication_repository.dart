@@ -1,3 +1,4 @@
+import 'package:ecom/data/repositories/user/user_repository.dart';
 import 'package:ecom/features/authentication/screens/login/login_screen.dart';
 import 'package:ecom/features/authentication/screens/onboarding/onboarding.dart';
 import 'package:ecom/features/authentication/screens/signup/verify_email_screen.dart';
@@ -410,6 +411,133 @@ class AuthenticationRepository extends GetxController {
         debugPrint('==============================================================================');
       }
       throw 'An unexpected error occurred while logging out. Please try again.';
+    }
+  }
+
+  /// [ReAuthenticate] - Re-Authenticate with Email and Password
+  Future<void> reAuthenticateWithEmailAndPassword(String email, String password) async {
+    if (kDebugMode) {
+      debugPrint('==================== [AUTH REPO: RE-AUTHENTICATE REQUEST] ====================');
+      debugPrint('Action: reAuthenticateWithCredential');
+      debugPrint('Email: $email');
+      debugPrint('Timestamp: ${DateTime.now().toIso8601String()}');
+      debugPrint('=============================================================================');
+    }
+    try {
+      // Create a credential
+      AuthCredential credential = EmailAuthProvider.credential(email: email, password: password);
+
+      // Re-authenticate
+      await _auth.currentUser!.reauthenticateWithCredential(credential);
+
+      if (kDebugMode) {
+        debugPrint('==================== [AUTH REPO: RE-AUTHENTICATE RESPONSE] ====================');
+        debugPrint('Status: Re-Authentication Successful');
+        debugPrint('==============================================================================');
+      }
+    } on FirebaseAuthException catch (e) {
+      if (kDebugMode) {
+        debugPrint('==================== [AUTH REPO: RE-AUTHENTICATE FIREBASE ERROR] ====================');
+        debugPrint('Code: ${e.code}');
+        debugPrint('Message: ${e.message}');
+        debugPrint('=====================================================================================');
+      }
+      switch (e.code) {
+        case 'wrong-password':
+          throw 'Incorrect password. Please try again.';
+        case 'user-mismatch':
+          throw 'The credential does not match the current user.';
+        case 'user-not-found':
+          throw 'User not found.';
+        case 'invalid-credential':
+          throw 'Invalid credential provided. Please check your credentials.';
+        default:
+          throw e.message ?? 'Authentication error occurred.';
+      }
+    } on FirebaseException catch (e) {
+      if (kDebugMode) {
+        debugPrint('==================== [AUTH REPO: RE-AUTHENTICATE FIREBASE EXCEPTION] ====================');
+        debugPrint('Error: ${e.message}');
+        debugPrint('=========================================================================================');
+      }
+      throw e.message ?? 'A Firebase error occurred.';
+    } on PlatformException catch (e) {
+      if (kDebugMode) {
+        debugPrint('==================== [AUTH REPO: RE-AUTHENTICATE PLATFORM ERROR] ====================');
+        debugPrint('Error: ${e.message}');
+        debugPrint('=====================================================================================');
+      }
+      throw e.message ?? 'A platform error occurred.';
+    } catch (e) {
+      if (kDebugMode) {
+        debugPrint('==================== [AUTH REPO: RE-AUTHENTICATE UNEXPECTED ERROR] ====================');
+        debugPrint('Error: $e');
+        debugPrint('=======================================================================================');
+      }
+      throw 'Something went wrong. Please try again';
+    }
+  }
+
+  /// [DeleteAccount] - Delete User Account
+  Future<void> deleteAccount() async {
+    if (kDebugMode) {
+      debugPrint('==================== [AUTH REPO: DELETE ACCOUNT REQUEST] ====================');
+      debugPrint('Action: deleteAccount');
+      debugPrint('UID: ${_auth.currentUser?.uid}');
+      debugPrint('Timestamp: ${DateTime.now().toIso8601String()}');
+      debugPrint('=============================================================================');
+    }
+    try {
+      final user = _auth.currentUser;
+      if (user == null) throw 'No authenticated user found.';
+      final uid = user.uid;
+
+      // Delete Firestore user record
+      final userRepo = Get.isRegistered<UserRepository>() ? Get.find<UserRepository>() : Get.put(UserRepository());
+      await userRepo.removeUserRecord(uid);
+
+      // Delete Firebase Auth user
+      await user.delete();
+
+      if (kDebugMode) {
+        debugPrint('==================== [AUTH REPO: DELETE ACCOUNT RESPONSE] ====================');
+        debugPrint('Status: Account Deleted Successfully');
+        debugPrint('==============================================================================');
+      }
+    } on FirebaseAuthException catch (e) {
+      if (kDebugMode) {
+        debugPrint('==================== [AUTH REPO: DELETE ACCOUNT FIREBASE ERROR] ====================');
+        debugPrint('Code: ${e.code}');
+        debugPrint('Message: ${e.message}');
+        debugPrint('====================================================================================');
+      }
+      switch (e.code) {
+        case 'requires-recent-login':
+          throw 'This operation is sensitive and requires recent authentication. Log in again before retrying this request.';
+        default:
+          throw e.message ?? 'Authentication error occurred.';
+      }
+    } on FirebaseException catch (e) {
+      if (kDebugMode) {
+        debugPrint('==================== [AUTH REPO: DELETE ACCOUNT FIREBASE EXCEPTION] ====================');
+        debugPrint('Error: ${e.message}');
+        debugPrint('========================================================================================');
+      }
+      throw e.message ?? 'A Firebase error occurred.';
+    } on PlatformException catch (e) {
+      if (kDebugMode) {
+        debugPrint('==================== [AUTH REPO: DELETE ACCOUNT PLATFORM ERROR] ====================');
+        debugPrint('Error: ${e.message}');
+        debugPrint('====================================================================================');
+      }
+      throw e.message ?? 'A platform error occurred.';
+    } catch (e) {
+      if (kDebugMode) {
+        debugPrint('==================== [AUTH REPO: DELETE ACCOUNT UNEXPECTED ERROR] ====================');
+        debugPrint('Error: $e');
+        debugPrint('======================================================================================');
+      }
+      throw 'Something went wrong. Please try again';
     }
   }
 
