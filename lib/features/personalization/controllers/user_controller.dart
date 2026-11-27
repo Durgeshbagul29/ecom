@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:ecom/data/repositories/AuthenticationRepository/authentication_repository.dart';
 import 'package:ecom/data/repositories/user/user_repository.dart';
 import 'package:ecom/features/authentication/screens/login/login_screen.dart';
@@ -11,7 +9,6 @@ import 'package:ecom/utils/helpers/network_manager.dart';
 import 'package:ecom/utils/popups/full_screen_loader.dart';
 import 'package:ecom/utils/popups/loaders.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -145,15 +142,25 @@ class UserController extends GetxController {
     Get.defaultDialog(
       contentPadding: const EdgeInsets.all(AppSizes.md),
       title: 'Delete Account',
-      middleText: 'Are you want to delete your account permanently? This action not reversible and all of your data will be removed permanently.',
-      confirm: ElevatedButton(onPressed: () async => deleteUserAccount(),
-      style: ElevatedButton.styleFrom(backgroundColor: Colors.red,
-          side: const BorderSide(color: Colors.red)),
-      child: const Padding(
-          padding: EdgeInsets.symmetric(horizontal: AppSizes.lg),
-          child: Text('Delete')),
-    ),
-    cancel: OutlinedButton( child: const Text('Cancel'), onPressed: () => Navigator.of(Get.overlayContext!).pop()));
+      middleText:
+          'Are you sure you want to delete your account permanently? This action is not reversible and all of your data will be removed permanently.',
+      confirm: ElevatedButton(
+        onPressed: () async {
+          Navigator.of(Get.overlayContext!).pop();
+          deleteUserAccount();
+        },
+        style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.red,
+            side: const BorderSide(color: Colors.red)),
+        child: const Padding(
+            padding: EdgeInsets.symmetric(horizontal: AppSizes.lg),
+            child: Text('Delete')),
+      ),
+      cancel: OutlinedButton(
+        child: const Text('Cancel'),
+        onPressed: () => Navigator.of(Get.overlayContext!).pop(),
+      ),
+    );
   }
 
   /// Delete User Account Permanently
@@ -162,27 +169,41 @@ class UserController extends GetxController {
       FullScreenLoader.openLoadingDialog(
           'Processing..', AppImages.bubbleLoading);
 
-      // First re-authentication user
-      final auth = AuthenticationRepository.instance;
-      final provider = auth.authUser!
-          .providerData
-          .map((e) => e.providerId)
-          .first;
+      // Check internet connection
+      final isConnected = await NetworkManager.instance.isConnected();
+      if (!isConnected) {
+        FullScreenLoader.stopLoading();
+        return;
+      }
 
-      // Re Verify auth email ID
+      // First re-authenticate user
+      final auth = AuthenticationRepository.instance;
+      final authUser = auth.authUser;
+
+      if (authUser == null) {
+        FullScreenLoader.stopLoading();
+        AppLoaders.warningSnackBar(title: 'Error', message: 'No authenticated user found.');
+        return;
+      }
+
+      final provider = authUser.providerData.isNotEmpty
+          ? authUser.providerData.map((e) => e.providerId).first
+          : 'password';
+
+      // Re-verify auth email ID
       if (provider == 'google.com') {
         await auth.signInWithGoogle();
         await auth.deleteAccount();
         FullScreenLoader.stopLoading();
         Get.offAll(() => const LoginScreen());
-      } else if (provider == 'password') {
+      } else {
         FullScreenLoader.stopLoading();
+        verifyEmail.text = authUser.email ?? user.value.email;
         Get.to(() => const ReAuthLoginForm());
       }
-    }
-    catch (e) {
+    } catch (e) {
       FullScreenLoader.stopLoading();
-      AppLoaders.warningSnackBar(title: 'Oh Shit!', message: e.toString());
+      AppLoaders.warningSnackBar(title: 'Oh Snap!', message: e.toString());
     }
   }
 
