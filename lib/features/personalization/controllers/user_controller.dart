@@ -18,6 +18,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
 
 class UserController extends GetxController {
@@ -226,14 +227,87 @@ class UserController extends GetxController {
     }
   }
 
-  Future<String> uploadImage(XFile image, {String? folder}) async {
+  Future<CloudinaryUploadResult> uploadImageWithDetails(
+    XFile image, {
+    String? folder,
+  }) async {
     try {
-      return await CloudinaryService.uploadImage(image, folder: folder);
+      return await CloudinaryService.uploadImageWithDetails(
+        image,
+        folder: folder,
+      );
     } on PlatformException catch (e) {
       throw e.message ?? 'Platform error occurred (${e.code}).';
     } catch (e) {
       if (e is String) rethrow;
       throw 'Something went wrong. Please try again.';
+    }
+  }
+
+  Future<String> uploadImage(XFile image, {String? folder}) async {
+    final result = await uploadImageWithDetails(image, folder: folder);
+    return result.secureUrl;
+  }
+
+  static const Duration _deleteTokenMaxAge = Duration(minutes: 10);
+
+  String _deleteTokenKey(String uid) => 'profile_image_delete_token_$uid';
+  String _deleteTokenAtKey(String uid) => 'profile_image_delete_token_at_$uid';
+
+  Future<void> _deletePreviousProfileImageIfPossible(String uid) async {
+    final storage = GetStorage();
+    final previousToken = storage.read<String>(_deleteTokenKey(uid));
+    final savedAtMs = storage.read<int>(_deleteTokenAtKey(uid));
+
+    if (previousToken == null || previousToken.isEmpty || savedAtMs == null) {
+      if (kDebugMode) {
+        debugPrint(
+          '[PROFILE IMAGE CLEANUP] Skipped: no previous delete_token stored for UID $uid.',
+        );
+      }
+      return;
+    }
+
+    final savedAt = DateTime.fromMillisecondsSinceEpoch(savedAtMs);
+    if (DateTime.now().difference(savedAt) < _deleteTokenMaxAge) {
+      final deleted = await CloudinaryService.deleteByToken(previousToken);
+      if (kDebugMode) {
+        debugPrint(
+          '[PROFILE IMAGE CLEANUP] deleteByToken result for UID $uid: $deleted',
+        );
+      }
+    } else if (kDebugMode) {
+      debugPrint(
+        '[PROFILE IMAGE CLEANUP] Skipped: previous delete_token expired (>10 min).',
+      );
+    }
+
+    await storage.remove(_deleteTokenKey(uid));
+    await storage.remove(_deleteTokenAtKey(uid));
+  }
+
+  Future<void> _saveProfileDeleteToken(String uid, String? deleteToken) async {
+    final storage = GetStorage();
+    if (deleteToken != null && deleteToken.isNotEmpty) {
+      await storage.write(_deleteTokenKey(uid), deleteToken);
+      await storage.write(
+        _deleteTokenAtKey(uid),
+        DateTime.now().millisecondsSinceEpoch,
+      );
+      if (kDebugMode) {
+        debugPrint(
+          '[PROFILE IMAGE CLEANUP] Saved new delete_token for UID $uid (valid 10 min).',
+        );
+      }
+    } else {
+      await storage.remove(_deleteTokenKey(uid));
+      await storage.remove(_deleteTokenAtKey(uid));
+      if (kDebugMode) {
+        debugPrint(
+          '[PROFILE IMAGE CLEANUP] No delete_token in Cloudinary response. '
+          'Enable "Return delete token" in upload preset "${CloudinaryService.uploadPresetName}".',
+        );
+      }
     }
   }
 
@@ -331,14 +405,23 @@ class UserController extends GetxController {
               : ImageSource.gallery);
       if (selectedSource == null) return;
 
-      // Pick high-resolution image so profile DP stays sharp like WhatsApp.
+      // Pick original PNG/JPG without pre-compression so alpha PNGs and sharp JPGs stay intact.
       final pickedImage = await ImagePicker().pickImage(
         source: selectedSource,
-        imageQuality: 95,
-        maxHeight: 2560,
-        maxWidth: 2560,
       );
       if (pickedImage == null) return;
+
+      List<int>? headerBytes;
+      try {
+        headerBytes = await pickedImage.openRead(0, 12).first;
+      } catch (_) {}
+      if (!CloudinaryService.isPngOrJpg(pickedImage, headerBytes: headerBytes)) {
+        AppLoaders.warningSnackBar(
+          title: 'Unsupported Format',
+          message: 'Only PNG and JPG images are supported.',
+        );
+        return;
+      }
 
       final XFile? imageToUpload = Get.key.currentState != null
           ? await Get.to<XFile?>(
@@ -366,16 +449,20 @@ class UserController extends GetxController {
 
       imageUploading.value = true;
 
-      final imageUrl = await uploadImage(
+      final uploadResult = await uploadImageWithDetails(
         imageToUpload,
         folder: 'ecom/user/profileImages/$uid',
       );
 
       // Save secure_url to Firestore: Users/{uid} → ProfilePicture
-      await userRepo.updateSingleField({'ProfilePicture': imageUrl});
+      await userRepo.updateSingleField({'ProfilePicture': uploadResult.secureUrl});
 
-      user.value.profilePicture = imageUrl;
+      user.value.profilePicture = uploadResult.secureUrl;
       user.refresh();
+
+      // Best-effort cleanup of previous profile image within Cloudinary's 10-min delete_token window.
+      await _deletePreviousProfileImageIfPossible(uid);
+      await _saveProfileDeleteToken(uid, uploadResult.deleteToken);
 
       AppLoaders.successSnackBar(
         title: 'Congratulations',

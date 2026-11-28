@@ -2,8 +2,10 @@ import 'dart:io';
 import 'dart:math' as math;
 import 'dart:ui' as ui;
 
+import 'package:ecom/data/services/cloudinary_service.dart';
 import 'package:ecom/utils/constants/colors.dart';
 import 'package:ecom/utils/constants/sizes.dart';
+import 'package:ecom/utils/helpers/helper_functions.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -71,11 +73,36 @@ class _ProfileImageCropperState extends State<ProfileImageCropper> {
   }
 
   Future<void> _loadImage() async {
+    ui.ImmutableBuffer? buffer;
+    ui.ImageDescriptor? descriptor;
+    ui.Codec? codec;
     try {
       final bytes = await widget.imageFile.readAsBytes();
-      final codec = await ui.instantiateImageCodec(bytes);
+      if (CloudinaryService.detectPngOrJpgExtension(bytes) == null) {
+        if (!mounted) return;
+        setState(() {
+          _loadError = 'Only PNG and JPG images are supported.';
+        });
+        return;
+      }
+      buffer = await ui.ImmutableBuffer.fromUint8List(bytes);
+      descriptor = await ui.ImageDescriptor.encoded(buffer);
+
+      const maxDecodeDim = 2560;
+      if (descriptor.width > maxDecodeDim || descriptor.height > maxDecodeDim) {
+        final targetWidth =
+            descriptor.width >= descriptor.height ? maxDecodeDim : null;
+        final targetHeight =
+            descriptor.height > descriptor.width ? maxDecodeDim : null;
+        codec = await descriptor.instantiateCodec(
+          targetWidth: targetWidth,
+          targetHeight: targetHeight,
+        );
+      } else {
+        codec = await ui.instantiateImageCodec(bytes);
+      }
+
       final frame = await codec.getNextFrame();
-      codec.dispose();
 
       if (!mounted) {
         frame.image.dispose();
@@ -88,8 +115,13 @@ class _ProfileImageCropperState extends State<ProfileImageCropper> {
     } catch (_) {
       if (!mounted) return;
       setState(() {
-        _loadError = 'Unable to load the selected image.';
+        _loadError =
+            'Unable to load the selected image. Please choose a valid PNG or JPG image.';
       });
+    } finally {
+      codec?.dispose();
+      descriptor?.dispose();
+      buffer?.dispose();
     }
   }
 
@@ -339,23 +371,27 @@ class _ProfileImageCropperState extends State<ProfileImageCropper> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = AppHelperFunctions.isDarkMode(context);
+    final bgColor = isDark ? AppColors.charcoalBlack : AppColors.white;
+    final fgColor = isDark ? AppColors.white : AppColors.textPrimary;
+
     return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle.light,
+      value: isDark ? SystemUiOverlayStyle.light : SystemUiOverlayStyle.dark,
       child: Scaffold(
-        backgroundColor: AppColors.black,
+        backgroundColor: bgColor,
         appBar: AppBar(
-          backgroundColor: AppColors.black,
-          foregroundColor: AppColors.white,
+          backgroundColor: bgColor,
+          foregroundColor: fgColor,
           elevation: 0,
           leading: IconButton(
             onPressed: _isExporting ? null : () => Navigator.of(context).pop(),
-            icon: const Icon(Icons.close),
+            icon: Icon(Icons.close, color: fgColor),
             tooltip: 'Cancel',
           ),
-          title: const Text(
+          title: Text(
             'Move and Scale',
             style: TextStyle(
-              color: AppColors.white,
+              color: fgColor,
               fontWeight: FontWeight.w600,
             ),
           ),
@@ -363,7 +399,7 @@ class _ProfileImageCropperState extends State<ProfileImageCropper> {
             IconButton(
               onPressed:
                   (_uiImage == null || _isExporting) ? null : _rotateRight,
-              icon: const Icon(Icons.rotate_right),
+              icon: Icon(Icons.rotate_right, color: fgColor),
               tooltip: 'Rotate 90°',
             ),
           ],
@@ -371,23 +407,32 @@ class _ProfileImageCropperState extends State<ProfileImageCropper> {
         body: Column(
           children: [
             Expanded(
-              child: _buildCropWorkspace(),
+              child: _buildCropWorkspace(
+                isDark: isDark,
+                fgColor: fgColor,
+              ),
             ),
-            _buildBottomControls(),
+            _buildBottomControls(
+              isDark: isDark,
+              fgColor: fgColor,
+            ),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildCropWorkspace() {
+  Widget _buildCropWorkspace({
+    required bool isDark,
+    required Color fgColor,
+  }) {
     if (_loadError != null) {
       return Center(
         child: Padding(
           padding: const EdgeInsets.all(AppSizes.lg),
           child: Text(
             _loadError!,
-            style: const TextStyle(color: AppColors.white),
+            style: TextStyle(color: fgColor),
             textAlign: TextAlign.center,
           ),
         ),
@@ -396,7 +441,7 @@ class _ProfileImageCropperState extends State<ProfileImageCropper> {
 
     if (_uiImage == null) {
       return const Center(
-        child: CircularProgressIndicator(color: AppColors.white),
+        child: CircularProgressIndicator(color: AppColors.primary),
       );
     }
 
@@ -449,6 +494,9 @@ class _ProfileImageCropperState extends State<ProfileImageCropper> {
                     size: areaSize,
                     painter: _SquareCropOverlayPainter(
                       cropBoxSize: cropBoxSize,
+                      scrimColor: isDark
+                          ? AppColors.black.withValues(alpha: 0.65)
+                          : AppColors.black.withValues(alpha: 0.45),
                     ),
                   ),
                 ),
@@ -460,11 +508,24 @@ class _ProfileImageCropperState extends State<ProfileImageCropper> {
     );
   }
 
-  Widget _buildBottomControls() {
+  Widget _buildBottomControls({
+    required bool isDark,
+    required Color fgColor,
+  }) {
     final canInteract = _uiImage != null && !_isExporting;
+    final barBgColor = isDark ? AppColors.blackPrimary : AppColors.lightGrey;
+    final secondaryIconColor = isDark ? AppColors.darkGrey : AppColors.textSecondary;
+    final sliderInactiveColor = isDark ? AppColors.darkerGrey : AppColors.grey;
 
     return Container(
-      color: AppColors.blackPrimary,
+      decoration: BoxDecoration(
+        color: barBgColor,
+        border: Border(
+          top: BorderSide(
+            color: isDark ? AppColors.dark : AppColors.borderSecondary,
+          ),
+        ),
+      ),
       padding: const EdgeInsets.fromLTRB(
         AppSizes.md,
         AppSizes.sm,
@@ -478,17 +539,17 @@ class _ProfileImageCropperState extends State<ProfileImageCropper> {
           children: [
             Row(
               children: [
-                const Icon(
+                Icon(
                   Icons.zoom_out,
-                  color: AppColors.darkGrey,
+                  color: secondaryIconColor,
                   size: AppSizes.iconSm + 4,
                 ),
                 Expanded(
                   child: SliderTheme(
                     data: SliderTheme.of(context).copyWith(
                       activeTrackColor: AppColors.primary,
-                      inactiveTrackColor: AppColors.darkerGrey,
-                      thumbColor: AppColors.white,
+                      inactiveTrackColor: sliderInactiveColor,
+                      thumbColor: isDark ? AppColors.white : AppColors.primary,
                       overlayColor: AppColors.primary.withValues(alpha: 0.2),
                     ),
                     child: Slider(
@@ -499,9 +560,9 @@ class _ProfileImageCropperState extends State<ProfileImageCropper> {
                     ),
                   ),
                 ),
-                const Icon(
+                Icon(
                   Icons.zoom_in,
-                  color: AppColors.darkGrey,
+                  color: secondaryIconColor,
                   size: AppSizes.iconSm + 4,
                 ),
               ],
@@ -513,21 +574,21 @@ class _ProfileImageCropperState extends State<ProfileImageCropper> {
                 TextButton(
                   onPressed:
                       _isExporting ? null : () => Navigator.of(context).pop(),
-                  child: const Text(
+                  child: Text(
                     'Cancel',
-                    style: TextStyle(color: AppColors.white),
+                    style: TextStyle(color: fgColor),
                   ),
                 ),
                 TextButton.icon(
                   onPressed: canInteract ? _resetTransform : null,
-                  icon: const Icon(
+                  icon: Icon(
                     Icons.refresh,
-                    color: AppColors.darkGrey,
+                    color: secondaryIconColor,
                     size: AppSizes.iconSm + 2,
                   ),
-                  label: const Text(
+                  label: Text(
                     'Reset',
-                    style: TextStyle(color: AppColors.darkGrey),
+                    style: TextStyle(color: secondaryIconColor),
                   ),
                 ),
                 ElevatedButton.icon(
@@ -565,9 +626,13 @@ class _ProfileImageCropperState extends State<ProfileImageCropper> {
 }
 
 class _SquareCropOverlayPainter extends CustomPainter {
-  const _SquareCropOverlayPainter({required this.cropBoxSize});
+  const _SquareCropOverlayPainter({
+    required this.cropBoxSize,
+    required this.scrimColor,
+  });
 
   final double cropBoxSize;
+  final Color scrimColor;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -586,7 +651,7 @@ class _SquareCropOverlayPainter extends CustomPainter {
 
     canvas.drawPath(
       overlayPath,
-      Paint()..color = AppColors.black.withValues(alpha: 0.65),
+      Paint()..color = scrimColor,
     );
 
     // Subtle 3x3 rule-of-thirds grid inside the square.
@@ -680,5 +745,6 @@ class _SquareCropOverlayPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant _SquareCropOverlayPainter oldDelegate) =>
-      oldDelegate.cropBoxSize != cropBoxSize;
+      oldDelegate.cropBoxSize != cropBoxSize ||
+      oldDelegate.scrimColor != scrimColor;
 }
