@@ -40,9 +40,7 @@ dependencies:
   firebase_auth: ^6.1.1
   cloud_firestore: ^6.0.3
   google_sign_in: ^6.1.6
-
-  # App Icon Packages
-  flutter_launcher_icons: ^0.14.4
+  firebase_storage: ^13.0.3
 
 
 # ---------------- [PACKAGES END] ----------------
@@ -52,11 +50,15 @@ dev_dependencies:
 
   flutter_lints: ^5.0.0
 
+  # App Icon Generation (build-time only)
+  flutter_launcher_icons: ^0.14.4
+
 # ---------------- [APP ICON] ----------------
 flutter_launcher_icons:
   android: true
   ios: true
   image_path: "assets/icons/icon.png"
+  min_sdk_android: 21
   adaptive_icon_foreground: "assets/icons/foreground.png"
   adaptive_icon_background: "assets/icons/background.png"
   adaptive_icon_monochrome: "assets/icons/monochrome.png"
