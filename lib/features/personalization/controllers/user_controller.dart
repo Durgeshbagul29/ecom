@@ -1,7 +1,6 @@
-import 'dart:io';
-
 import 'package:ecom/data/repositories/AuthenticationRepository/authentication_repository.dart';
 import 'package:ecom/data/repositories/user/user_repository.dart';
+import 'package:ecom/data/services/cloudinary_service.dart';
 import 'package:ecom/features/authentication/screens/login/login_screen.dart';
 import 'package:ecom/features/personalization/models/user_model.dart';
 import 'package:ecom/features/personalization/screens/profile/widgets/re_authentication_user_login.dart';
@@ -11,7 +10,6 @@ import 'package:ecom/utils/helpers/network_manager.dart';
 import 'package:ecom/utils/popups/full_screen_loader.dart';
 import 'package:ecom/utils/popups/loaders.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -25,13 +23,10 @@ class UserController extends GetxController {
 
   final profileLoading = false.obs;
   final imageUploading = false.obs;
-  Rx<UserModel> user = UserModel
-      .empty()
-      .obs;
+  Rx<UserModel> user = UserModel.empty().obs;
   final userRepo = Get.isRegistered<UserRepository>() ? Get.find<
       UserRepository>() : Get.put(UserRepository());
 
-  /// For re-authentication dialog of closed account fun
   final hidePassword = false.obs;
   final verifyEmail = TextEditingController();
   final verifyPassword = TextEditingController();
@@ -43,10 +38,8 @@ class UserController extends GetxController {
     fetchUserRecord();
   }
 
-  /// Fetch user record
   Future<void> fetchUserRecord() async {
     try {
-      // Don't attempt to fetch if user is not authenticated
       final authUser = FirebaseAuth.instance.currentUser;
       if (authUser == null) {
         user(UserModel.empty());
@@ -55,28 +48,22 @@ class UserController extends GetxController {
 
       profileLoading.value = true;
       if (kDebugMode) {
-        debugPrint(
-            '==================== [USER CONTROLLER - FETCH RECORD REQUEST] ====================');
+        debugPrint('==================== [USER CONTROLLER - FETCH RECORD REQUEST] ====================');
         debugPrint('Action: fetchUserDetails for UID: ${authUser.uid}');
-        debugPrint(
-            '==================================================================================');
+        debugPrint('==================================================================================');
       }
       final fetchedUser = await userRepo.fetchUserDetails();
       user(fetchedUser);
       if (kDebugMode) {
-        debugPrint(
-            '==================== [USER CONTROLLER - FETCH RECORD RESPONSE] ====================');
+        debugPrint('==================== [USER CONTROLLER - FETCH RECORD RESPONSE] ====================');
         debugPrint('Fetched User: ${fetchedUser.toJson()}');
-        debugPrint(
-            '===================================================================================');
+        debugPrint('===================================================================================');
       }
     } catch (e) {
       if (kDebugMode) {
-        debugPrint(
-            '==================== [USER CONTROLLER - FETCH RECORD ERROR] ====================');
+        debugPrint('==================== [USER CONTROLLER - FETCH RECORD ERROR] ====================');
         debugPrint('Error: $e');
-        debugPrint(
-            '================================================================================');
+        debugPrint('================================================================================');
       }
       user(UserModel.empty());
     } finally {
@@ -84,16 +71,12 @@ class UserController extends GetxController {
     }
   }
 
-  /// Save user Record from any Registration provider
   Future<void> saveUserRecord(UserCredential? userCredential) async {
     try {
-
-      // First Update Rx user and then check if user data is already stored.If not store new data
       await fetchUserRecord();
 
       if (user.value.id.isEmpty) {
         if (userCredential != null) {
-          // Convert Name to first and last name
           final nameParts = UserModel.nameParts(
             userCredential.user!.displayName ?? '',
           );
@@ -101,7 +84,6 @@ class UserController extends GetxController {
             userCredential.user!.displayName ?? '',
           );
 
-          // Map Data
           final user = UserModel(
             id: userCredential.user!.uid,
             firstName: nameParts[0],
@@ -113,33 +95,26 @@ class UserController extends GetxController {
           );
 
           if (kDebugMode) {
-            debugPrint(
-                '==================== [USER CONTROLLER - SAVE RECORD REQUEST] ====================');
+            debugPrint('==================== [USER CONTROLLER - SAVE RECORD REQUEST] ====================');
             debugPrint('Action: saveUserRecord from provider');
             debugPrint('Payload: ${user.toJson()}');
-            debugPrint(
-                '=================================================================================');
+            debugPrint('=================================================================================');
           }
 
-          // Save user data
           await userRepo.saveUserRecord(user);
 
           if (kDebugMode) {
-            debugPrint(
-                '==================== [USER CONTROLLER - SAVE RECORD RESPONSE] ====================');
+            debugPrint('==================== [USER CONTROLLER - SAVE RECORD RESPONSE] ====================');
             debugPrint('Status: User record saved');
-            debugPrint(
-                '==================================================================================');
+            debugPrint('==================================================================================');
           }
         }
       }
     } catch (e) {
       if (kDebugMode) {
-        debugPrint(
-            '==================== [USER CONTROLLER - SAVE RECORD ERROR] ====================');
+        debugPrint('==================== [USER CONTROLLER - SAVE RECORD ERROR] ====================');
         debugPrint('Error: $e');
-        debugPrint(
-            '================================================================================');
+        debugPrint('================================================================================');
       }
       AppLoaders.warningSnackBar(
         title: 'Data not saved',
@@ -149,7 +124,6 @@ class UserController extends GetxController {
     }
   }
 
-  /// Delete Account Warning
   void deleteAccountWarningPopup() {
     Get.defaultDialog(
       contentPadding: const EdgeInsets.all(AppSizes.md),
@@ -175,20 +149,17 @@ class UserController extends GetxController {
     );
   }
 
-  /// Delete User Account Permanently
   void deleteUserAccount() async {
     try {
       FullScreenLoader.openLoadingDialog(
           'Processing..', AppImages.bubbleLoading);
 
-      // Check internet connection
       final isConnected = await NetworkManager.instance.isConnected();
       if (!isConnected) {
         FullScreenLoader.stopLoading();
         return;
       }
 
-      // First re-authenticate user
       final auth = AuthenticationRepository.instance;
       final authUser = auth.authUser;
 
@@ -202,7 +173,6 @@ class UserController extends GetxController {
           ? authUser.providerData.map((e) => e.providerId).first
           : 'password';
 
-      // Re-verify auth email ID
       if (provider == 'google.com') {
         await auth.signInWithGoogle();
         await auth.deleteAccount();
@@ -219,49 +189,32 @@ class UserController extends GetxController {
     }
   }
 
-
-  /// --- RE-AUTHENTICATE before deleting account ---
   Future<void> reAuthenticateEmailAndPassword() async {
     try {
-      // Show loading dialog
-      FullScreenLoader.openLoadingDialog(
-        'Processing',
-        AppImages.bubbleLoading,
-      );
+      FullScreenLoader.openLoadingDialog('Processing', AppImages.bubbleLoading);
 
-      // Check internet connection
       final isConnected = await NetworkManager.instance.isConnected();
-
       if (!isConnected) {
         FullScreenLoader.stopLoading();
         return;
       }
 
-      // Validate form
       if (!reAuthFormKey.currentState!.validate()) {
         FullScreenLoader.stopLoading();
         return;
       }
 
-      // Re-authenticate user with email and password
       await AuthenticationRepository.instance
           .reAuthenticateWithEmailAndPassword(
         verifyEmail.text.trim(),
         verifyPassword.text.trim(),
       );
 
-      // Delete account
       await AuthenticationRepository.instance.deleteAccount();
-
-      // Close loading dialog
       FullScreenLoader.stopLoading();
-
-      // Navigate to login screen
       Get.offAll(() => const LoginScreen());
-
     } catch (e) {
       FullScreenLoader.stopLoading();
-
       AppLoaders.warningSnackBar(
         title: 'Oh Snap!',
         message: e.toString(),
@@ -269,29 +222,17 @@ class UserController extends GetxController {
     }
   }
 
-  /// Upload any image to Firebase Storage and return its download URL.
-  Future<String> uploadImage(String path, XFile image) async {
+  Future<String> uploadImage(XFile image, {String? folder}) async {
     try {
-      final ref = FirebaseStorage.instance.ref(path).child(image.name);
-      if (kIsWeb) {
-        await ref.putData(await image.readAsBytes());
-      } else {
-        await ref.putFile(File(image.path));
-      }
-      final url = await ref.getDownloadURL();
-      return url;
-    } on FirebaseException catch (e) {
-      throw e.message ?? 'Firebase error occurred (${e.code}).';
-    } on FormatException catch (_) {
-      throw 'Invalid file format.';
+      return await CloudinaryService.uploadImage(image, folder: folder);
     } on PlatformException catch (e) {
       throw e.message ?? 'Platform error occurred (${e.code}).';
     } catch (e) {
+      if (e is String) rethrow;
       throw 'Something went wrong. Please try again.';
     }
   }
 
-  /// Pick an image, upload it to Firebase Storage, and update the user's profile picture.
   Future<void> uploadUserProfilePicture({
     ImageSource source = ImageSource.gallery,
   }) async {
@@ -321,16 +262,14 @@ class UserController extends GetxController {
 
       imageUploading.value = true;
 
-      // Upload image to user-scoped path in Firebase Storage
       final imageUrl = await uploadImage(
-        'Users/Images/Profile/$uid/',
         image,
+        folder: 'ecom/user/profileImages/$uid',
       );
 
-      // Update user's ProfilePicture field in Firestore
+      // Save secure_url to Firestore: Users/{uid} → ProfilePicture
       await userRepo.updateSingleField({'ProfilePicture': imageUrl});
 
-      // Update reactive user state
       user.value.profilePicture = imageUrl;
       user.refresh();
 
@@ -347,5 +286,4 @@ class UserController extends GetxController {
       imageUploading.value = false;
     }
   }
-
 }

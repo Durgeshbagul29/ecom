@@ -3,13 +3,13 @@ import 'package:ecom/common/widgets/images_design/app_rounded_image.dart';
 import 'package:ecom/common/widgets/texts/app_section_heading.dart';
 import 'package:ecom/features/personalization/controllers/user_controller.dart';
 import 'package:ecom/features/personalization/screens/profile/widgets/chnage_name.dart';
+import 'package:ecom/features/personalization/screens/profile/widgets/profile_image_viewer.dart';
 import 'package:ecom/features/personalization/screens/profile/widgets/profile_menu.dart';
 import 'package:ecom/utils/constants/images.dart';
 import 'package:ecom/utils/constants/sizes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:image_picker/image_picker.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -24,7 +24,6 @@ class ProfileScreen extends StatelessWidget {
         padding: EdgeInsetsGeometry.all(AppSizes.defaultSpace),
         child: Column(
           children: [
-            /// User Profile Picture
             SizedBox(
               width: double.infinity,
               child: Column(
@@ -50,15 +49,19 @@ class ProfileScreen extends StatelessWidget {
                       fit: BoxFit.cover,
                       borderRadius: 100,
                       isNetworking: networkImage.isNotEmpty,
-                      onPressed: () =>
-                          _showImageSourceSheet(context, controller),
+                      onPressed: () => ProfileImageViewer.show(
+                        context,
+                        imageUrl: image,
+                        userName: controller.user.value.fullName,
+                        isNetwork: networkImage.isNotEmpty,
+                      ),
                     );
                   }),
                   Obx(
                     () => TextButton(
                       onPressed: controller.imageUploading.value
                           ? null
-                          : () => _showImageSourceSheet(context, controller),
+                          : () => controller.uploadUserProfilePicture(),
                       child: const Text('Change Profile Picture'),
                     ),
                   ),
@@ -66,7 +69,6 @@ class ProfileScreen extends StatelessWidget {
               ),
             ),
 
-            /// Details
             const SizedBox(height: AppSizes.spaceBtwItems / 2),
             const Divider(),
             const SizedBox(height: AppSizes.spaceBtwItems),
@@ -81,7 +83,6 @@ class ProfileScreen extends StatelessWidget {
             const Divider(),
             const SizedBox(height: AppSizes.spaceBtwItems),
 
-            /// Personal Information
             const AppSectionHeading(title: 'Personal Information', showActionButton: false),
             const SizedBox(height: AppSizes.spaceBtwItems),
 
@@ -108,45 +109,6 @@ class ProfileScreen extends StatelessWidget {
               ),
             ),
           ],
-        ),
-      ),
-    );
-  }
-
-  void _showImageSourceSheet(
-    BuildContext context,
-    UserController controller,
-  ) {
-    showModalBottomSheet<void>(
-      context: context,
-      builder: (sheetContext) => SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: AppSizes.sm),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ListTile(
-                leading: const Icon(Iconsax.gallery),
-                title: const Text('Choose from Gallery'),
-                onTap: () {
-                  Navigator.of(sheetContext).pop();
-                  controller.uploadUserProfilePicture(
-                    source: ImageSource.gallery,
-                  );
-                },
-              ),
-              ListTile(
-                leading: const Icon(Iconsax.camera),
-                title: const Text('Take a Photo'),
-                onTap: () {
-                  Navigator.of(sheetContext).pop();
-                  controller.uploadUserProfilePicture(
-                    source: ImageSource.camera,
-                  );
-                },
-              ),
-            ],
-          ),
         ),
       ),
     );

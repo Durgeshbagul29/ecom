@@ -43,3 +43,6 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Cloudinary private config (contains cloud name & preset)
+lib/utils/constants/cloudinary_config.dart
