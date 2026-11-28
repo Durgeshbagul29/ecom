@@ -43,19 +43,48 @@ class ProfileScreen extends StatelessWidget {
                     final image = networkImage.isNotEmpty
                         ? networkImage
                         : AppImages.user;
-                    return AppRoundedImage(
-                      imageUrl: image,
-                      width: AppSizes.imgMd,
-                      height: AppSizes.imgMd,
-                      fit: BoxFit.cover,
-                      borderRadius: AppSizes.imgMd,
-                      isNetworking: networkImage.isNotEmpty,
-                      onPressed: () => ProfileImageViewer.show(
-                        context,
-                        imageUrl: image,
-                        userName: controller.user.value.fullName,
-                        isNetwork: networkImage.isNotEmpty,
-                      ),
+                    return Stack(
+                      clipBehavior: Clip.none,
+                      children: [
+                        AppRoundedImage(
+                          imageUrl: image,
+                          width: AppSizes.imgMd,
+                          height: AppSizes.imgMd,
+                          fit: BoxFit.cover,
+                          borderRadius: AppSizes.imgMd,
+                          isNetworking: networkImage.isNotEmpty,
+                          onPressed: () => ProfileImageViewer.show(
+                            context,
+                            imageUrl: image,
+                            userName: controller.user.value.fullName,
+                            isNetwork: networkImage.isNotEmpty,
+                          ),
+                        ),
+                        Positioned(
+                          right: -2,
+                          bottom: -2,
+                          child: GestureDetector(
+                            onTap: () => controller.uploadUserProfilePicture(),
+                            child: Container(
+                              width: AppSizes.iconMd + 2,
+                              height: AppSizes.iconMd + 2,
+                              decoration: BoxDecoration(
+                                color: AppColors.primary,
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: Theme.of(context).scaffoldBackgroundColor,
+                                  width: 2,
+                                ),
+                              ),
+                              child: const Icon(
+                                Icons.camera_alt_outlined,
+                                color: AppColors.white,
+                                size: AppSizes.iconSm - 2,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     );
                   }),
                   Obx(

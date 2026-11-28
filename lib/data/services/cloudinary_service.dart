@@ -25,14 +25,28 @@ class CloudinaryService {
         request.fields['folder'] = folder;
       }
 
-      if (kIsWeb) {
+      final rawName = image.name.trim();
+      final pathName = image.path.trim().isNotEmpty
+          ? image.path.split(RegExp(r'[/\\]')).last.trim()
+          : '';
+      final fileName = rawName.isNotEmpty
+          ? rawName
+          : (pathName.isNotEmpty
+              ? pathName
+              : 'upload_${DateTime.now().millisecondsSinceEpoch}.png');
+
+      if (kIsWeb || image.path.isEmpty) {
         final bytes = await image.readAsBytes();
         request.files.add(
-          http.MultipartFile.fromBytes('file', bytes, filename: image.name),
+          http.MultipartFile.fromBytes('file', bytes, filename: fileName),
         );
       } else {
         request.files.add(
-          await http.MultipartFile.fromPath('file', image.path, filename: image.name),
+          await http.MultipartFile.fromPath(
+            'file',
+            image.path,
+            filename: fileName,
+          ),
         );
       }
 
@@ -41,7 +55,7 @@ class CloudinaryService {
         debugPrint('URL : ${uri.toString()}');
         debugPrint('Preset : ${request.fields['upload_preset']}');
         debugPrint('Folder : ${request.fields['folder'] ?? '(root)'}');
-        debugPrint('File : ${image.name}');
+        debugPrint('File : $fileName');
         debugPrint('================================================================================');
       }
 

@@ -1,9 +1,13 @@
+import 'dart:io';
+
 import 'package:ecom/data/repositories/AuthenticationRepository/authentication_repository.dart';
 import 'package:ecom/data/repositories/user/user_repository.dart';
 import 'package:ecom/data/services/cloudinary_service.dart';
 import 'package:ecom/features/authentication/screens/login/login_screen.dart';
 import 'package:ecom/features/personalization/models/user_model.dart';
+import 'package:ecom/features/personalization/screens/profile/widgets/profile_image_cropper.dart';
 import 'package:ecom/features/personalization/screens/profile/widgets/re_authentication_user_login.dart';
+import 'package:ecom/utils/constants/colors.dart';
 import 'package:ecom/utils/constants/images.dart';
 import 'package:ecom/utils/constants/sizes.dart';
 import 'package:ecom/utils/helpers/network_manager.dart';
@@ -233,19 +237,119 @@ class UserController extends GetxController {
     }
   }
 
+  Future<ImageSource?> _pickImageSource(BuildContext context) {
+    return showModalBottomSheet<ImageSource>(
+      context: context,
+      builder: (sheetContext) {
+        return SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(
+              AppSizes.defaultSpace,
+              AppSizes.sm,
+              AppSizes.defaultSpace,
+              AppSizes.defaultSpace,
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Profile Photo',
+                  style: Theme.of(sheetContext).textTheme.titleLarge,
+                ),
+                const SizedBox(height: AppSizes.spaceBtwItems),
+                Row(
+                  children: [
+                    _buildSourceOption(
+                      context: sheetContext,
+                      icon: Icons.photo_camera_outlined,
+                      label: 'Camera',
+                      onTap: () =>
+                          Navigator.of(sheetContext).pop(ImageSource.camera),
+                    ),
+                    const SizedBox(width: AppSizes.spaceBtwSections),
+                    _buildSourceOption(
+                      context: sheetContext,
+                      icon: Icons.photo_library_outlined,
+                      label: 'Gallery',
+                      onTap: () =>
+                          Navigator.of(sheetContext).pop(ImageSource.gallery),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildSourceOption({
+    required BuildContext context,
+    required IconData icon,
+    required String label,
+    required VoidCallback onTap,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(AppSizes.borderRadiusLg),
+      child: Padding(
+        padding: const EdgeInsets.all(AppSizes.sm),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: 56,
+              height: 56,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(color: AppColors.grey),
+              ),
+              child: Icon(icon, color: AppColors.primary, size: AppSizes.iconMd),
+            ),
+            const SizedBox(height: AppSizes.sm),
+            Text(label, style: Theme.of(context).textTheme.bodyMedium),
+          ],
+        ),
+      ),
+    );
+  }
+
   Future<void> uploadUserProfilePicture({
-    ImageSource source = ImageSource.gallery,
+    ImageSource? source,
   }) async {
     if (imageUploading.value) return;
 
+    XFile? croppedTempFile;
+
     try {
-      final image = await ImagePicker().pickImage(
-        source: source,
-        imageQuality: 70,
-        maxHeight: 512,
-        maxWidth: 512,
+      final initialContext = Get.context;
+      final selectedSource = source ??
+          (initialContext != null
+              ? await _pickImageSource(initialContext)
+              : ImageSource.gallery);
+      if (selectedSource == null) return;
+
+      // Pick high-resolution image so profile DP stays sharp like WhatsApp.
+      final pickedImage = await ImagePicker().pickImage(
+        source: selectedSource,
+        imageQuality: 95,
+        maxHeight: 2560,
+        maxWidth: 2560,
       );
-      if (image == null) return;
+      if (pickedImage == null) return;
+
+      final XFile? imageToUpload = Get.key.currentState != null
+          ? await Get.to<XFile?>(
+              () => ProfileImageCropper(imageFile: pickedImage),
+              fullscreenDialog: true,
+            )
+          : pickedImage;
+      if (imageToUpload == null) return;
+      if (imageToUpload != pickedImage) {
+        croppedTempFile = imageToUpload;
+      }
 
       final isConnected = await NetworkManager.instance.isConnected();
       if (!isConnected) return;
@@ -263,7 +367,7 @@ class UserController extends GetxController {
       imageUploading.value = true;
 
       final imageUrl = await uploadImage(
-        image,
+        imageToUpload,
         folder: 'ecom/user/profileImages/$uid',
       );
 
@@ -284,6 +388,16 @@ class UserController extends GetxController {
       );
     } finally {
       imageUploading.value = false;
+      if (!kIsWeb &&
+          croppedTempFile != null &&
+          croppedTempFile.path.isNotEmpty) {
+        try {
+          final file = File(croppedTempFile.path);
+          if (await file.exists()) {
+            await file.delete();
+          }
+        } catch (_) {}
+      }
     }
   }
 }
