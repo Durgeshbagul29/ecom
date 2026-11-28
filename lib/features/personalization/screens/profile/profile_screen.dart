@@ -1,10 +1,12 @@
 import 'package:ecom/common/widgets/appbar/appbar.dart';
 import 'package:ecom/common/widgets/images_design/app_rounded_image.dart';
+import 'package:ecom/common/widgets/loaders/shimmer.dart';
 import 'package:ecom/common/widgets/texts/app_section_heading.dart';
 import 'package:ecom/features/personalization/controllers/user_controller.dart';
 import 'package:ecom/features/personalization/screens/profile/widgets/chnage_name.dart';
 import 'package:ecom/features/personalization/screens/profile/widgets/profile_image_viewer.dart';
 import 'package:ecom/features/personalization/screens/profile/widgets/profile_menu.dart';
+import 'package:ecom/utils/constants/colors.dart';
 import 'package:ecom/utils/constants/images.dart';
 import 'package:ecom/utils/constants/sizes.dart';
 import 'package:flutter/material.dart';
@@ -29,13 +31,12 @@ class ProfileScreen extends StatelessWidget {
               child: Column(
                 children: [
                   Obx(() {
-                    if (controller.imageUploading.value) {
-                      return const SizedBox(
-                        width: 80,
-                        height: 80,
-                        child: Center(
-                          child: CircularProgressIndicator(strokeWidth: 2.5),
-                        ),
+                    if (controller.imageUploading.value ||
+                        controller.profileLoading.value) {
+                      return const AppShimmerEffect(
+                        width: AppSizes.imgMd,
+                        height: AppSizes.imgMd,
+                        shape: BoxShape.circle,
                       );
                     }
                     final networkImage = controller.user.value.profilePicture;
@@ -44,10 +45,10 @@ class ProfileScreen extends StatelessWidget {
                         : AppImages.user;
                     return AppRoundedImage(
                       imageUrl: image,
-                      width: 80,
-                      height: 80,
+                      width: AppSizes.imgMd,
+                      height: AppSizes.imgMd,
                       fit: BoxFit.cover,
-                      borderRadius: 100,
+                      borderRadius: AppSizes.imgMd,
                       isNetworking: networkImage.isNotEmpty,
                       onPressed: () => ProfileImageViewer.show(
                         context,
@@ -101,9 +102,9 @@ class ProfileScreen extends StatelessWidget {
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Icon(Icons.close, color: Colors.red),
-                    const SizedBox(width: 8),
-                    Text('Close Account', style: Theme.of(context).textTheme.bodyLarge!.apply(color: Colors.red)),
+                    const Icon(Icons.close, color: AppColors.error),
+                    const SizedBox(width: AppSizes.sm),
+                    Text('Close Account', style: Theme.of(context).textTheme.bodyLarge!.apply(color: AppColors.error)),
                   ],
                 ),
               ),

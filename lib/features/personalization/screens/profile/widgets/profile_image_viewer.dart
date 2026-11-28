@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecom/utils/constants/colors.dart';
 import 'package:ecom/utils/constants/sizes.dart';
 import 'package:flutter/material.dart';
@@ -47,20 +48,17 @@ class ProfileImageViewer extends StatelessWidget {
               minScale: 1.0,
               maxScale: 4.0,
               child: isNetwork
-                  ? Image.network(
-                      imageUrl,
+                  ? CachedNetworkImage(
+                      imageUrl: imageUrl,
                       fit: BoxFit.contain,
                       width: double.infinity,
-                      loadingBuilder: (context, child, progress) {
-                        if (progress == null) return child;
-                        return const Center(
-                          child: CircularProgressIndicator(
-                            color: AppColors.white,
-                            strokeWidth: AppSizes.cardElevation,
-                          ),
-                        );
-                      },
-                      errorBuilder: (_, __, ___) => const Icon(
+                      progressIndicatorBuilder: (_, __, ___) => const Center(
+                        child: CircularProgressIndicator(
+                          color: AppColors.white,
+                          strokeWidth: AppSizes.cardElevation,
+                        ),
+                      ),
+                      errorWidget: (_, __, ___) => const Icon(
                         Icons.broken_image,
                         color: AppColors.darkGrey,
                         size: AppSizes.imgXl,
@@ -79,11 +77,11 @@ class ProfileImageViewer extends StatelessWidget {
             left: 0,
             right: 0,
             child: Container(
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
-                  colors: [Colors.black87, Colors.transparent],
+                  colors: [AppColors.black, AppColors.black.withValues(alpha: 0)],
                 ),
               ),
               child: SafeArea(

@@ -1,3 +1,5 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:ecom/common/widgets/loaders/shimmer.dart';
 import 'package:ecom/utils/constants/sizes.dart';
 import 'package:flutter/material.dart';
 
@@ -35,31 +37,34 @@ class AppRoundedImage extends StatelessWidget {
       child: Container(
         width: width,
         height: height,
+        padding: padding,
         decoration: BoxDecoration(
           border: border,
           color: backgroundColor,
-          borderRadius: BorderRadiusGeometry.circular(borderRadius),
+          borderRadius: BorderRadius.circular(borderRadius),
         ),
         child: ClipRRect(
           borderRadius: applyImageRadius
               ? BorderRadius.circular(borderRadius)
               : BorderRadius.zero,
           child: isNetworking
-              ? Image.network(
-                  imageUrl,
+              ? CachedNetworkImage(
+                  imageUrl: imageUrl,
                   fit: fit ?? BoxFit.cover,
-                  loadingBuilder: (context, child, loadingProgress) {
-                    if (loadingProgress == null) return child;
-                    return const Center(
-                      child: SizedBox(
-                        width: 24,
-                        height: 24,
-                        child: CircularProgressIndicator(strokeWidth: 2),
-                      ),
-                    );
-                  },
-                  errorBuilder: (context, error, stackTrace) =>
-                      const Icon(Icons.error),
+                  progressIndicatorBuilder: (_, __, ___) => LayoutBuilder(
+                    builder: (_, constraints) => AppShimmerEffect(
+                      width: width ??
+                          (constraints.maxWidth.isFinite
+                              ? constraints.maxWidth
+                              : AppSizes.imgLg),
+                      height: height ??
+                          (constraints.maxHeight.isFinite
+                              ? constraints.maxHeight
+                              : AppSizes.imgLg),
+                      radius: applyImageRadius ? borderRadius : 0,
+                    ),
+                  ),
+                  errorWidget: (_, __, ___) => const Icon(Icons.error),
                 )
               : Image.asset(
                   imageUrl,

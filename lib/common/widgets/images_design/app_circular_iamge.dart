@@ -1,4 +1,5 @@
-
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:ecom/common/widgets/loaders/shimmer.dart';
 import 'package:ecom/utils/constants/colors.dart';
 import 'package:ecom/utils/constants/sizes.dart';
 import 'package:ecom/utils/helpers/helper_functions.dart';
@@ -12,8 +13,8 @@ class AppCircularImage extends StatelessWidget {
     this.isNetworkingImage = false,
     this.overlayColor,
     this.backgroundColor,
-    this.width = 56,
-    this.height = 56,
+    this.width = AppSizes.imgSm,
+    this.height = AppSizes.imgSm,
     this.padding = AppSizes.sm,
   });
 
@@ -31,13 +32,32 @@ class AppCircularImage extends StatelessWidget {
       height: height,
       padding: EdgeInsets.all(padding),
       decoration: BoxDecoration(
-        color: backgroundColor ?? (AppHelperFunctions.isDarkMode(context) ? AppColors.charcoalBlack : AppColors.white),
-        borderRadius: BorderRadius.circular(100),
+        color: backgroundColor ??
+            (AppHelperFunctions.isDarkMode(context)
+                ? AppColors.charcoalBlack
+                : AppColors.white),
+        shape: BoxShape.circle,
       ),
-      child: Image(
-        fit: fit,
-        image: isNetworkingImage ? NetworkImage(image) : AssetImage(image),
-        color : overlayColor,
+      child: ClipOval(
+        child: Center(
+          child: isNetworkingImage
+              ? CachedNetworkImage(
+                  fit: fit ?? BoxFit.cover,
+                  color: overlayColor,
+                  imageUrl: image,
+                  progressIndicatorBuilder: (_, __, ___) => AppShimmerEffect(
+                    width: width,
+                    height: height,
+                    shape: BoxShape.circle,
+                  ),
+                  errorWidget: (_, __, ___) => const Icon(Icons.error),
+                )
+              : Image(
+                  fit: fit,
+                  image: AssetImage(image),
+                  color: overlayColor,
+                ),
+        ),
       ),
     );
   }
