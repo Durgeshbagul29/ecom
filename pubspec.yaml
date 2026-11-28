@@ -41,6 +41,7 @@ dependencies:
   cloud_firestore: ^6.0.3
   google_sign_in: ^6.1.6
   firebase_storage: ^13.0.3
+  image_picker: ^1.2.4
 
 
 # ---------------- [PACKAGES END] ----------------

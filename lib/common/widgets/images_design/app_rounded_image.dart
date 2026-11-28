@@ -10,7 +10,8 @@ class AppRoundedImage extends StatelessWidget {
     this.applyImageRadius = true,
     this.border,
     this.backgroundColor,
-    this.fit, this.padding,
+    this.fit,
+    this.padding,
     this.isNetworking = false,
     this.onPressed,
     this.borderRadius = AppSizes.borderRadiusXXl,
@@ -35,10 +36,35 @@ class AppRoundedImage extends StatelessWidget {
         width: width,
         height: height,
         decoration: BoxDecoration(
-            border: border, color: backgroundColor, borderRadius: BorderRadiusGeometry.circular(borderRadius)),
+          border: border,
+          color: backgroundColor,
+          borderRadius: BorderRadiusGeometry.circular(borderRadius),
+        ),
         child: ClipRRect(
-          borderRadius: applyImageRadius ? BorderRadius.circular(borderRadius) : BorderRadius.zero,
-          child: Image(fit: fit ?? BoxFit.cover, image: isNetworking ? NetworkImage(imageUrl) : AssetImage(imageUrl) as ImageProvider),
+          borderRadius: applyImageRadius
+              ? BorderRadius.circular(borderRadius)
+              : BorderRadius.zero,
+          child: isNetworking
+              ? Image.network(
+                  imageUrl,
+                  fit: fit ?? BoxFit.cover,
+                  loadingBuilder: (context, child, loadingProgress) {
+                    if (loadingProgress == null) return child;
+                    return const Center(
+                      child: SizedBox(
+                        width: 24,
+                        height: 24,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      ),
+                    );
+                  },
+                  errorBuilder: (context, error, stackTrace) =>
+                      const Icon(Icons.error),
+                )
+              : Image.asset(
+                  imageUrl,
+                  fit: fit ?? BoxFit.cover,
+                ),
         ),
       ),
     );

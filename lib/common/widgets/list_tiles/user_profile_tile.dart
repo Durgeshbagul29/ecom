@@ -16,12 +16,24 @@ class UserProfileTile extends StatelessWidget {
     final controller = UserController.instance;
 
     return ListTile(
-        leading: Container(
+        leading: Obx(() {
+          final networkImage = controller.user.value.profilePicture;
+          return Container(
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              border: Border.all(color: Colors.grey.shade200, width: border ? 1 : 0)
+              border: Border.all(
+                color: Colors.grey.shade200,
+                width: border ? 1 : 0,
+              ),
             ),
-            child: CircleAvatar(radius: 30, backgroundImage: AssetImage(AppImages.user))),
+            child: CircleAvatar(
+              radius: 30,
+              backgroundImage: networkImage.isNotEmpty
+                  ? NetworkImage(networkImage)
+                  : const AssetImage(AppImages.user) as ImageProvider,
+            ),
+          );
+        }),
         title: Obx(() => Text(controller.user.value.fullName, style: Theme.of(context).textTheme.headlineSmall!.apply(color : AppColors.white))),
         subtitle : Obx(() => Text(controller.user.value.email, style: Theme.of(context).textTheme.bodyMedium!.apply(color : AppColors.white))),
         trailing: IconButton(onPressed: () => Get.to(() => const ProfileScreen()), icon: const Icon(Iconsax.edit, color: AppColors.white))

@@ -9,6 +9,7 @@ import 'package:ecom/utils/constants/sizes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -28,8 +29,39 @@ class ProfileScreen extends StatelessWidget {
               width: double.infinity,
               child: Column(
                 children: [
-                  const AppRoundedImage(imageUrl: AppImages.user, width: 80, height: 80, fit: BoxFit.cover, borderRadius: 100),
-                  TextButton(onPressed: () {}, child: const Text('Change Profile Picture')),
+                  Obx(() {
+                    if (controller.imageUploading.value) {
+                      return const SizedBox(
+                        width: 80,
+                        height: 80,
+                        child: Center(
+                          child: CircularProgressIndicator(strokeWidth: 2.5),
+                        ),
+                      );
+                    }
+                    final networkImage = controller.user.value.profilePicture;
+                    final image = networkImage.isNotEmpty
+                        ? networkImage
+                        : AppImages.user;
+                    return AppRoundedImage(
+                      imageUrl: image,
+                      width: 80,
+                      height: 80,
+                      fit: BoxFit.cover,
+                      borderRadius: 100,
+                      isNetworking: networkImage.isNotEmpty,
+                      onPressed: () =>
+                          _showImageSourceSheet(context, controller),
+                    );
+                  }),
+                  Obx(
+                    () => TextButton(
+                      onPressed: controller.imageUploading.value
+                          ? null
+                          : () => _showImageSourceSheet(context, controller),
+                      child: const Text('Change Profile Picture'),
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -76,6 +108,45 @@ class ProfileScreen extends StatelessWidget {
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  void _showImageSourceSheet(
+    BuildContext context,
+    UserController controller,
+  ) {
+    showModalBottomSheet<void>(
+      context: context,
+      builder: (sheetContext) => SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: AppSizes.sm),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                leading: const Icon(Iconsax.gallery),
+                title: const Text('Choose from Gallery'),
+                onTap: () {
+                  Navigator.of(sheetContext).pop();
+                  controller.uploadUserProfilePicture(
+                    source: ImageSource.gallery,
+                  );
+                },
+              ),
+              ListTile(
+                leading: const Icon(Iconsax.camera),
+                title: const Text('Take a Photo'),
+                onTap: () {
+                  Navigator.of(sheetContext).pop();
+                  controller.uploadUserProfilePicture(
+                    source: ImageSource.camera,
+                  );
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );

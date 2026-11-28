@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:ecom/data/repositories/AuthenticationRepository/authentication_repository.dart';
 import 'package:ecom/data/repositories/user/user_repository.dart';
 import 'package:ecom/features/authentication/screens/login/login_screen.dart';
@@ -9,9 +11,12 @@ import 'package:ecom/utils/helpers/network_manager.dart';
 import 'package:ecom/utils/popups/full_screen_loader.dart';
 import 'package:ecom/utils/popups/loaders.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 
 class UserController extends GetxController {
   static UserController get instance =>
@@ -19,6 +24,7 @@ class UserController extends GetxController {
           UserController());
 
   final profileLoading = false.obs;
+  final imageUploading = false.obs;
   Rx<UserModel> user = UserModel
       .empty()
       .obs;
@@ -81,44 +87,50 @@ class UserController extends GetxController {
   /// Save user Record from any Registration provider
   Future<void> saveUserRecord(UserCredential? userCredential) async {
     try {
-      if (userCredential != null) {
-        // Convert Name to first and last name
-        final nameParts = UserModel.nameParts(
-          userCredential.user!.displayName ?? '',
-        );
-        final userName = UserModel.generateUsername(
-          userCredential.user!.displayName ?? '',
-        );
 
-        // Map Data
-        final user = UserModel(
-          id: userCredential.user!.uid,
-          firstName: nameParts[0],
-          lastName: nameParts.length > 1 ? nameParts.sublist(1).join(' ') : '',
-          username: userName,
-          email: userCredential.user!.email ?? '',
-          phoneNumber: userCredential.user!.phoneNumber ?? '',
-          profilePicture: userCredential.user!.photoURL ?? '',
-        );
+      // First Update Rx user and then check if user data is already stored.If not store new data
+      await fetchUserRecord();
 
-        if (kDebugMode) {
-          debugPrint(
-              '==================== [USER CONTROLLER - SAVE RECORD REQUEST] ====================');
-          debugPrint('Action: saveUserRecord from provider');
-          debugPrint('Payload: ${user.toJson()}');
-          debugPrint(
-              '=================================================================================');
-        }
+      if (user.value.id.isEmpty) {
+        if (userCredential != null) {
+          // Convert Name to first and last name
+          final nameParts = UserModel.nameParts(
+            userCredential.user!.displayName ?? '',
+          );
+          final userName = UserModel.generateUsername(
+            userCredential.user!.displayName ?? '',
+          );
 
-        // Save user data
-        await userRepo.saveUserRecord(user);
+          // Map Data
+          final user = UserModel(
+            id: userCredential.user!.uid,
+            firstName: nameParts[0],
+            lastName: nameParts.length > 1 ? nameParts.sublist(1).join(' ') : '',
+            username: userName,
+            email: userCredential.user!.email ?? '',
+            phoneNumber: userCredential.user!.phoneNumber ?? '',
+            profilePicture: userCredential.user!.photoURL ?? '',
+          );
 
-        if (kDebugMode) {
-          debugPrint(
-              '==================== [USER CONTROLLER - SAVE RECORD RESPONSE] ====================');
-          debugPrint('Status: User record saved');
-          debugPrint(
-              '==================================================================================');
+          if (kDebugMode) {
+            debugPrint(
+                '==================== [USER CONTROLLER - SAVE RECORD REQUEST] ====================');
+            debugPrint('Action: saveUserRecord from provider');
+            debugPrint('Payload: ${user.toJson()}');
+            debugPrint(
+                '=================================================================================');
+          }
+
+          // Save user data
+          await userRepo.saveUserRecord(user);
+
+          if (kDebugMode) {
+            debugPrint(
+                '==================== [USER CONTROLLER - SAVE RECORD RESPONSE] ====================');
+            debugPrint('Status: User record saved');
+            debugPrint(
+                '==================================================================================');
+          }
         }
       }
     } catch (e) {
@@ -254,6 +266,85 @@ class UserController extends GetxController {
         title: 'Oh Snap!',
         message: e.toString(),
       );
+    }
+  }
+
+  /// Upload any image to Firebase Storage and return its download URL.
+  Future<String> uploadImage(String path, XFile image) async {
+    try {
+      final ref = FirebaseStorage.instance.ref(path).child(image.name);
+      if (kIsWeb) {
+        await ref.putData(await image.readAsBytes());
+      } else {
+        await ref.putFile(File(image.path));
+      }
+      final url = await ref.getDownloadURL();
+      return url;
+    } on FirebaseException catch (e) {
+      throw e.message ?? 'Firebase error occurred (${e.code}).';
+    } on FormatException catch (_) {
+      throw 'Invalid file format.';
+    } on PlatformException catch (e) {
+      throw e.message ?? 'Platform error occurred (${e.code}).';
+    } catch (e) {
+      throw 'Something went wrong. Please try again.';
+    }
+  }
+
+  /// Pick an image, upload it to Firebase Storage, and update the user's profile picture.
+  Future<void> uploadUserProfilePicture({
+    ImageSource source = ImageSource.gallery,
+  }) async {
+    if (imageUploading.value) return;
+
+    try {
+      final image = await ImagePicker().pickImage(
+        source: source,
+        imageQuality: 70,
+        maxHeight: 512,
+        maxWidth: 512,
+      );
+      if (image == null) return;
+
+      final isConnected = await NetworkManager.instance.isConnected();
+      if (!isConnected) return;
+
+      final uid =
+          AuthenticationRepository.instance.authUser?.uid ?? user.value.id;
+      if (uid.isEmpty) {
+        AppLoaders.errorSnackBar(
+          title: 'Oh Snap!',
+          message: 'User is not authenticated.',
+        );
+        return;
+      }
+
+      imageUploading.value = true;
+
+      // Upload image to user-scoped path in Firebase Storage
+      final imageUrl = await uploadImage(
+        'Users/Images/Profile/$uid/',
+        image,
+      );
+
+      // Update user's ProfilePicture field in Firestore
+      await userRepo.updateSingleField({'ProfilePicture': imageUrl});
+
+      // Update reactive user state
+      user.value.profilePicture = imageUrl;
+      user.refresh();
+
+      AppLoaders.successSnackBar(
+        title: 'Congratulations',
+        message: 'Your Profile Image has been updated!',
+      );
+    } catch (e) {
+      AppLoaders.errorSnackBar(
+        title: 'Oh Snap!',
+        message: e.toString(),
+      );
+    } finally {
+      imageUploading.value = false;
     }
   }
 
