@@ -80,12 +80,12 @@ class AppImages{
   // static const String watchIcon = 'assets/icons/categories/watch.png'; //------------
   //
   // // Banners
-  static const String homeBanner1 = 'assets/banners/2.png';
-  static const String homeBanner2 = 'assets/banners/1.png';
-  static const String homeBanner3 = 'assets/banners/3.png';
-  static const String homeBanner4 = 'assets/banners/4.png';
-  static const String homeBanner5 = 'assets/banners/5.png';
-  static const String homeBanner6 = 'assets/banners/6.png';
+  static const String homeBanner1 = 'assets/banners/2.webp';
+  static const String homeBanner2 = 'assets/banners/1.webp';
+  static const String homeBanner3 = 'assets/banners/3.webp';
+  static const String homeBanner4 = 'assets/banners/4.webp';
+  static const String homeBanner5 = 'assets/banners/5.webp';
+  static const String homeBanner6 = 'assets/banners/6.webp';
 
   // Another Images
   static const String noInternet = 'assets/images/no-wifi.png';
